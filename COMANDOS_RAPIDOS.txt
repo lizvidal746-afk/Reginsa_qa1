@@ -1,0 +1,136 @@
+# ⚡ COMANDOS LISTOS - Copia y Pega
+
+## 1️⃣ LIMPIAR CASO 01
+
+**En Terminal:**
+```bash
+cd "d:\SUNEDU\SELENIUM\playwrigth" && del registros-administrados.json registros-administrados.html
+```
+
+**O Doble clic:**
+```
+D:\SUNEDU\SELENIUM\playwrigth\limpiar-caso-01.bat
+```
+
+---
+
+## 2️⃣ EJECUTAR CASO 01
+
+**En Terminal:**
+```bash
+cd "d:\SUNEDU\SELENIUM\playwrigth" && npm run test:01
+```
+
+**Resultado:**
+- ✅ Browser abre y ejecuta
+- ✅ Playwright Report se abre automáticamente
+- ✅ Allure Report se abre automáticamente
+- ✅ Tiempo: ~2-3 minutos
+- ✅ Screenshots con razón social incluida
+
+---
+
+## 3️⃣ EJECUTAR CASO 02
+
+**En Terminal:**
+```bash
+cd "d:\SUNEDU\SELENIUM\playwrigth" && npm run test:02
+```
+
+**Resultado:**
+- ✅ Browser abre y ejecuta
+- ✅ Playwright Report se abre automáticamente
+- ✅ Allure Report se abre automáticamente
+- ✅ Tiempo: ~46 segundos
+- ✅ Screenshots con razón social incluida
+- ✅ Allure muestra: Caso 01 + Caso 02
+
+---
+
+## 4️⃣ EJECUTAR TODOS
+
+**En Terminal:**
+```bash
+cd "d:\SUNEDU\SELENIUM\playwrigth" && npm run test:all
+```
+
+**Resultado:**
+- ✅ Ejecuta Caso 01 + Caso 02
+- ✅ Ambos reportes automáticos
+- ✅ Tiempo: ~3 minutos total
+- ✅ Allure muestra ambos limpios
+- ✅ Screenshots con razón social
+
+---
+
+## 📋 SECUENCIA RECOMENDADA
+
+```bash
+# Paso 1: Abrir terminal en VS Code o CMD
+cd "d:\SUNEDU\SELENIUM\playwrigth"
+
+# Paso 2: Limpiar Caso 01
+del registros-administrados.json registros-administrados.json 2>nul
+
+# Paso 3: Ejecutar Caso 01 (espera a terminar)
+npm run test:01
+
+# Paso 4: Ejecutar Caso 02 (espera a terminar)
+npm run test:02
+
+# Paso 5: Si quieres ambos juntos nuevamente
+npm run test:all
+```
+
+---
+
+## 🎯 COPIAR EXACTO
+
+### Limpiar + Caso 01:
+```bash
+cd "d:\SUNEDU\SELENIUM\playwrigth" && del registros-administrados.json registros-administrados.html 2>nul && npm run test:01
+```
+
+### Limpiar + Caso 02:
+```bash
+cd "d:\SUNEDU\SELENIUM\playwrigth" && npm run test:02
+```
+
+### Limpiar + Todos:
+```bash
+cd "d:\SUNEDU\SELENIUM\playwrigth" && npm run test:all
+```
+
+### Ver Allure Report (abrir en navegador):
+```bash
+cd "d:\SUNEDU\SELENIUM\playwrigth" && allure serve allure-results
+```
+
+### Ver Playwright Report (abrir en navegador):
+```bash
+cd "d:\SUNEDU\SELENIUM\playwrigth" && npx playwright show-report
+```
+
+---
+
+## ✨ Cambio en Screenshots
+
+**Antes:**
+```
+02-REGISTRAR_SANCION_RUC_12345678901_Exp_N°_123_2026...png
+```
+
+**Ahora:**
+```
+02-REGISTRAR_SANCION_Perfumerias_unidas_2026-01-20...png
+```
+
+**Incluye:**
+- ✅ Caso
+- ✅ Paso
+- ✅ Razón Social ← AHORA INCLUIDO
+- ✅ Timestamp
+
+---
+
+**¡Listo! Copia un comando y ejecuta.** 🚀

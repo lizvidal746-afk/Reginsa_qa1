@@ -1,0 +1,194 @@
+# 🧹 GUÍA COMPLETA: Limpiar y Ejecutar Tests
+
+## 🎯 Situación Actual
+
+Viste en Allure tests antiguos que ya no existen. Eso ocurre porque:
+- ❌ Los directorios de datos NO se limpian automáticamente
+- ❌ Allure mantiene histórico de ejecuciones antiguas
+- ❌ Screenshots viejos quedan en carpeta
+
+---
+
+## 🚀 SOLUCIÓN: Limpiar + Ejecutar
+
+### Opción 1️⃣ - Limpiar + Caso 02 (RECOMENDADO)
+
+**Haz doble clic en:**
+```
+D:\SUNEDU\SELENIUM\playwrigth\limpiar-y-ejecutar-caso-02.bat
+```
+
+**Qué hace:**
+1. 🧹 Elimina directorio `allure-results` (limpia histórico)
+2. 🧹 Elimina directorio `playwright-report`
+3. 🧹 Elimina directorio `screenshots`
+4. 🧹 Elimina directorio `test-results`
+5. 🧹 Elimina JSON/HTML de administrados
+6. ✅ Ejecuta Caso 02
+7. 🔄 Abre Playwright Report (limpio)
+8. 🔄 Abre Allure Report (solo muestra Caso 02)
+
+**Resultado en Allure:**
+```
+chromium
+└── casos-prueba/02-registrar-sancion.spec.ts ✅
+```
+
+---
+
+### Opción 2️⃣ - Limpiar + TODOS los Casos
+
+**Haz doble clic en:**
+```
+D:\SUNEDU\SELENIUM\playwrigth\limpiar-y-ejecutar-todos.bat
+```
+
+**Qué hace:**
+1. 🧹 Limpia TODO igual que Opción 1
+2. ✅ Ejecuta Caso 01 + Caso 02 en orden
+3. 🔄 Abre ambos reportes (ahora con 2 tests limpios)
+
+**Resultado en Allure:**
+```
+chromium
+├── casos-prueba/01-agregar-administrado.spec.ts ✅
+└── casos-prueba/02-registrar-sancion.spec.ts ✅
+```
+
+---
+
+### Opción 3️⃣ - Limpiar solo (sin ejecutar)
+
+**Haz doble clic en:**
+```
+D:\SUNEDU\SELENIUM\playwrigth\limpiar-datos.bat
+```
+
+**Qué hace:**
+- 🧹 Limpia todos los directorios
+- ⏹️ NO ejecuta tests
+- Útil si quieres limpiar y luego ejecutar manualmente
+
+---
+
+## 📊 Comparación: Antes vs Después
+
+### ❌ ANTES (Datos sucios)
+```
+Allure muestra:
+├── 01-agregar-administrado.spec.ts          ✅
+├── 02-registrar-sancion.spec.ts             ✅
+├── casos-prueba/02-caso-prueba-siguiente    ❓ ¿De dónde?
+├── debug-dropdown.spec.ts                   ❓ ¿Qué es?
+└── test-admin-registro.spec.ts              ❓ Antiguo
+```
+
+### ✅ DESPUÉS (Datos limpios)
+```
+Allure muestra:
+├── 01-agregar-administrado.spec.ts ✅
+└── 02-registrar-sancion.spec.ts    ✅
+```
+
+---
+
+## 🔄 Nombres de Screenshots (MEJORADO)
+
+### Antes
+```
+02-REGISTRAR_SANCION_01-SANCION_LLENA_RUC_12345678901_Perfumerias_unidas_2026-01-20T10-30-45-123Z.png
+```
+
+### Después (Simplificado)
+```
+02-REGISTRAR_SANCION_01-SANCION_LLENA_2026-01-20T10-30-45-123Z.png
+```
+
+**Cambios:**
+- ❌ Eliminado: RUC
+- ❌ Eliminado: Razón Social
+- ✅ Mantenido: Caso, Paso, Timestamp (lo importante)
+
+---
+
+## 📝 Qué hacer AHORA
+
+### 1️⃣ Limpiar y ejecutar Caso 02
+```
+D:\SUNEDU\SELENIUM\playwrigth\limpiar-y-ejecutar-caso-02.bat
+```
+Doble clic → Se limpian datos → Se ejecuta Caso 02 → Se abren reportes limpios
+
+### 2️⃣ Revisar Allure
+```
+http://localhost:4050
+```
+Verás solo: **Caso 01 y Caso 02** (sin basura antigua)
+
+### 3️⃣ Si necesitas más tests
+- Copia template de Caso 02
+- Crea Caso 03, 04, 05
+- Ejecuta: `limpiar-y-ejecutar-todos.bat`
+- Allure mostrará: 01, 02, 03, 04, 05 (limpios)
+
+---
+
+## 🎯 Workflow Recomendado
+
+```
+Trabaja en Caso 03
+    ↓
+Quieres probar
+    ↓
+Doble clic: limpiar-y-ejecutar-todos.bat
+    ↓
+Se limpian datos + se ejecutan todos
+    ↓
+Allure muestra solo los que existen (01, 02, 03)
+    ↓
+Sin confusión, sin datos viejos
+```
+
+---
+
+## 🚨 ¿Qué se elimina?
+
+| Directorio | Contenido | Impacto |
+|-----------|-----------|--------|
+| `allure-results/` | Datos crudos de Allure | Nuevo histórico limpio |
+| `allure-report/` | HTML generado de Allure | Se regenera al ejecutar |
+| `playwright-report/` | HTML de Playwright | Se regenera al ejecutar |
+| `screenshots/` | Capturas de tests | Nuevas screenshots |
+| `test-results/` | Datos de ejecución | Nuevos datos |
+| `registros-administrados.json` | Datos Caso 01 | Se recrea si Caso 01 ejecuta |
+| `reporte-administrados.html` | Reporte Caso 01 | Se recrea si lo generas |
+
+---
+
+## 💡 Ventajas
+
+✅ **Reportes limpios** - Solo lo que existe ahora  
+✅ **Sin confusión** - No ves datos de tests antiguos  
+✅ **Histórico fresco** - Empieza desde 0  
+✅ **Allure honesto** - Muestra solo tests actuales  
+✅ **Screenshots ordenados** - Nombres simples y legibles  
+
+---
+
+## 📌 Próxima vez que ejecutes
+
+Simplemente:
+```
+limpiar-y-ejecutar-caso-02.bat
+```
+
+O si tienes Caso 03, 04, 05:
+```
+limpiar-y-ejecutar-todos.bat
+```
+
+**Eso es todo. Los reportes siempre estarán limpios.** ✅
+
+---
+
+**Última actualización:** Enero 20, 2026

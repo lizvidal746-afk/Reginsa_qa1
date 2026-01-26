@@ -1,0 +1,163 @@
+# 📸 CAPTURAS AUTOMÁTICAS - CASO 02
+
+## ¿QUÉ CAPTURA EL TEST AHORA?
+
+El test `02-registrar-sancion.spec.ts` captura **automáticamente** 3 pantallas en momentos clave:
+
+---
+
+## 📷 CAPTURA 1: AGREGAR SANCIÓN
+**Cuándo**: PASO 10 - Cuando se abre el modal "Agregar sanción"
+
+**Ubicación en archivo**: Línea ~225 en `02-registrar-sancion.spec.ts`
+
+**Qué muestra**:
+- Pestaña: "Detalle de sanciones"
+- Modal abierto: "Agregar sanción"
+- Campos: Sanción, Tipo Infractor
+- Estado: Listo para llenar
+
+**Nombre archivo**: 
+```
+test-results/casos-prueba-02-registrar-sancion-chromium/
+└── 02-REGISTRAR_SANCION_01-AGREGAR_SANCION_[timestamp].png
+```
+
+---
+
+## 📷 CAPTURA 2: VALIDACIONES
+**Cuándo**: PASO 15 - Cuando regresa a la pestaña "Datos del administrado"
+
+**Ubicación en archivo**: Línea ~315 en `02-registrar-sancion.spec.ts`
+
+**Qué muestra**:
+- Pestaña: "Datos del administrado"
+- Campos completos: Administrado, Expediente, Resolución, etc.
+- Validaciones: Bordes rojos en campos requeridos (si aplica)
+- Estado: Antes de guardar
+
+**Nombre archivo**:
+```
+test-results/casos-prueba-02-registrar-sancion-chromium/
+└── 02-REGISTRAR_SANCION_02-VALIDACIONES_ADMINISTRADO_[timestamp].png
+```
+
+---
+
+## 📷 CAPTURA 3: BOTÓN GUARDAR
+**Cuándo**: PASO 15 - Justo antes de clickear "Guardar"
+
+**Ubicación en archivo**: Línea ~325 en `02-registrar-sancion.spec.ts`
+
+**Qué muestra**:
+- Pestaña: "Datos del administrado"
+- Botón: "Guardar" (visible y activo)
+- Formulario: Completamente lleno
+- Estado: Listo para guardar
+
+**Nombre archivo**:
+```
+test-results/casos-prueba-02-registrar-sancion-chromium/
+└── 02-REGISTRAR_SANCION_03-BOTON_GUARDAR_[timestamp].png
+```
+
+---
+
+## ✅ CÓMO OBTENER LAS CAPTURAS
+
+### Paso 1: Ejecutar el test
+```bash
+npm run test:02
+```
+
+### Paso 2: El test captura automáticamente
+No necesitas hacer nada. El test:
+1. Llega a PASO 10 y captura "Agregar Sanción"
+2. Llega a PASO 15 y captura "Validaciones"
+3. Captura "Botón Guardar"
+4. Continúa hasta guardar
+5. Captura resultado final
+
+### Paso 3: Ubicar las capturas
+```
+d:\SUNEDU\SELENIUM\playwrigth\
+└── test-results/
+    └── casos-prueba-02-registrar-sancion-chromium/
+        ├── 02-REGISTRAR_SANCION_01-AGREGAR_SANCION_*.png
+        ├── 02-REGISTRAR_SANCION_02-VALIDACIONES_ADMINISTRADO_*.png
+        ├── 02-REGISTRAR_SANCION_03-BOTON_GUARDAR_*.png
+        ├── test-passed-1.png (resultado final)
+        └── test-failed-1.png (si falla)
+```
+
+---
+
+## 🎯 VERIFICAR CAPTURAS
+
+Después de ejecutar `npm run test:02`:
+
+```bash
+# Windows
+cd test-results/casos-prueba-02-registrar-sancion-chromium/
+explorer .
+
+# Linux/Mac
+open test-results/casos-prueba-02-registrar-sancion-chromium/
+```
+
+---
+
+## 📊 FUNCIONES USADO
+
+Las capturas usan la función:
+```typescript
+await capturarPantallaMejorada(
+  page,
+  '02-REGISTRAR_SANCION',           // Prefijo del test
+  '01-AGREGAR_SANCION',              // Nombre descriptivo
+  `Modal de agregar sanción abierto` // Descripción
+);
+```
+
+---
+
+## 🔧 SI QUIERES AGREGAR MÁS CAPTURAS
+
+Edita `02-registrar-sancion.spec.ts` y agrega en cualquier PASO:
+
+```typescript
+// En el PASO que quieras
+console.log('   📸 Tomando captura: Nombre descriptivo');
+await capturarPantallaMejorada(
+  page,
+  '02-REGISTRAR_SANCION',
+  'PASO_XX_NOMBRE',
+  'Descripción detallada'
+);
+```
+
+---
+
+## ⚡ TIPS
+
+1. **Pantallas oscuras**: Si las capturas están oscuras, significa que el modal no se renderizó completamente
+   - Aumenta el `waitForTimeout()` antes de la captura
+
+2. **Capturas cortadas**: Si se ven parciales, agranda la ventana del navegador
+   - Playwright abre en 1280x720 por defecto
+
+3. **Múltiples capturas**: Si el test se ejecuta varias veces, verás múltiples archivos con `[timestamp]`
+   - Las más recientes están al final del nombre
+
+---
+
+## 📋 CHECKLIST
+
+- [x] Test 02 generera 3 capturas automáticas
+- [x] Captura 1: Agregar Sanción (PASO 10)
+- [x] Captura 2: Validaciones (PASO 15)
+- [x] Captura 3: Botón Guardar (PASO 15)
+- [x] Ubicación: `test-results/casos-prueba-02-registrar-sancion-chromium/`
+- [x] Nombres descriptivos incluyen timestamps
+- [x] Se pueden agregar más capturas si es necesario
+

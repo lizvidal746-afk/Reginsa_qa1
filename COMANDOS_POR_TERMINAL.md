@@ -1,0 +1,160 @@
+# ⚡ TODOS LOS COMANDOS POR TERMINAL
+
+## 🪟 POWERSHELL (Windows)
+
+**Indicador:** `PS D:\...>`
+
+### Limpiar:
+```powershell
+cd "d:\SUNEDU\SELENIUM\playwrigth"; del registros-administrados.json, reporte-administrados.html -ErrorAction SilentlyContinue
+```
+
+### Ejecutar Caso 01:
+```powershell
+cd "d:\SUNEDU\SELENIUM\playwrigth"; npm run test:01
+```
+
+### Ejecutar Caso 02:
+```powershell
+cd "d:\SUNEDU\SELENIUM\playwrigth"; npm run test:02
+```
+
+### Ejecutar Todos:
+```powershell
+cd "d:\SUNEDU\SELENIUM\playwrigth"; npm run test:all
+```
+
+### Ver Allure:
+```powershell
+cd "d:\SUNEDU\SELENIUM\playwrigth"; allure serve allure-results
+```
+
+### Ver Playwright:
+```powershell
+cd "d:\SUNEDU\SELENIUM\playwrigth"; npx playwright show-report
+```
+
+### Limpiar pantalla:
+```powershell
+Clear-Host
+```
+
+---
+
+## ⌨️ CMD (Windows Clásico)
+
+**Indicador:** `D:\...>` o `C:\...>` (sin PS)
+
+### Limpiar:
+```cmd
+cd "d:\SUNEDU\SELENIUM\playwrigth" && del registros-administrados.json reporte-administrados.html 2>nul
+```
+
+### Ejecutar Caso 01:
+```cmd
+cd "d:\SUNEDU\SELENIUM\playwrigth" && npm run test:01
+```
+
+### Ejecutar Caso 02:
+```cmd
+cd "d:\SUNEDU\SELENIUM\playwrigth" && npm run test:02
+```
+
+### Ejecutar Todos:
+```cmd
+cd "d:\SUNEDU\SELENIUM\playwrigth" && npm run test:all
+```
+
+### Ver Allure:
+```cmd
+cd "d:\SUNEDU\SELENIUM\playwrigth" && allure serve allure-results
+```
+
+### Ver Playwright:
+```cmd
+cd "d:\SUNEDU\SELENIUM\playwrigth" && npx playwright show-report
+```
+
+### Limpiar pantalla:
+```cmd
+cls
+```
+
+---
+
+## 🐧 BASH (Git Bash, Linux, Mac)
+
+**Indicador:** `$` o `bash-...$`
+
+### Limpiar:
+```bash
+cd "d:\SUNEDU\SELENIUM\playwrigth" && rm registros-administrados.json reporte-administrados.html 2>/dev/null
+```
+
+### Ejecutar Caso 01:
+```bash
+cd "d:\SUNEDU\SELENIUM\playwrigth" && npm run test:01
+```
+
+### Ejecutar Caso 02:
+```bash
+cd "d:\SUNEDU\SELENIUM\playwrigth" && npm run test:02
+```
+
+### Ejecutar Todos:
+```bash
+cd "d:\SUNEDU\SELENIUM\playwrigth" && npm run test:all
+```
+
+### Ver Allure:
+```bash
+cd "d:\SUNEDU\SELENIUM\playwrigth" && allure serve allure-results
+```
+
+### Ver Playwright:
+```bash
+cd "d:\SUNEDU\SELENIUM\playwrigth" && npx playwright show-report
+```
+
+### Limpiar pantalla:
+```bash
+clear
+```
+
+---
+
+## 📋 TABLA RÁPIDA DE SINTAXIS
+
+| Acción | PowerShell | CMD | Bash |
+|--------|-----------|-----|------|
+| **Separador** | `;` | `&&` | `&&` |
+| **Eliminar** | `del` | `del` | `rm` |
+| **Ignorar errores** | `-ErrorAction SilentlyContinue` | `2>nul` | `2>/dev/null` |
+| **Limpiar pantalla** | `Clear-Host` | `cls` | `clear` |
+
+---
+
+## 🎯 MI RECOMENDACIÓN
+
+Si estás en Windows:
+1. ✅ Usa **PowerShell** (más moderno)
+2. Si tengo dudas, usa **CMD** (más simple)
+3. Si usas Git Bash, usa **Bash**
+
+---
+
+## ✅ GUÍA VISUAL
+
+**Ver qué terminal tienes:**
+
+```
+Mira el símbolo al inicio de la línea:
+
+PS D:\...>          ← PowerShell    (Copia comandos PowerShell)
+D:\...>  o C:\...>  ← CMD           (Copia comandos CMD)
+$ o bash-$          ← Bash          (Copia comandos Bash)
+```
+
+---
+
+**¡Elige tu terminal y copia el comando que necesitas!** 🚀

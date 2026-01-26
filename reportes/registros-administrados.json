@@ -1,0 +1,134 @@
+[
+  {
+    "id": 1,
+    "ruc": "49924040194",
+    "razonSocial": "Empresa comercial 1",
+    "nombreComercial": "Empresa comercial 1",
+    "estado": "Licenciada",
+    "timestamp": "2026-01-19T20:58:32.453Z",
+    "screenshot": "01-agregar-administrado_ANTES_GUARDAR_49924040194",
+    "screenshot_despues": "./screenshots/01-agregar-administrado_DESPUES_GUARDAR_49924040194_2026-01-19T20-58-32-364Z.png",
+    "estado_registro": "exitoso"
+  },
+  {
+    "id": 1,
+    "ruc": "99999945285",
+    "razonSocial": "Empresa comercial 1",
+    "nombreComercial": "Empresa comercial 1",
+    "estado": "Licenciada",
+    "timestamp": "2026-01-19T21:17:57.012Z",
+    "screenshot": "./screenshots/01-AGREGAR_ADMINISTRADO_ANTES_GUARDAR_RUC_99999945285_Empresa_comercial_1_2026-01-19T21-17-55-191Z.png",
+    "screenshot_despues": "./screenshots/01-AGREGAR_ADMINISTRADO_DESPUES_GUARDAR_RUC_99999945285_Empresa_comercial_1_2026-01-19T21-17-56-929Z.png",
+    "estado_registro": "exitoso"
+  },
+  {
+    "id": 1,
+    "ruc": "74673428143",
+    "razonSocial": "Empresa comercial 1",
+    "nombreComercial": "Empresa comercial 1",
+    "estado": "Licenciada",
+    "timestamp": "2026-01-20T15:44:15.005Z",
+    "screenshot": "./screenshots/01-AGREGAR_ADMINISTRADO_ANTES_GUARDAR_Empresa_comercial_1_2026-01-20T15-44-12-993Z.png",
+    "screenshot_despues": "./screenshots/01-AGREGAR_ADMINISTRADO_DESPUES_GUARDAR_Empresa_comercial_1_2026-01-20T15-44-14-849Z.png",
+    "estado_registro": "exitoso"
+  },
+  {
+    "id": 1,
+    "ruc": "48538960928",
+    "razonSocial": "Empresa comercial 1",
+    "nombreComercial": "Empresa comercial 1",
+    "estado": "Licenciada",
+    "timestamp": "2026-01-20T15:48:56.853Z",
+    "screenshot": "./screenshots/01-AGREGAR_ADMINISTRADO_ANTES_GUARDAR_Empresa_comercial_1_2026-01-20T15-48-54-897Z.png",
+    "screenshot_despues": "./screenshots/01-AGREGAR_ADMINISTRADO_DESPUES_GUARDAR_Empresa_comercial_1_2026-01-20T15-48-56-691Z.png",
+    "estado_registro": "exitoso"
+  },
+  {
+    "id": 1,
+    "ruc": "61525282884",
+    "razonSocial": "Empresa comercial 1",
+    "nombreComercial": "Empresa comercial 1",
+    "estado": "Licenciada",
+    "timestamp": "2026-01-20T15:56:05.550Z",
+    "screenshot": "./screenshots/01-AGREGAR_ADMINISTRADO_ANTES_GUARDAR_Empresa_comercial_1_2026-01-20T15-56-03-600Z.png",
+    "screenshot_despues": "./screenshots/01-AGREGAR_ADMINISTRADO_DESPUES_GUARDAR_Empresa_comercial_1_2026-01-20T15-56-05-385Z.png",
+    "estado_registro": "exitoso"
+  },
+  {
+    "id": 1,
+    "ruc": "91033876793",
+    "razonSocial": "Empresa comercial 1",
+    "nombreComercial": "Empresa comercial 1",
+    "estado": "Licenciada",
+    "timestamp": "2026-01-20T15:58:44.579Z",
+    "screenshot": "./screenshots/01-AGREGAR_ADMINISTRADO_ANTES_GUARDAR_Empresa_comercial_1_2026-01-20T15-58-42-482Z.png",
+    "screenshot_despues": "./screenshots/01-AGREGAR_ADMINISTRADO_DESPUES_GUARDAR_Empresa_comercial_1_2026-01-20T15-58-44-362Z.png",
+    "estado_registro": "exitoso"
+  },
+  {
+    "id": 1,
+    "ruc": "88609738437",
+    "razonSocial": "Empresa comercial 1",
+    "nombreComercial": "Empresa comercial 1",
+    "estado": "Licenciada",
+    "timestamp": "2026-01-20T16:06:16.069Z",
+    "screenshot": "./screenshots/01-AGREGAR_ADMINISTRADO_ANTES_GUARDAR_Empresa_comercial_1_2026-01-20T16-06-14-029Z.png",
+    "screenshot_despues": "./screenshots/01-AGREGAR_ADMINISTRADO_DESPUES_GUARDAR_Empresa_comercial_1_2026-01-20T16-06-15-881Z.png",
+    "estado_registro": "exitoso"
+  },
+  {
+    "id": 1,
+    "ruc": "24033318221",
+    "razonSocial": "Empresa comercial 1",
+    "nombreComercial": "Empresa comercial 1",
+    "estado": "Licenciada",
+    "timestamp": "2026-01-20T16:20:55.723Z",
+    "screenshot": "./screenshots/01-AGREGAR_ADMINISTRADO_ANTES_GUARDAR_Empresa_comercial_1_2026-01-20T16-20-53-682Z.png",
+    "screenshot_despues": "./screenshots/01-AGREGAR_ADMINISTRADO_DESPUES_GUARDAR_Empresa_comercial_1_2026-01-20T16-20-55-510Z.png",
+    "estado_registro": "exitoso"
+  },
+  {
+    "id": 1,
+    "ruc": "79819732262",
+    "razonSocial": "Empresa comercial 1",
+    "nombreComercial": "Empresa comercial 1",
+    "estado": "Licenciada",
+    "timestamp": "2026-01-20T16:34:56.825Z",
+    "screenshot": "./screenshots/01-AGREGAR_ADMINISTRADO_ANTES_GUARDAR_Empresa_comercial_1_2026-01-20T16-34-54-832Z.png",
+    "screenshot_despues": "./screenshots/01-AGREGAR_ADMINISTRADO_DESPUES_GUARDAR_Empresa_comercial_1_2026-01-20T16-34-56-605Z.png",
+    "estado_registro": "exitoso"
+  },
+  {
+    "id": 1,
+    "ruc": "08580132762",
+    "razonSocial": "Empresa comercial 1",
+    "nombreComercial": "Empresa comercial 1",
+    "estado": "Licenciada",
+    "timestamp": "2026-01-20T16:42:40.903Z",
+    "screenshot": "./screenshots/01-AGREGAR_ADMINISTRADO_ANTES_GUARDAR_Empresa_comercial_1_2026-01-20T16-42-38-976Z.png",
+    "screenshot_despues": "./screenshots/01-AGREGAR_ADMINISTRADO_DESPUES_GUARDAR_Empresa_comercial_1_2026-01-20T16-42-40-751Z.png",
+    "estado_registro": "exitoso"
+  },
+  {
+    "id": 1,
+    "ruc": "26680847922",
+    "razonSocial": "Empresa comercial 1",
+    "nombreComercial": "Empresa comercial 1",
+    "estado": "Licenciada",
+    "timestamp": "2026-01-20T16:46:56.699Z",
+    "screenshot": "./screenshots/01-AGREGAR_ADMINISTRADO_ANTES_GUARDAR_Empresa_comercial_1_2026-01-20T16-46-54-754Z.png",
+    "screenshot_despues": "./screenshots/01-AGREGAR_ADMINISTRADO_DESPUES_GUARDAR_Empresa_comercial_1_2026-01-20T16-46-56-543Z.png",
+    "estado_registro": "exitoso"
+  },
+  {
+    "id": 1,
+    "ruc": "52564485595",
+    "razonSocial": "EMPRESA COMERCIAL 4131 SRL",
+    "nombreComercial": "EMPRESA COMERCIAL 4131",
+    "estado": "Licenciada",
+    "timestamp": "2026-01-26T19:44:49.829Z",
+    "screenshot": "./screenshots/01-AGREGAR_ADMINISTRADO_ANTES_GUARDAR_EMPRESA_COMERCIAL_41_2026-01-26T19-44-47-818Z.png",
+    "screenshot_despues": "./screenshots/01-AGREGAR_ADMINISTRADO_DESPUES_GUARDAR_EMPRESA_COMERCIAL_41_2026-01-26T19-44-49-632Z.png",
+    "estado_registro": "exitoso"
+  }
+]
