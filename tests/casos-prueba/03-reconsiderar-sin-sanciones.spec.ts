@@ -16,10 +16,11 @@ import {
  * 1. Login + navegación al módulo (reutiliza `iniciarSesionYNavegar`)
  * 2. Ir a Infracción y Sanción (reutiliza `navegarAInfraccionSancion`)
  * 3. Buscar registro con campos vacíos (F. Modificación, N° Reconsideración y F. Reconsideración)
- * 4. Completar cabecera con archivo, número y fecha válidos (fecha > resolución y <= hoy) (reutiliza `completarCabeceraReconsideracion`)
- * 5. Capturar formulario lleno (reutiliza `capturarFormularioLleno`)
- * 6. Guardar cabecera y validar éxito (reutiliza `capturarToastExito`)
- * 7. Ir a Detalle de sanciones y verificar “Sin sanciones registradas”
+ * 4. Editar cabecera y marcar “Presentó reconsideración” (reutiliza `completarCabeceraReconsideracion`)
+ * 5. Subir archivo, llenar número y seleccionar fecha válida (fecha > resolución y <= hoy) (reutiliza `completarCabeceraReconsideracion`)
+ * 6. Capturar formulario lleno (reutiliza `capturarFormularioLleno`)
+ * 7. Guardar cabecera y validar éxito (reutiliza `capturarToastExito`)
+ * 8. Ir a Detalle de sanciones y verificar “Sin sanciones registradas”
  */
 
 test.describe('03-RECONSIDERAR SIN SANCIONES', () => {

@@ -26,6 +26,13 @@
  - **Flujo (anotado en código)**: [tests/casos-prueba/03-reconsiderar-sin-sanciones.spec.ts](../tests/casos-prueba/03-reconsiderar-sin-sanciones.spec.ts)
  - **Criterio de selección**: F. Modificación, N° Reconsideración y F. Reconsideración vacíos
 - **Regla de fecha**: Fecha de reconsideración > Fecha de resolución y <= fecha actual
+ - **Cabecera (orden obligatorio)**:
+ 	 - Clic en **Editar cabecera**
+ 	 - Marcar **Presentó reconsideración**
+ 	 - Subir archivo PDF
+ 	 - Llenar **N° de reconsideración**
+ 	 - Seleccionar **Fecha de reconsideración**
+ 	 - Guardar cabecera
 
 ### Caso 04: Reconsiderar con sanciones
 - **Archivo**: `tests/casos-prueba/04-reconsiderar-con-sanciones.spec.ts`
@@ -35,6 +42,13 @@
  - **Flujo (anotado en código)**: [tests/casos-prueba/04-reconsiderar-con-sanciones.spec.ts](../tests/casos-prueba/04-reconsiderar-con-sanciones.spec.ts)
  - **Criterio de selección**: F. Modificación, N° Reconsideración y F. Reconsideración vacíos
 - **Regla de fecha**: Fecha de reconsideración > Fecha de resolución y <= fecha actual
+ - **Cabecera (orden obligatorio)**:
+ 	 - Clic en **Editar cabecera**
+ 	 - Marcar **Presentó reconsideración**
+ 	 - Subir archivo PDF
+ 	 - Llenar **N° de reconsideración**
+ 	 - Seleccionar **Fecha de reconsideración**
+ 	 - Guardar cabecera
  - **Reglas principales (Detalle de sanciones)**:
 	 - Multa → marcar **Pagó** + **Reconsidera**
 	 - Suspensión → marcar **Reconsidera**

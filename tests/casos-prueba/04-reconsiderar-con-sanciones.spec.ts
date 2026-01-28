@@ -16,11 +16,12 @@ import {
  * 1. Login + navegación al módulo (reutiliza `iniciarSesionYNavegar`)
  * 2. Buscar registro con detalle de sanciones disponible y campos vacíos
  * 3. Click en “Reconsiderar”
- * 4. Completar cabecera con archivo, número y fecha válidos (fecha > resolución y <= hoy) (reutiliza `completarCabeceraReconsideracion`)
- * 5. Capturar formulario lleno (reutiliza `capturarFormularioLleno`)
- * 6. Guardar cabecera y validar éxito (reutiliza `capturarToastExito`)
- * 7. Ir a Detalle de sanciones
- * 8. Editar registros y marcar opciones según sanción
+ * 4. Editar cabecera y marcar “Presentó reconsideración” (reutiliza `completarCabeceraReconsideracion`)
+ * 5. Subir archivo, llenar número y seleccionar fecha válida (fecha > resolución y <= hoy) (reutiliza `completarCabeceraReconsideracion`)
+ * 6. Capturar formulario lleno (reutiliza `capturarFormularioLleno`)
+ * 7. Guardar cabecera y validar éxito (reutiliza `capturarToastExito`)
+ * 8. Ir a Detalle de sanciones
+ * 9. Editar registros y marcar opciones según sanción
  */
 
 test.describe('04-RECONSIDERAR CON SANCIONES', () => {
