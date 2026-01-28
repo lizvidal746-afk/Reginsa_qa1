@@ -1,0 +1,108 @@
+# ⚠️ Documento movido
+
+Este archivo fue movido a [docs/ARBOL_PROYECTO.md](docs/ARBOL_PROYECTO.md).
+
+# 📁 Árbol del Proyecto - REGINSA (Actual)
+
+```
+D:\SUNEDU\SELENIUM\playwrigth/
+│
+├── README.md
+├── ARBOL_PROYECTO.md
+├── docs/
+│   ├── INDICE.md
+│   ├── GUIA_OPERATIVA.md
+│   ├── GLOSARIO_PLANTILLA.md
+│   ├── INSTALACION_Y_EJECUCION.md
+│   ├── CREAR_CASOS_MANUAL.md
+│   └── CASOS_PRUEBA_ACTUALES.md
+│
+├── tests/
+│   ├── casos-prueba/
+│   │   ├── 01-agregar-administrado.spec.ts
+│   │   ├── 02-registrar-sancion.spec.ts
+│   │   ├── 03-reconsiderar-sin-sanciones.spec.ts
+│   │   └── 04-reconsiderar-con-sanciones.spec.ts
+│   └── utilidades/
+│       └── reginsa-actions.ts
+│
+├── test-files/
+│   └── GENERAL N° 00001-2026-SUNEDU-SG-OTI.pdf
+│
+├── reportes/
+│   └── registros-administrados.json
+│
+├── playwright.config.js
+├── package.json
+├── package-lock.json
+├── tsconfig.json
+├── .gitignore
+└── node_modules/
+```
+
+---
+
+## 🚀 Rutas rápidas
+
+### ▶️ Ejecutar tests
+```
+npm run test:01
+npm run test:02
+npm run test:03
+npm run test:04
+npm run test:all
+```
+
+### 📊 Reportes
+```
+npm run reports:open
+```
+
+---
+
+## ✅ Documentación oficial
+- [docs/INDICE.md](docs/INDICE.md)
+
+---
+
+## 🔄 PRÓXIMAS ADICIONES
+
+### Estructura Prevista
+```
+D:\SUNEDU\SELENIUM\playwrigth/
+├── tests/casos-prueba/
+│   ├── 03-editar-administrado.spec.ts        (Próximo)
+│   ├── 04-eliminar-administrado.spec.ts      (Futuro)
+│   └── 05-buscar-administrado.spec.ts        (Futuro)
+│
+├── utilidades/                               (Próximo)
+│   ├── helpers.ts                            (Funciones comunes)
+│   ├── datos.ts                              (Data test)
+│   └── selectores.ts                         (Selectores reutilizables)
+│
+└── ci-cd/                                    (Próximo)
+    ├── github-actions.yml
+    ├── jenkins.yml
+    └── docker-compose.yml
+```
+
+---
+
+## ✅ CHECKLIST DE INICIALIZACIÓN
+
+- [x] Estructura de carpetas creada
+- [x] Caso 01 implementado y probado
+- [x] Reportes configurados
+- [x] Documentación completa
+- [x] Scripts de automatización
+- [x] Template para Caso 02
+- [ ] Caso 02 implementado (Próximo)
+- [ ] CI/CD configurado (Futuro)
+- [ ] Dashboard en tiempo real (Futuro)
+
+---
+
+**Proyecto:** REGINSA SUNEDU Automation  
+**Versión:** 1.0.0  
+**Fecha:** Enero 2026  
+**Estructura:** Organizada y preparada para escalabilidad

@@ -1,9 +1,5 @@
 @echo off
-REM Script para ejecutar el Test 02 - Registrar Sanción
-echo ========================================
-echo  EJECUTANDO CASO 02: REGISTRAR SANCIÓN
-echo ========================================
-echo.
-cd /d "%~dp0"
-npm run test:caso-02
-pause
+REM Wrapper para ejecutar scripts del Caso 02 (Registrar Sanci??n).
+REM Script real: docs\scripts\caso-02\run-test-02.bat
+call "%~dp0docs\scripts\caso-02\run-test-02.bat"
+

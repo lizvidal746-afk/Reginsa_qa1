@@ -1,9 +1,12 @@
 import { test } from '@playwright/test';
 import {
-  loginReginsa,
-  navegarAInfraccionSancion,
+  iniciarSesionYNavegar,
+  abrirFormularioRegistrarSancion,
   obtenerAdministradoAleatorio,
-  capturarPantallaMejorada
+  capturarPantallaMejorada,
+  capturarFormularioLleno,
+  capturarToastExito,
+  generarFechaPonderada
 } from '../utilidades/reginsa-actions';
 
 /**
@@ -29,12 +32,15 @@ import {
 test('02-REGISTRAR SANCIÓN: 5 sanciones para 1 administrado', async ({ page }) => {
   test.setTimeout(300000); // 5 minutos de timeout
 
+  // ═══════════════════════════════════════════════════════════════════
+  // PASO 1: LOGIN + NAVEGACIÓN
+  // Reutiliza `iniciarSesionYNavegar`
+  // ═══════════════════════════════════════════════════════════════════
   console.log('\n' + '═'.repeat(90));
   console.log('🔐 LOGIN Y NAVEGACIÓN');
   console.log('═'.repeat(90));
 
-  await loginReginsa(page);
-  await navegarAInfraccionSancion(page);
+  await iniciarSesionYNavegar(page, 'infractor');
   console.log('  ✅ Sesión iniciada y módulo cargado\n');
 
   // ═══════════════════════════════════════════════════════════════════
@@ -44,9 +50,9 @@ test('02-REGISTRAR SANCIÓN: 5 sanciones para 1 administrado', async ({ page }) 
   console.log('📋 PASO 2: ABRIENDO FORMULARIO');
   console.log('═'.repeat(90));
 
-  const btnRegistrar = page.getByRole('button', { name: /Registrar|Sancionar/i });
-  await btnRegistrar.click();
-  await page.waitForTimeout(3000);
+  // Reutiliza `abrirFormularioRegistrarSancion`
+  await abrirFormularioRegistrarSancion(page);
+  await page.waitForTimeout(2000);
   console.log('  ✅ Formulario abierto\n');
 
   // ═══════════════════════════════════════════════════════════════════
@@ -56,9 +62,10 @@ test('02-REGISTRAR SANCIÓN: 5 sanciones para 1 administrado', async ({ page }) 
   console.log('🎲 PASO 3: SELECCIONANDO ADMINISTRADO');
   console.log('═'.repeat(90));
 
+  // Reutiliza `obtenerAdministradoAleatorio`
   const admin = await obtenerAdministradoAleatorio(page);
   await page.waitForTimeout(2000);
-  console.log(`  ✅ Seleccionado: ${admin}\n`);
+  console.log(`  ✅ Administrado seleccionado: ${admin}\n`);
 
   // ═══════════════════════════════════════════════════════════════════
   // PASO 4: LLENAR DATOS BÁSICOS
@@ -67,24 +74,73 @@ test('02-REGISTRAR SANCIÓN: 5 sanciones para 1 administrado', async ({ page }) 
   console.log('📝 PASO 4: DATOS BÁSICOS');
   console.log('═'.repeat(90));
 
+  const hoy = new Date();
+  const maxFecha = new Date(hoy);
+  maxFecha.setDate(maxFecha.getDate() - 2);
+  // Reutiliza `generarFechaPonderada`
+  const fechaResolucion = generarFechaPonderada(
+    [
+      { anio: 2024, peso: 0.2 },
+      { anio: 2025, peso: 0.4 },
+      { anio: 2026, peso: 0.4 }
+    ],
+    maxFecha
+  );
+  const yearResolucion = fechaResolucion.getFullYear();
+
   const numExp = Math.floor(Math.random() * 10000);
   const expInput = page.getByRole('textbox').nth(1);
   await expInput.click();
-  await expInput.fill(`Exp N° ${numExp}-2026`);
-  console.log(`  ✓ Expediente: Exp N° ${numExp}-2026`);
+  await expInput.fill(`Exp N° ${numExp}-${yearResolucion}`);
+  console.log(`  ✓ Expediente: Exp N° ${numExp}-${yearResolucion}`);
 
   const numRes = Math.floor(Math.random() * 10000);
   const resInput = page.getByRole('textbox').nth(2);
   await resInput.click();
-  await resInput.fill(`Res N° ${numRes}-2026`);
-  console.log(`  ✓ Resolución: Res N° ${numRes}-2026`);
+  await resInput.fill(`Res N° ${numRes}-${yearResolucion}`);
+  console.log(`  ✓ Resolución: Res N° ${numRes}-${yearResolucion}`);
+
+  const formatFecha = (date: Date) => {
+    const dd = String(date.getDate()).padStart(2, '0');
+    const mm = String(date.getMonth() + 1).padStart(2, '0');
+    const yyyy = date.getFullYear();
+    return `${dd}/${mm}/${yyyy}`;
+  };
 
   const btnFecha = page.getByRole('button', { name: /Choose|Seleccionar/i });
-  await btnFecha.click();
-  await page.waitForTimeout(1000);
-  const dayBtn = page.getByText('1', { exact: true }).first();
-  await dayBtn.click();
-  console.log('  ✓ Fecha: 01/01/2026\n');
+  const fechaInput = btnFecha.locator('..').locator('input');
+  const fechaTexto = formatFecha(fechaResolucion);
+
+  const asegurarFecha = async () => {
+    if (await fechaInput.isVisible().catch(() => false)) {
+      await fechaInput.click();
+      await fechaInput.fill(fechaTexto);
+      await page.keyboard.press('Tab');
+      await page.waitForTimeout(500);
+    } else {
+      await btnFecha.click();
+      await page.waitForTimeout(1000);
+      const dayBtn = page.getByText(String(fechaResolucion.getDate()), { exact: true }).first();
+      await dayBtn.click();
+      await page.waitForTimeout(500);
+    }
+
+    const valor = await fechaInput.inputValue().catch(() => '');
+    return valor?.includes(fechaTexto);
+  };
+
+  let fechaOk = false;
+  for (let intento = 0; intento < 3; intento++) {
+    fechaOk = await asegurarFecha();
+    if (fechaOk) break;
+    await page.waitForTimeout(500);
+  }
+
+  if (!fechaOk) {
+    throw new Error(`No se pudo fijar la fecha de resolución (${fechaTexto})`);
+  }
+
+  console.log(`  ✓ Fecha: ${fechaTexto}\n`);
 
   // ═══════════════════════════════════════════════════════════════════
   // PASO 5: SUBIR PDF
@@ -154,18 +210,8 @@ test('02-REGISTRAR SANCIÓN: 5 sanciones para 1 administrado', async ({ page }) 
   let exitosas = 0;
   let multaUsaUITCaso1: boolean | null = null;
 
-  const capturarToastExito = async (etiqueta: string) => {
-    const toast = page
-      .locator('.p-toast-message-success, .p-toast-message')
-      .filter({ hasText: /registro|registrad|guardad|Éxito/i })
-      .first();
-
-    const visible = await toast.isVisible({ timeout: 5000 }).catch(() => false);
-    if (visible) {
-      try {
-        await capturarPantallaMejorada(page, '02-REGISTRAR_SANCION', etiqueta, 'Toast', etiqueta);
-      } catch (e) {}
-    }
+  const capturarToastCaso = async (etiqueta: string) => {
+    await capturarToastExito(page, '02-REGISTRAR_SANCION', etiqueta, admin, '', 'DETALLE_SANCION');
   };
 
   for (const sancion of sanciones) {
@@ -184,34 +230,50 @@ test('02-REGISTRAR SANCIÓN: 5 sanciones para 1 administrado', async ({ page }) 
         await page.waitForTimeout(500);
       }
 
+      const dialog = page.locator('[role="dialog"]').first();
+      await dialog.waitFor({ state: 'visible', timeout: 10000 });
+
       console.log(`  │  ✓ Modal abierto`);
 
+      const seleccionarAleatorio = async (comboIndex: number, label: string) => {
+        const combobox = dialog.locator('[role="combobox"]').nth(comboIndex);
+        const visible = await combobox.isVisible({ timeout: 3000 }).catch(() => false);
+        if (!visible) {
+          console.log(`  │  ⚠️  ${label} no visible`);
+          return false;
+        }
+
+        for (let intento = 0; intento < 3; intento++) {
+          await combobox.click({ force: true });
+          await page.waitForTimeout(800);
+
+          const panel = page.locator('.p-dropdown-panel').first();
+          await panel.waitFor({ state: 'visible', timeout: 5000 }).catch(() => {});
+          const options = panel.locator('.p-dropdown-item');
+          const count = await options.count().catch(() => 0);
+
+          if (count > 0) {
+            const index = Math.floor(Math.random() * count);
+            await options.nth(index).click();
+            await page.waitForTimeout(800);
+            console.log(`  │  ✓ ${label} seleccionado`);
+            return true;
+          }
+
+          await page.keyboard.press('Escape');
+          await page.waitForTimeout(500);
+        }
+
+        console.log(`  │  ⚠️  No se pudo seleccionar ${label}`);
+        return false;
+      };
+
       // PASO 8B: RIS (aleatorio)
-      const risCombobox = page.locator('[role="dialog"] [role="combobox"]').first();
-      await risCombobox.click();
-      await page.waitForTimeout(1500);
-      const risOptions = page.getByRole('option');
-      const risCount = await risOptions.count().catch(() => 0);
-      if (risCount > 0) {
-        const risIndex = Math.floor(Math.random() * risCount);
-        await risOptions.nth(risIndex).click();
-      }
-      await page.waitForTimeout(1500);
-      console.log(`  │  ✓ RIS seleccionado`);
+      await seleccionarAleatorio(0, 'RIS');
 
       // PASO 8C: TIPO INFRACTOR (aleatorio)
-      await page.waitForTimeout(1500);
-      const tipoCombobox = page.locator('[role="dialog"] [role="combobox"]').nth(1);
-      await tipoCombobox.click();
-      await page.waitForTimeout(1200);
-      const tipoOptions = page.getByRole('option');
-      const tipoCount = await tipoOptions.count().catch(() => 0);
-      if (tipoCount > 0) {
-        const tipoIndex = Math.floor(Math.random() * tipoCount);
-        await tipoOptions.nth(tipoIndex).click();
-      }
-      await page.waitForTimeout(2000);
-      console.log(`  │  ✓ Tipo Infractor seleccionado`);
+      await page.waitForTimeout(800);
+      await seleccionarAleatorio(1, 'Tipo Infractor');
 
       // PASO 8D: HECHO INFRACTOR
       const hechoInput = page.getByPlaceholder('Describe el hecho infractor');
@@ -353,7 +415,7 @@ test('02-REGISTRAR SANCIÓN: 5 sanciones para 1 administrado', async ({ page }) 
       console.log(`  │  ✅ GUARDADA`);
       exitosas++;
 
-      await capturarToastExito(`DETALLE_${sancion.numero}`);
+      await capturarToastCaso(`DETALLE_${sancion.numero}`);
 
       // PASO 8I: CERRAR MODAL
       await page.keyboard.press('Escape');
@@ -376,6 +438,10 @@ test('02-REGISTRAR SANCIÓN: 5 sanciones para 1 administrado', async ({ page }) 
   console.log('✅ PASO 9: GUARDANDO FORMULARIO FINAL');
   console.log('═'.repeat(90));
 
+  // Captura formulario lleno antes de guardar
+  // Reutiliza `capturarFormularioLleno`
+  await capturarFormularioLleno(page, '02-REGISTRAR_SANCION', admin, '', 'REGISTRAR_SANCION');
+
   await page.waitForTimeout(2000);
   const btnGuardarFinal = page.getByRole('button', { name: 'Guardar' });
   if (await btnGuardarFinal.isVisible({ timeout: 5000 }).catch(() => false)) {
@@ -383,9 +449,11 @@ test('02-REGISTRAR SANCIÓN: 5 sanciones para 1 administrado', async ({ page }) 
     await page.waitForTimeout(4000);
     console.log('  ✅ Formulario guardado');
 
-    await capturarToastExito('GUARDAR_GENERAL');
+    // Reutiliza `capturarToastExito`
+    await capturarToastExito(page, '02-REGISTRAR_SANCION', 'EXITO_GUARDAR_GENERAL', admin, '', 'REGISTRAR_SANCION');
 
     try {
+      // Reutiliza `capturarPantallaMejorada`
       await capturarPantallaMejorada(page, '02-REGISTRAR_SANCION', 'FINAL', 'Éxito', 'Final');
     } catch (e) {}
   }

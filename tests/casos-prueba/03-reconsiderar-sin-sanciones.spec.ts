@@ -1,58 +1,117 @@
-import { test, Page } from '@playwright/test';
-import path from 'path';
+import { test } from '@playwright/test';
 import {
   iniciarSesionYNavegar,
   navegarAInfraccionSancion,
+  completarCabeceraReconsideracion,
+  capturarFormularioLleno,
+  capturarToastExito,
+  parseFechaTexto,
+  calcularFechaReconsideracion,
 } from '../utilidades/reginsa-actions';
+
+/**
+ * CASO 03: RECONSIDERAR SIN SANCIONES
+ *
+ * Flujo:
+ * 1. Login + navegación al módulo (reutiliza `iniciarSesionYNavegar`)
+ * 2. Ir a Infracción y Sanción (reutiliza `navegarAInfraccionSancion`)
+ * 3. Buscar registro con campos vacíos (F. Modificación, N° Reconsideración y F. Reconsideración)
+ * 4. Completar cabecera con archivo, número y fecha válidos (fecha > resolución y <= hoy) (reutiliza `completarCabeceraReconsideracion`)
+ * 5. Capturar formulario lleno (reutiliza `capturarFormularioLleno`)
+ * 6. Guardar cabecera y validar éxito (reutiliza `capturarToastExito`)
+ * 7. Ir a Detalle de sanciones y verificar “Sin sanciones registradas”
+ */
 
 test.describe('03-RECONSIDERAR SIN SANCIONES', () => {
   test('Reconsiderar sanción con campos vacíos - búsqueda dinámica', async ({ page }) => {
-    test.setTimeout(180000); // 3 minutos - aumentar tiempo de timeout
+    test.setTimeout(300000); // 5 minutos - evitar timeout en flujo completo
     const nombreCaso = '03-reconsiderar-sin-sanciones';
 
     try {
+      // ═══════════════════════════════════════════════════════════════════
+      // PASO 1: LOGIN + NAVEGACIÓN
+      // Reutiliza `iniciarSesionYNavegar`
+      // ═══════════════════════════════════════════════════════════════════
       console.log('🔐 PASO 1: Inicializando sesión...');
       await iniciarSesionYNavegar(page, 'infractor');
       console.log('✅ Sesión iniciada\n');
 
+      // ═══════════════════════════════════════════════════════════════════
+      // PASO 2: NAVEGAR A INFRACCIÓN Y SANCIÓN
+      // Reutiliza `navegarAInfraccionSancion`
+      // ═══════════════════════════════════════════════════════════════════
       console.log('📋 PASO 2: Navegando a Infracción y Sanción...');
       await navegarAInfraccionSancion(page);
       await page.waitForTimeout(1500);
       console.log('✅ Módulo accesible\n');
 
-      console.log('📋 PASO 3: Buscando registro con TODOS los campos vacíos...');
+      // ═══════════════════════════════════════════════════════════════════
+      // PASO 3: BUSCAR REGISTRO CON CAMPOS VACÍOS
+      // ═══════════════════════════════════════════════════════════════════
+      console.log('📋 PASO 3: Buscando registro con campos vacíos (F. Modificación, N° Reconsideración y F. Reconsideración)...');
       const filas = page.locator('tr');
       const totalFilas = await filas.count();
       console.log(`   Total de registros: ${totalFilas - 1}\n`);
       
       let registroEncontrado = false;
+      let fechaResolucionSeleccionada: Date | null = null;
+      const hoy = new Date();
+      hoy.setHours(0, 0, 0, 0);
 
-      // Buscar registro que tenga VACÍOS: F. Modificación, N° Reconsideración y F. Reconsideración
+      const obtenerIndiceColumna = async (regex: RegExp): Promise<number> => {
+        const headers = page.locator('thead tr th');
+        const total = await headers.count();
+        for (let i = 0; i < total; i++) {
+          const texto = (await headers.nth(i).textContent())?.trim() || '';
+          if (regex.test(texto)) return i;
+        }
+        return -1;
+      };
+
+      const idxFMod = await obtenerIndiceColumna(/F\.\s*Modificaci\w*|Modificaci\w*/i);
+      const idxNRec = await obtenerIndiceColumna(/N\W*Reconsideraci\w*/i);
+      const idxFRec = await obtenerIndiceColumna(/F\.\s*Reconsideraci\w*|Reconsideraci\w*/i);
+
+      if (idxFMod < 0 || idxNRec < 0 || idxFRec < 0) {
+        throw new Error('No se pudieron identificar las columnas F. Modificación, N° Reconsideración y F. Reconsideración.');
+      }
+
+      // Buscar primer registro que tenga VACÍOS: F. Modificación, N° Reconsideración y F. Reconsideración
       for (let i = 1; i < totalFilas; i++) {
         const fila = filas.nth(i);
         const celdas = fila.locator('td');
         const totalCeldas = await celdas.count();
         
         if (totalCeldas >= 9) {
-          // Columnas (de derecha a izquierda):
-          // -1: F. Reconsideración (última)
-          // -2: N° Reconsideración (penúltima)
-          // -3: F. Modificación (antepenúltima)
-          const fModificacion = (await celdas.nth(totalCeldas - 3).textContent())?.trim() || '';
-          const nReconsid = (await celdas.nth(totalCeldas - 2).textContent())?.trim() || '';
-          const fReconsid = (await celdas.nth(totalCeldas - 1).textContent())?.trim() || '';
+          const fModificacion = (await celdas.nth(idxFMod).textContent())?.trim() || '';
+          const nReconsid = (await celdas.nth(idxNRec).textContent())?.trim() || '';
+          const fReconsid = (await celdas.nth(idxFRec).textContent())?.trim() || '';
           
           console.log(`   Fila ${i}: F.Mod='${fModificacion}' | N°Rec='${nReconsid}' | F.Rec='${fReconsid}'`);
           
+          // Buscar fecha de resolución en la fila (primera fecha encontrada)
+          const fechasDetectadas: Date[] = [];
+          for (let c = 0; c < totalCeldas; c++) {
+            const texto = (await celdas.nth(c).textContent())?.trim() || '';
+            const fecha = parseFechaTexto(texto);
+            if (fecha) fechasDetectadas.push(fecha);
+          }
+          const fechaResolucion = fechasDetectadas[0] || null;
+
           // Si TODOS están vacíos
           if (!fModificacion && !nReconsid && !fReconsid) {
-            const botones = fila.locator('button.p-button-warning');
-            if (await botones.count() > 0) {
-              console.log(`   ✅ REGISTRO VÁLIDO encontrado en fila ${i}\n`);
-              await botones.first().click();
-              await page.waitForTimeout(2500);
-              registroEncontrado = true;
-              break;
+            if (fechaResolucion && fechaResolucion < hoy) {
+              const botones = fila.locator('button.p-button-warning');
+              if (await botones.count() > 0) {
+                const administrado = (await celdas.nth(0).textContent())?.trim() || 'N/D';
+                console.log(`   👤 Administrado: ${administrado}`);
+                console.log(`   ✅ REGISTRO VÁLIDO encontrado en fila ${i}\n`);
+                await botones.first().click();
+                await page.waitForTimeout(2500);
+                registroEncontrado = true;
+                fechaResolucionSeleccionada = fechaResolucion;
+                break;
+              }
             }
           }
         }
@@ -60,92 +119,38 @@ test.describe('03-RECONSIDERAR SIN SANCIONES', () => {
 
       if (!registroEncontrado) {
         console.log('❌ No se encontró registro válido\n');
-        throw new Error('No hay registros con todos los campos vacíos');
+        throw new Error('No hay registros con F. Modificación, N° Reconsideración y F. Reconsideración vacíos');
       }
 
-      console.log('📋 PASO 4: Abriendo editor de cabecera...');
-      await page.waitForTimeout(1000);
-      const btnEditarCabecera = page.getByRole('button', { name: 'Editar cabecera' });
-      await btnEditarCabecera.waitFor({ state: 'visible', timeout: 8000 });
-      await btnEditarCabecera.click();
-      await page.waitForTimeout(1500);
-      console.log('✅ Editor de cabecera abierto\n');
-
-      console.log('📋 PASO 5: Marcando checkbox de reconsideración...');
-      const checkbox = page.locator('.p-checkbox-box').first();
-      await checkbox.waitFor({ state: 'visible', timeout: 5000 });
-      await checkbox.click();
-      await page.waitForTimeout(500);
-      console.log('✅ Checkbox marcado\n');
-
-      console.log('📋 PASO 6: Cargando archivo PDF...');
+      // ═══════════════════════════════════════════════════════════════════
+      // PASO 4-8: COMPLETAR CABECERA (ARCHIVO + NÚMERO + FECHA)
+      // Reutiliza `completarCabeceraReconsideracion`
+      // ═══════════════════════════════════════════════════════════════════
+      console.log('📋 PASO 4-8: Editando cabecera y completando datos...');
       const rutaArchivo = 'D:\\SUNEDU\\SELENIUM\\playwrigth\\test-files\\GENERAL N° 00001-2026-SUNEDU-SG-OTI.pdf';
       console.log(`   Ruta: ${rutaArchivo}`);
-      
-      await page.waitForTimeout(1500);
-      const btnSeleccionar = page.getByText('Seleccionar archivo').nth(1);
-      await btnSeleccionar.waitFor({ state: 'visible', timeout: 8000 });
-      await page.waitForTimeout(800);
-      
-      // Interceptar el diálogo de archivo y seleccionar el archivo
-      const [fileChooser] = await Promise.all([
-        page.waitForEvent('filechooser', { timeout: 10000 }),
-        btnSeleccionar.click()
-      ]);
-      
-      await fileChooser.setFiles(rutaArchivo);
-      await page.waitForTimeout(2000);
-      
-      // El diálogo se cierra automáticamente después de setFiles()
-      // NO presionar Escape para evitar cerrar la página
-      
-      // Esperar a que el archivo se cargue completamente
-      console.log('   ⏳ Esperando que el archivo se procese completamente...');
-      await page.waitForTimeout(5000);
-      
-      console.log('✅ Archivo PDF cargado y procesado\n');
+      const fechaReconsideracion = calcularFechaReconsideracion(fechaResolucionSeleccionada);
 
-      console.log('📋 PASO 7: Ingresando número de reconsideración...');
-      await page.waitForTimeout(5000);
-      const numeroAleatorio = String(Math.floor(Math.random() * 9000) + 1000);
-      const numeroReconsideracion = `Reconsid N° ${numeroAleatorio}-2026`;
-      
-      const inputNumero = page.getByRole('textbox').nth(2);
-      await inputNumero.waitFor({ state: 'visible', timeout: 20000 });
-      await page.waitForTimeout(2000);
-      await inputNumero.fill(numeroReconsideracion);
-      await page.waitForTimeout(4000);
-      
+      const numeroReconsideracion = await completarCabeceraReconsideracion(page, rutaArchivo, fechaReconsideracion);
       console.log(`✅ Número ingresado: ${numeroReconsideracion}\n`);
-
-      console.log('📋 PASO 8: Seleccionando fecha de reconsideración...');
-      await page.waitForTimeout(5000);
-      const btnFecha = page.getByRole('button', { name: 'Choose Date' }).nth(1);
-      await btnFecha.waitFor({ state: 'visible', timeout: 20000 });
-      await page.waitForTimeout(2000);
-      await btnFecha.click();
-      await page.waitForTimeout(5000);
-      
-      const diaBtn = page.getByText('20', { exact: true });
-      await diaBtn.waitFor({ state: 'visible', timeout: 20000 });
-      await page.waitForTimeout(2000);
-      await diaBtn.click();
-      await page.waitForTimeout(4000);
-      
-      console.log('✅ Fecha seleccionada: 20/01/2026\n');
+      const dd = String(fechaReconsideracion.getDate()).padStart(2, '0');
+      const mm = String(fechaReconsideracion.getMonth() + 1).padStart(2, '0');
+      const yyyy = fechaReconsideracion.getFullYear();
+      console.log(`✅ Fecha seleccionada: ${dd}/${mm}/${yyyy}\n`);
 
       console.log('📋 PASO 9: Validando campos completados...');
       console.log(`   ✓ Número: ${numeroReconsideracion}`);
       console.log(`   ✓ Archivo: cargado`);
-      console.log(`   ✓ Fecha: 20/01/2026`);
+      console.log(`   ✓ Fecha: ${dd}/${mm}/${yyyy}`);
       console.log('   ✅ Todos los campos están completos\n');
 
-      console.log('� PASO 9.5: Captura ANTES de guardar...');
+      // ═══════════════════════════════════════════════════════════════════
+      // PASO 9.5: CAPTURAR FORMULARIO LLENO
+      // Reutiliza `capturarFormularioLleno`
+      // ═══════════════════════════════════════════════════════════════════
+      console.log('📋 PASO 9.5: Captura formulario lleno...');
       await page.waitForTimeout(1000);
-      let timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
-      let archivoAntes = `./screenshots/03-reconsiderar-sin-sanciones_ANTES_guardar_${timestamp}.png`;
-      await page.screenshot({ path: archivoAntes, fullPage: true });
-      console.log(`📸 Screenshot ANTES guardado: ${archivoAntes}\n`);
+      await capturarFormularioLleno(page, '03-RECONSIDERAR-SIN-SANCIONES', numeroReconsideracion, '', 'CABECERA_RECONSIDERACION');
 
       console.log('📋 PASO 10: Guardando cabecera...');
       await page.waitForTimeout(2000);
@@ -157,14 +162,18 @@ test.describe('03-RECONSIDERAR SIN SANCIONES', () => {
       await page.waitForTimeout(3000);
       console.log('✅ Guardar completado\n');
 
-      console.log('📸 PASO 10.5: Captura DESPUÉS de guardar (mensaje verde)...');
+      // ═══════════════════════════════════════════════════════════════════
+      // PASO 10.5: CAPTURA MENSAJE DE ÉXITO
+      // Reutiliza `capturarToastExito`
+      // ═══════════════════════════════════════════════════════════════════
+      console.log('📸 PASO 10.5: Captura mensaje de éxito (toast verde)...');
       console.log('   ⏳ Esperando que aparezca el mensaje de confirmación...');
-      await page.waitForTimeout(5000);  // Dar tiempo a que aparezca y se vea el mensaje
-      timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
-      const archivoDespues = `./screenshots/03-reconsiderar-sin-sanciones_DESPUES_guardar_${timestamp}.png`;
-      await page.screenshot({ path: archivoDespues, fullPage: true });
-      console.log(`📸 Screenshot DESPUÉS guardado: ${archivoDespues}\n`);
+      await page.waitForTimeout(5000);
+      await capturarToastExito(page, '03-RECONSIDERAR-SIN-SANCIONES', 'EXITO', numeroReconsideracion, '', 'CABECERA_RECONSIDERACION');
 
+      // ═══════════════════════════════════════════════════════════════════
+      // PASO 11: ACCEDER A DETALLE DE SANCIONES
+      // ═══════════════════════════════════════════════════════════════════
       console.log('📋 PASO 11: Accediendo a Detalle de sanciones...');
       await page.waitForTimeout(3000);
       const tabDetalle = page.getByRole('tab', { name: 'Detalle de sanciones' });
@@ -174,6 +183,9 @@ test.describe('03-RECONSIDERAR SIN SANCIONES', () => {
       await page.waitForTimeout(3000);
       console.log('✅ Tab Detalle abierto\n');
 
+      // ═══════════════════════════════════════════════════════════════════
+      // PASO 12: VERIFICAR TEXTO “SIN SANCIONES REGISTRADAS”
+      // ═══════════════════════════════════════════════════════════════════
       console.log('📋 PASO 12: Verificando contenido...');
       await page.waitForTimeout(1000);
       const bodyText = await page.locator('body').textContent();

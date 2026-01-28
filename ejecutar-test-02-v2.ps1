@@ -1,18 +1,5 @@
-#!/bin/pwsh
+﻿# Wrapper para ejecutar scripts del Caso 02 (Registrar SanciÃ³n).
+# Script real: docs\scripts\caso-02\ejecutar-test-02-v2.ps1
+$ErrorActionPreference = 'Stop'
+& "$PSScriptRoot\docs\scripts\caso-02\ejecutar-test-02-v2.ps1"
 
-Write-Host "═══════════════════════════════════════════════════════════════════════════════════" -ForegroundColor Cyan
-Write-Host "🚀 EJECUTANDO TEST V2 OPTIMIZADO - Caso 02: Registrar Sanción" -ForegroundColor Green
-Write-Host "═══════════════════════════════════════════════════════════════════════════════════" -ForegroundColor Cyan
-Write-Host ""
-
-Set-Location "d:\SUNEDU\SELENIUM\playwrigth"
-
-Write-Host "📋 Ejecutando: npm run test:02-v2" -ForegroundColor Yellow
-Write-Host ""
-
-npm run test:02-v2
-
-Write-Host ""
-Write-Host "═══════════════════════════════════════════════════════════════════════════════════" -ForegroundColor Cyan
-Write-Host "✅ Ejecución completada" -ForegroundColor Green
-Write-Host "═══════════════════════════════════════════════════════════════════════════════════" -ForegroundColor Cyan

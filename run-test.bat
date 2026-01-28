@@ -1,21 +1,5 @@
 @echo off
-REM Script para ejecutar test 02 
-cd /d "%~dp0"
+REM Wrapper para ejecuci??n general de pruebas.
+REM Script real: docs\scripts\ejecucion\run-test.bat
+call "%~dp0docs\scripts\ejecucion\run-test.bat"
 
-echo.
-echo ========================================
-echo Ejecutando Caso 02: Registrar Sancion
-echo PrimeNG dropdown fix (sin networkidle)
-echo ========================================
-echo.
-
-REM Ejecutar test
-npm run test:02
-
-echo.
-echo ========================================
-echo Test completado
-echo Capturas en: test-results/
-echo ========================================
-echo.
-pause

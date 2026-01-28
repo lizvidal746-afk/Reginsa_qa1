@@ -1443,6 +1443,222 @@
 				"run",
 				"test:02"
 			]
+		},
+		{
+			"label": "List Case 03 Tests",
+			"type": "shell",
+			"command": "npx",
+			"args": [
+				"playwright",
+				"test",
+				"tests/casos-prueba/03-reconsiderar-sin-sanciones.spec.ts",
+				"--list"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "List Case 03 Tests",
+			"type": "shell",
+			"command": "npx",
+			"args": [
+				"playwright",
+				"test",
+				"tests/casos-prueba/03-reconsiderar-sin-sanciones.spec.ts",
+				"--list"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "Show reginsa-actions lines 330-350",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-Command",
+				"$i=0; Get-Content 'd:\\SUNEDU\\SELENIUM\\playwrigth\\tests\\utilidades\\reginsa-actions.ts' | ForEach-Object { $i++; if($i -ge 330 -and $i -le 350){\"$i: $_\"} }"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "Run test:03 fresh",
+			"type": "shell",
+			"command": "npm",
+			"args": [
+				"run",
+				"test:03"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "Show reginsa-actions lines 330-380",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"$i=0; Get-Content 'd:\\SUNEDU\\SELENIUM\\playwrigth\\tests\\utilidades\\reginsa-actions.ts' | ForEach-Object { $i++; if($i -ge 330 -and $i -le 380){ Write-Output ($i.ToString() + ': ' + $_) } }"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "Show reginsa-actions lines 330-350",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"$i=0; Get-Content 'd:\\SUNEDU\\SELENIUM\\playwrigth\\tests\\utilidades\\reginsa-actions.ts' | ForEach-Object { $i++; if($i -ge 330 -and $i -le 350){ Write-Output ($i.ToString() + ': ' + $_) } }"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "Show reginsa-actions lines 360-390",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"$i=0; Get-Content 'd:\\SUNEDU\\SELENIUM\\playwrigth\\tests\\utilidades\\reginsa-actions.ts' | ForEach-Object { $i++; if($i -ge 360 -and $i -le 390){ Write-Output ($i.ToString() + ': ' + $_) } }"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "Show reginsa-actions lines 340-360",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"$i=0; Get-Content 'd:\\SUNEDU\\SELENIUM\\playwrigth\\tests\\utilidades\\reginsa-actions.ts' | ForEach-Object { $i++; if($i -ge 340 -and $i -le 360){ Write-Output ($i.ToString() + ': ' + $_) } }"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "Show reginsa-actions lines 330-345",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"$i=0; Get-Content 'd:\\SUNEDU\\SELENIUM\\playwrigth\\tests\\utilidades\\reginsa-actions.ts' | ForEach-Object { $i++; if($i -ge 330 -and $i -le 345){ Write-Output ($i.ToString() + ': ' + $_) } }"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "Show reginsa-actions lines 330-345",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"$i=0; Get-Content 'd:\\SUNEDU\\SELENIUM\\playwrigth\\tests\\utilidades\\reginsa-actions.ts' | ForEach-Object { $i++; if($i -ge 330 -and $i -le 345){ Write-Output ($i.ToString() + ': ' + $_) } }"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "Show reginsa-actions lines 326-334",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"$i=0; Get-Content 'd:\\SUNEDU\\SELENIUM\\playwrigth\\tests\\utilidades\\reginsa-actions.ts' | ForEach-Object { $i++; if($i -ge 326 -and $i -le 334){ Write-Output ($i.ToString() + ': ' + $_) } }"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "Show reginsa-actions lines 334-342",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"$i=0; Get-Content 'd:\\SUNEDU\\SELENIUM\\playwrigth\\tests\\utilidades\\reginsa-actions.ts' | ForEach-Object { $i++; if($i -ge 334 -and $i -le 342){ Write-Output ($i.ToString() + ': ' + $_) } }"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "Show reginsa-actions lines 300-320",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"$i=0; Get-Content 'd:\\SUNEDU\\SELENIUM\\playwrigth\\tests\\utilidades\\reginsa-actions.ts' | ForEach-Object { $i++; if($i -ge 300 -and $i -le 320){ Write-Output ($i.ToString() + ': ' + $_) } }"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "Show reginsa-actions lines 410-430",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"$i=0; Get-Content 'd:\\SUNEDU\\SELENIUM\\playwrigth\\tests\\utilidades\\reginsa-actions.ts' | ForEach-Object { $i++; if($i -ge 410 -and $i -le 430){ Write-Output ($i.ToString() + ': ' + $_) } }"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "Show reginsa-actions lines 418-426",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"$i=0; Get-Content 'd:\\SUNEDU\\SELENIUM\\playwrigth\\tests\\utilidades\\reginsa-actions.ts' | ForEach-Object { $i++; if($i -ge 418 -and $i -le 426){ Write-Output ($i.ToString() + ': ' + $_) } }"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "Show reginsa-actions lines 418-426",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"$i=0; Get-Content 'd:\\SUNEDU\\SELENIUM\\playwrigth\\tests\\utilidades\\reginsa-actions.ts' | ForEach-Object { $i++; if($i -ge 418 -and $i -le 426){ Write-Output ($i.ToString() + ': ' + $_) } }"
+			],
+			"isBackground": false
+		},
+		{
+			"label": "Delete obsolete files",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"Remove-Item -Path \"D:\\SUNEDU\\SELENIUM\\playwrigth\\test-output.log\",\"D:\\SUNEDU\\SELENIUM\\playwrigth\\MONITOREO_TEST_04.txt\",\"D:\\SUNEDU\\SELENIUM\\playwrigth\\EJECUTAR_AHORA.txt\",\"D:\\SUNEDU\\SELENIUM\\playwrigth\\cleanup-04-temp.bat\",\"D:\\SUNEDU\\SELENIUM\\playwrigth\\consolidar-caso-02.bat\",\"D:\\SUNEDU\\SELENIUM\\playwrigth\\consolidar-caso-02.js\",\"D:\\SUNEDU\\SELENIUM\\playwrigth\\consolidar.js\",\"D:\\SUNEDU\\SELENIUM\\playwrigth\\test-v2-guia.js\",\"D:\\SUNEDU\\SELENIUM\\playwrigth\\run-test-v2-now.bat\",\"D:\\SUNEDU\\SELENIUM\\playwrigth\\docs\\scripts\\caso-04\\cleanup-04-temp.bat\",\"D:\\SUNEDU\\SELENIUM\\playwrigth\\docs\\scripts\\caso-02\\consolidar-caso-02.bat\",\"D:\\SUNEDU\\SELENIUM\\playwrigth\\docs\\scripts\\ejecucion\\run-test-v2-now.bat\" -Force -ErrorAction SilentlyContinue"
+			]
+		},
+		{
+			"label": "Git status and remotes",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"git status; git remote -v"
+			]
+		},
+		{
+			"label": "Git add commit push",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"git add -A; git commit -m \"Organiza scripts y limpia archivos\"; git push"
+			]
+		},
+		{
+			"label": "Git commit push retry",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"git add -A; git commit -m 'Organiza scripts y limpia archivos'; git push"
+			]
 		}
 	]
 }

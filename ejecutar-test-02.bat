@@ -1,10 +1,5 @@
 @echo off
-cls
-echo ======================================
-echo  EJECUTANDO TEST CASO 02
-echo  REGISTRAR SANCIÓN
-echo ======================================
-echo.
-cd /d "%~dp0"
-call npm run test:caso-02
-pause
+REM Wrapper para ejecutar scripts del Caso 02 (Registrar Sanci??n).
+REM Script real: docs\scripts\caso-02\ejecutar-test-02.bat
+call "%~dp0docs\scripts\caso-02\ejecutar-test-02.bat"
+

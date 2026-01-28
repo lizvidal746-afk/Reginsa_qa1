@@ -1,0 +1,99 @@
+# 📁 Árbol del Proyecto - REGINSA (Actual)
+
+```
+D:\SUNEDU\SELENIUM\playwrigth/
+│
+├── README.md
+├── docs/
+│   ├── INDICE.md
+│   ├── README.md
+│   ├── GUIA_OPERATIVA.md
+│   ├── GLOSARIO_PLANTILLA.md
+│   ├── INSTALACION_Y_EJECUCION.md
+│   ├── CREAR_CASOS_MANUAL.md
+│   ├── CASOS_PRUEBA_ACTUALES.md
+│   ├── REUTILIZACION.md
+│   ├── ARBOL_PROYECTO.md
+│   ├── ARQUITECTURA_REUTILIZACION.md
+│   ├── GUIA_REPORTES.md
+│   ├── ALLURE_GUIA_COMPLETA.md
+│   ├── ALLURE_COMANDOS_RAPIDOS.md
+│   ├── ALLURE_LISTO.md
+│   ├── ALLURE_NO_APARECE_SOLUCION.md
+│   ├── LIMPIAR_TODO.md
+│   ├── LIMPIAR_POR_TERMINAL.md
+│   ├── GUIA_EJECUCION.md
+│   ├── GUIA_LIMPIAR_Y_EJECUTAR.md
+│   ├── GUIA_CAPTURA_PANTALLA.md
+│   ├── RECORDER_PLAYWRIGHT.md
+│   ├── HEADLESS_MODE.md
+│   ├── INICIO_RAPIDO.md
+│   ├── PLANTILLA_NUEVOS_CASOS.md
+│   ├── PUNTO_ENTRADA_TESTS.md
+│   └── legacy/
+│       └── (documentos redundantes y anteriores)
+│
+├── tests/
+│   ├── casos-prueba/
+│   │   ├── 01-agregar-administrado.spec.ts
+│   │   ├── 02-registrar-sancion.spec.ts
+│   │   ├── 03-reconsiderar-sin-sanciones.spec.ts
+│   │   └── 04-reconsiderar-con-sanciones.spec.ts
+│   └── utilidades/
+│       └── reginsa-actions.ts
+│
+├── test-files/
+│   └── GENERAL N° 00001-2026-SUNEDU-SG-OTI.pdf
+│
+├── reportes/
+│   └── registros-administrados.json
+│
+├── playwright.config.js
+├── package.json
+├── package-lock.json
+├── tsconfig.json
+├── .gitignore
+└── node_modules/
+```
+
+---
+
+## 🚀 Rutas rápidas
+
+### ▶️ Ejecutar tests
+```
+npm run test:01
+npm run test:02
+npm run test:03
+npm run test:04
+npm run test:all
+```
+
+### 📊 Reportes
+```
+npm run reports:open
+```
+
+---
+
+## ✅ Documentación oficial
+- [INDICE.md](INDICE.md)
+
+---
+
+## ✅ CHECKLIST DE INICIALIZACIÓN
+
+- [x] Estructura de carpetas creada
+- [x] Caso 01 implementado y probado
+- [x] Caso 02 implementado y probado
+- [x] Caso 03 implementado y probado
+- [x] Caso 04 implementado y probado
+- [x] Reportes configurados
+- [x] Documentación consolidada en docs/
+
+---
+
+**Proyecto:** REGINSA SUNEDU Automation  
+**Versión:** 1.0.0  
+**Fecha:** Enero 2026  
+**Estructura:** Organizada y preparada para escalabilidad

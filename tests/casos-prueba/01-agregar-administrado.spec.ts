@@ -6,7 +6,9 @@ import {
   abrirFormularioNuevoAdministrado,
   generarRUC,
   capturarPantalla,
-  capturarPantallaMejorada
+  capturarPantallaMejorada,
+  capturarFormularioLleno,
+  capturarToastExito
 } from '../utilidades/reginsa-actions';
 
 // Ruta del archivo de reporte
@@ -32,6 +34,7 @@ interface RegistroAdministrado {
 // ===============================
 
 const SUFIJOS_EMPRESA = ['SAC', 'EIRL', 'SRL', 'SAA'];
+const PREFIJOS_RAZON_SOCIAL = ['EMPRESA', 'CONSORCIO', 'UNIVERSIDAD', 'INDUSTRIA', 'CORPORACION'];
 
 function leerRegistrosExistentes(): RegistroAdministrado[] {
   if (!fs.existsSync(reportPath)) {
@@ -56,7 +59,8 @@ function quitarSufijoEmpresa(razon: string): string {
 }
 
 function generarRazonSocialUnica(usados: Set<string>): string {
-  const base = `EMPRESA COMERCIAL ${Math.floor(Math.random() * 9000) + 1000}`;
+  const prefijo = PREFIJOS_RAZON_SOCIAL[Math.floor(Math.random() * PREFIJOS_RAZON_SOCIAL.length)];
+  const base = `${prefijo} COMERCIAL ${Math.floor(Math.random() * 9000) + 1000}`;
   const sufijo = SUFIJOS_EMPRESA[Math.floor(Math.random() * SUFIJOS_EMPRESA.length)];
   const razon = `${base} ${sufijo}`;
   const normalizada = normalizarTexto(razon);
@@ -105,7 +109,7 @@ async function registrarAdministrado(page: Page, numeroRegistro: number): Promis
   const razonesRegistradas = new Set(registrosExistentes.map(r => normalizarTexto(r.razonSocial)));
 
   for (let intento = 0; intento < maxReintentos; intento++) {
-    // Generar RUC único
+    // Generar RUC único (reutiliza `generarRUC`)
     let ruc = generarRUC();
     while (rucsUsados.includes(ruc) || rucsRegistrados.has(normalizarTexto(ruc))) {
       ruc = generarRUC();
@@ -118,6 +122,7 @@ async function registrarAdministrado(page: Page, numeroRegistro: number): Promis
     razonesRegistradas.add(normalizarTexto(razonSocial));
 
     console.log(`🔄 Intento ${intento + 1}/${maxReintentos} - RUC: ${ruc}`);
+    console.log(`   👤 Administrado: ${razonSocial}`);
 
     try {
       // Llenar formulario
@@ -132,13 +137,13 @@ async function registrarAdministrado(page: Page, numeroRegistro: number): Promis
       await page.getByRole('option', { name: 'Licenciada' }).click();
       await page.waitForTimeout(300);
 
-      // Captura ANTES de guardar
-        const screenshotAntes = await capturarPantallaMejorada(
+      // Captura formulario lleno ANTES de guardar (reutiliza `capturarFormularioLleno`)
+      const screenshotAntes = await capturarFormularioLleno(
         page,
         '01-AGREGAR_ADMINISTRADO',
-        'ANTES_GUARDAR',
         ruc,
-          razonSocial
+        razonSocial,
+        'AGREGAR_ADMINISTRADO'
       );
 
       // Guardar
@@ -152,14 +157,11 @@ async function registrarAdministrado(page: Page, numeroRegistro: number): Promis
       if (estaVisible) {
         console.log(`✅ Administrado registrado - RUC: ${ruc}`);
         
-        // Captura DESPUÉS de guardar
-        const screenshotDespues = await capturarPantallaMejorada(
-          page,
-          '01-AGREGAR_ADMINISTRADO',
-          'DESPUES_GUARDAR',
-          ruc,
-          razonSocial
-        );
+        // Captura mensaje de éxito (toast verde) (reutiliza `capturarToastExito`)
+        const screenshotDespues =
+          (await capturarToastExito(page, '01-AGREGAR_ADMINISTRADO', 'EXITO', ruc, razonSocial, 'AGREGAR_ADMINISTRADO')) ||
+          // Fallback de captura completa (reutiliza `capturarPantallaMejorada`)
+          (await capturarPantallaMejorada(page, '01-AGREGAR_ADMINISTRADO', 'EXITO', ruc, razonSocial));
         
         // Actualizar reporte
         const registro: RegistroAdministrado = {
@@ -200,36 +202,41 @@ async function registrarAdministrado(page: Page, numeroRegistro: number): Promis
 
 /**
  * CASO 01: AGREGAR ADMINISTRADO
- * 
- * Registra un nuevo administrado con:
- * - RUC generado aleatoriamente
- * - Reintentos automáticos por duplicado
- * - Capturas de pantalla ANTES y DESPUÉS
- * - Reporte JSON actualizado
+ *
+ * Flujo:
+ * 1. Login + navegación al módulo (reutiliza `iniciarSesionYNavegar`)
+ * 2. Abrir formulario de nuevo administrado (reutiliza `abrirFormularioNuevoAdministrado`)
+ * 3. Generar RUC y razón social únicas (reutiliza `generarRUC` + helpers locales)
+ * 4. Llenar formulario y seleccionar estado
+ * 5. Capturar formulario (reutiliza `capturarFormularioLleno`)
+ * 6. Guardar y validar éxito (reutiliza `capturarToastExito` / `capturarPantallaMejorada`)
+ * 7. Actualizar reporte JSON
  */
 test('01-AGREGAR ADMINISTRADO: Registro con RUC automático y reintentos', async ({ page }) => {
   console.log('\n📱 CASO 01: AGREGAR ADMINISTRADO\n');
 
   try {
-    // ===============================
-    // PASO 1: SETUP INICIAL (Reutilizable)
-    // ===============================
+    // ═══════════════════════════════════════════════════════════════════
+    // PASO 1: LOGIN + NAVEGACIÓN
+    // Reutiliza `iniciarSesionYNavegar` (login + módulo)
+    // ═══════════════════════════════════════════════════════════════════
     await iniciarSesionYNavegar(page, 'infractor');
 
-    // ===============================
+    // ═══════════════════════════════════════════════════════════════════
     // PASO 2: ABRIR FORMULARIO
-    // ===============================
+    // Reutiliza `abrirFormularioNuevoAdministrado`
+    // ═══════════════════════════════════════════════════════════════════
     await abrirFormularioNuevoAdministrado(page);
 
-    // ===============================
+    // ═══════════════════════════════════════════════════════════════════
     // PASO 3: REGISTRAR ADMINISTRADO
-    // ===============================
+    // ═══════════════════════════════════════════════════════════════════
     console.log('\n📝 REGISTRANDO ADMINISTRADO...');
     const rucRegistrado = await registrarAdministrado(page, 1);
 
-    // ===============================
+    // ═══════════════════════════════════════════════════════════════════
     // RESULTADO FINAL
-    // ===============================
+    // ═══════════════════════════════════════════════════════════════════
     console.log('\n✅ CASO 01 COMPLETADO EXITOSAMENTE');
     console.log(`📊 Resumen:`);
     console.log(`   - Empresa: generada automáticamente`);

@@ -127,6 +127,376 @@ export async function navegarAInfraccionSancion(page: Page): Promise<void> {
 }
 
 /**
+ * Completa cabecera de reconsideración (checkbox, archivo, número y fecha)
+ * Retorna el número de reconsideración generado.
+ */
+function formatearFecha(date: Date): string {
+  const dd = String(date.getDate()).padStart(2, '0');
+  const mm = String(date.getMonth() + 1).padStart(2, '0');
+  const yyyy = date.getFullYear();
+  return `${dd}/${mm}/${yyyy}`;
+}
+
+export function parseFechaTexto(texto: string): Date | null {
+  const match = texto.match(/(\d{2})\/(\d{2})\/(\d{4})/);
+  if (!match) return null;
+  const [_, dd, mm, yyyy] = match;
+  const date = new Date(Number(yyyy), Number(mm) - 1, Number(dd));
+  return Number.isNaN(date.getTime()) ? null : date;
+}
+
+export function calcularFechaReconsideracion(fechaResolucion: Date | null): Date {
+  const hoy = new Date();
+  hoy.setHours(0, 0, 0, 0);
+
+  const base = fechaResolucion ?? new Date();
+  const minFecha = new Date(base);
+  minFecha.setDate(minFecha.getDate() + 1);
+
+  const maxFecha = new Date();
+  maxFecha.setHours(0, 0, 0, 0);
+
+  if (minFecha > maxFecha) {
+    throw new Error('No hay fecha válida de reconsideración (resolución >= hoy).');
+  }
+
+  const diff = Math.floor((maxFecha.getTime() - minFecha.getTime()) / (24 * 60 * 60 * 1000));
+  const offset = Math.floor(Math.random() * (diff + 1));
+  const fechaReconsideracion = new Date(minFecha);
+  fechaReconsideracion.setDate(minFecha.getDate() + offset);
+  return fechaReconsideracion;
+}
+
+export function generarFechaPonderada(
+  pesosPorAnio: Array<{ anio: number; peso: number }>,
+  fechaMaxima: Date
+): Date {
+  const pesosValidos = pesosPorAnio.filter(p => p.anio >= 0 && p.peso > 0);
+  const total = pesosValidos.reduce((acc, p) => acc + p.peso, 0);
+  if (total <= 0) {
+    return new Date(fechaMaxima);
+  }
+
+  const r = Math.random() * total;
+  let acumulado = 0;
+  let anioSeleccionado = pesosValidos[0].anio;
+  for (const p of pesosValidos) {
+    acumulado += p.peso;
+    if (r <= acumulado) {
+      anioSeleccionado = p.anio;
+      break;
+    }
+  }
+
+  const inicio = new Date(anioSeleccionado, 0, 1);
+  const fin = new Date(anioSeleccionado, 11, 31);
+  const limite = fechaMaxima < fin ? fechaMaxima : fin;
+
+  if (limite <= inicio) {
+    return new Date(limite);
+  }
+
+  const diffMs = limite.getTime() - inicio.getTime();
+  const randomMs = Math.floor(Math.random() * (diffMs + 1));
+  return new Date(inicio.getTime() + randomMs);
+}
+
+export async function completarCabeceraReconsideracion(
+  page: Page,
+  rutaArchivo: string,
+  fechaReconsideracion?: Date
+): Promise<string> {
+  const cabeceraPanel = page.getByRole('tabpanel').filter({ hasText: /Datos del administrado/i }).first();
+  const tabDatos = page.getByRole('tab', { name: /Datos del administrado/i });
+  if (await tabDatos.isVisible().catch(() => false)) {
+    const selected = await tabDatos.getAttribute('aria-selected').catch(() => 'true');
+    if (selected !== 'true') {
+      await tabDatos.click();
+      await page.waitForTimeout(1000);
+    }
+  }
+  const scope = (await cabeceraPanel.isVisible().catch(() => false)) ? cabeceraPanel : page;
+
+  const btnEditarCabecera = page.getByRole('button', { name: 'Editar cabecera' });
+  await btnEditarCabecera.waitFor({ state: 'visible', timeout: 8000 });
+  const tryHabilitarEdicion = async () => {
+    const enabled = await btnEditarCabecera.isEnabled().catch(() => false);
+    if (enabled) {
+      await btnEditarCabecera.click();
+      await page.waitForTimeout(1500);
+      return;
+    }
+
+    // Si ya está en modo edición, el botón puede estar deshabilitado
+    const btnGuardar = page.getByRole('button', { name: 'Guardar cabecera' });
+    const guardEnabled = await btnGuardar.isEnabled().catch(() => false);
+    if (guardEnabled) return;
+
+    // Esperar un poco más por si habilita edición
+    for (let i = 0; i < 6; i++) {
+      await page.waitForTimeout(1000);
+      const enabledNow = await btnEditarCabecera.isEnabled().catch(() => false);
+      if (enabledNow) {
+        await btnEditarCabecera.click();
+        await page.waitForTimeout(1500);
+        return;
+      }
+    }
+  };
+
+  await tryHabilitarEdicion();
+
+  const btnGuardarCabecera = page.getByRole('button', { name: 'Guardar cabecera' });
+  for (let i = 0; i < 6; i++) {
+    const enabled = await btnGuardarCabecera.isEnabled().catch(() => false);
+    if (enabled) break;
+    await page.waitForTimeout(800);
+  }
+
+  const labelPresento = scope.locator('label[for="presentoReconsideracion"]').first();
+  if (await labelPresento.isVisible().catch(() => false)) {
+    await labelPresento.scrollIntoViewIfNeeded().catch(() => {});
+  }
+
+  const presentoInput = scope.locator('input#presentoReconsideracion').first();
+  const presentoBox = scope.locator('p-checkbox[inputid="presentoReconsideracion"] .p-checkbox-box').first();
+  if (await presentoInput.isVisible().catch(() => false)) {
+    for (let intento = 0; intento < 5; intento++) {
+      const enabled = await presentoInput.isEnabled().catch(() => false);
+      const checked = await presentoInput.isChecked().catch(() => false);
+      if (checked) break;
+      if (enabled) {
+        if (await presentoBox.isVisible().catch(() => false)) {
+          await presentoBox.click({ force: true });
+        } else {
+          await scope.locator('label[for="presentoReconsideracion"]').click({ force: true }).catch(() => {});
+        }
+        await page.waitForTimeout(800);
+      } else {
+        await page.waitForTimeout(800);
+      }
+    }
+  }
+
+  const seccionReconsideracion = scope.locator('label').filter({ hasText: /Resoluci[oó]n de Reconsideraci[oó]n/i }).first();
+  for (let intento = 0; intento < 4; intento++) {
+    if (await seccionReconsideracion.isVisible().catch(() => false)) break;
+    if (await presentoBox.isVisible().catch(() => false)) {
+      await presentoBox.click({ force: true });
+    } else if (await labelPresento.isVisible().catch(() => false)) {
+      await labelPresento.click({ force: true });
+    }
+    await page.waitForTimeout(1500);
+  }
+  await seccionReconsideracion.waitFor({ state: 'visible', timeout: 12000 });
+  await seccionReconsideracion.scrollIntoViewIfNeeded().catch(() => {});
+
+  // 1) Adjuntar archivo de reconsideración
+  const fileUpload = seccionReconsideracion
+    .locator('xpath=following::p-fileupload[@name="rutaArchivoReconsideracion" or @name="rutaArchivoRecons"][1]')
+    .first();
+  const fileInput = fileUpload.locator('input[type="file"]').first();
+  const nombreArchivo = rutaArchivo.split(/[/\\]/).pop() || '';
+  await fileInput.waitFor({ state: 'attached', timeout: 10000 });
+  await fileInput.setInputFiles(rutaArchivo);
+  const archivoNombre = scope.locator('.p-fileupload-filename, .p-fileupload-files').filter({ hasText: nombreArchivo }).first();
+  const archivoTexto = scope.getByText(nombreArchivo).first();
+  const archivoRuta = scope.locator('text=/Archivo:/i').first();
+  const botonVerReconsideracion = scope.getByRole('button', { name: /Ver reconsideraci[oó]n/i }).first();
+  const inputValor = await fileInput.inputValue().catch(() => '');
+  let archivoVisible = await archivoNombre.isVisible().catch(() => false)
+    || await archivoTexto.isVisible().catch(() => false)
+    || await archivoRuta.isVisible().catch(() => false)
+    || await botonVerReconsideracion.isEnabled().catch(() => false)
+    || inputValor.includes(nombreArchivo);
+  for (let i = 0; i < 4 && !archivoVisible; i++) {
+    await page.waitForTimeout(1200);
+    const valorActual = await fileInput.inputValue().catch(() => '');
+    archivoVisible = await archivoNombre.isVisible().catch(() => false)
+      || await archivoTexto.isVisible().catch(() => false)
+      || await archivoRuta.isVisible().catch(() => false)
+      || await botonVerReconsideracion.isEnabled().catch(() => false)
+      || valorActual.includes(nombreArchivo);
+  }
+  if (!archivoVisible) {
+    throw new Error('No se pudo validar el archivo de reconsideración.');
+  }
+
+  // 2) Número de reconsideración
+  const fechaUsar = fechaReconsideracion ?? new Date();
+  const numeroAleatorio = String(Math.floor(Math.random() * 9000) + 1000);
+  const numeroReconsideracion = `Reconsid N° ${numeroAleatorio}-${fechaUsar.getFullYear()}`;
+  const inputNumero = page
+    .locator('label', { hasText: /Nº\s*de\s*Reconsideraci[oó]n/i })
+    .locator('..')
+    .locator('input[formcontrolname="desResolucionReconsideracion"], input')
+    .first();
+  await inputNumero.waitFor({ state: 'attached', timeout: 20000 });
+  for (let i = 0; i < 8; i++) {
+    const visible = await inputNumero.isVisible().catch(() => false);
+    const enabled = await inputNumero.isEnabled().catch(() => false);
+    if (visible && enabled) break;
+    if (await btnEditarCabecera.isEnabled().catch(() => false)) {
+      await btnEditarCabecera.click().catch(() => {});
+    }
+    if (await labelPresento.isVisible().catch(() => false)) {
+      await labelPresento.click({ force: true }).catch(() => {});
+    }
+    await page.waitForTimeout(800);
+  }
+  if (!(await inputNumero.isVisible().catch(() => false))) {
+    throw new Error('No se encontró el campo "N° de Reconsideración".');
+  }
+  if (!(await inputNumero.isEnabled().catch(() => false))) {
+    throw new Error('El campo "N° de Reconsideración" está deshabilitado.');
+  }
+  await inputNumero.scrollIntoViewIfNeeded().catch(() => {});
+  await page.waitForTimeout(1200);
+  await inputNumero.fill(numeroReconsideracion);
+  await page.waitForTimeout(2000);
+  const numeroValor = await inputNumero.inputValue().catch(() => '');
+  if (!numeroValor.includes(numeroReconsideracion)) {
+    await inputNumero.fill(numeroReconsideracion);
+    await page.waitForTimeout(800);
+  }
+
+  // 3) Fecha de reconsideración (con botón de fecha)
+  const fechaInput = page
+    .locator('label', { hasText: /Fecha\s*de\s*Reconsideraci[oó]n/i })
+    .locator('..')
+    .locator('p-calendar[formcontrolname="fechaResolucionReconsideracion"], p-calendar[formcontrolname="fechaReconsideracion"], input')
+    .locator('input')
+    .first();
+  await fechaInput.waitFor({ state: 'visible', timeout: 20000 });
+  await fechaInput.scrollIntoViewIfNeeded().catch(() => {});
+  await page.waitForTimeout(1200);
+  const fechaTexto = formatearFecha(fechaUsar);
+
+  for (let i = 0; i < 6; i++) {
+    const enabled = await fechaInput.isEnabled().catch(() => false);
+    if (enabled) break;
+    if (await btnEditarCabecera.isEnabled().catch(() => false)) {
+      await btnEditarCabecera.click().catch(() => {});
+    }
+    if (await labelPresento.isVisible().catch(() => false)) {
+      await labelPresento.click({ force: true }).catch(() => {});
+    }
+    await page.waitForTimeout(800);
+  }
+  if (!(await fechaInput.isEnabled().catch(() => false))) {
+    throw new Error('El campo "Fecha de Reconsideración" está deshabilitado.');
+  }
+
+  const setFechaPorTexto = async () => {
+    const enabled = await fechaInput.isEnabled().catch(() => false);
+    if (!enabled) return false;
+    await fechaInput.scrollIntoViewIfNeeded().catch(() => {});
+    await fechaInput.click({ force: true }).catch(() => {});
+    await fechaInput.fill(fechaTexto);
+    await page.keyboard.press('Tab').catch(() => {});
+    await fechaInput.blur().catch(() => {});
+    await page.waitForTimeout(800);
+    const valor = await fechaInput.inputValue().catch(() => '');
+    return valor.includes(fechaTexto);
+  };
+
+  const setFechaPorCalendario = async () => {
+    try {
+      const panelId = await fechaInput.getAttribute('aria-controls').catch(() => null);
+      const calendarContainer = fechaInput.locator('..');
+      const trigger = calendarContainer.locator('button[aria-label="Choose Date"]').first();
+      if (await trigger.isVisible().catch(() => false)) {
+        await trigger.click({ force: true });
+      }
+      const calendario = panelId ? page.locator(`#${panelId}`) : page.locator('.p-datepicker').last();
+      await calendario.waitFor({ state: 'visible', timeout: 8000 }).catch(() => {});
+
+      const monthNames = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+      const targetMonth = monthNames[fechaUsar.getMonth()];
+      const targetYear = String(fechaUsar.getFullYear());
+      const prevBtn = calendario.getByRole('button', { name: /Previous Month/i }).first();
+      const nextBtn = calendario.getByRole('button', { name: /Next Month/i }).first();
+
+      const getVisibleMonthYear = async () => {
+        const monthText = (await calendario.getByRole('button', { name: /Choose Month/i }).first().textContent().catch(() => ''))?.toLowerCase() || '';
+        const yearText = (await calendario.getByRole('button', { name: /Choose Year/i }).first().textContent().catch(() => ''))?.trim() || '';
+        return { monthText, yearText };
+      };
+
+      for (let i = 0; i < 24; i++) {
+        const { monthText, yearText } = await getVisibleMonthYear();
+        if (monthText.includes(targetMonth) && yearText.includes(targetYear)) break;
+        if (yearText > targetYear || (yearText === targetYear && monthText.localeCompare(targetMonth) > 0)) {
+          if (await prevBtn.isVisible().catch(() => false)) await prevBtn.click();
+        } else {
+          if (await nextBtn.isVisible().catch(() => false)) await nextBtn.click();
+        }
+        await page.waitForTimeout(200);
+      }
+
+      const diaBtn = calendario.getByRole('gridcell', { name: String(fechaUsar.getDate()) }).first();
+      if (!(await diaBtn.isVisible().catch(() => false))) return false;
+      await diaBtn.click();
+      await page.waitForTimeout(800);
+      const valor = await fechaInput.inputValue().catch(() => '');
+      return valor.includes(fechaTexto);
+    } catch {
+      return false;
+    }
+  };
+
+  const setFechaPorJs = async () => {
+    try {
+      await fechaInput.evaluate((input, valor) => {
+        const el = input as HTMLInputElement | null;
+        if (el) {
+          el.value = valor;
+          el.dispatchEvent(new Event('input', { bubbles: true }));
+          el.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+      }, fechaTexto);
+      await page.waitForTimeout(800);
+      const valor = await fechaInput.inputValue().catch(() => '');
+      return valor.includes(fechaTexto);
+    } catch {
+      return false;
+    }
+  };
+
+  let fechaOk = await setFechaPorTexto();
+  if (!fechaOk) {
+    fechaOk = await setFechaPorJs();
+  }
+  if (!fechaOk) {
+    fechaOk = await setFechaPorCalendario();
+  }
+
+  // Revalidar checkbox presentó reconsideración al final
+  if (await presentoInput.isVisible().catch(() => false)) {
+    const checkedFinal = await presentoInput.isChecked().catch(() => false);
+    if (!checkedFinal) {
+      if (await presentoBox.isVisible().catch(() => false)) {
+        await presentoBox.click({ force: true });
+      } else {
+        await scope.locator('label[for="presentoReconsideracion"]').click({ force: true }).catch(() => {});
+      }
+      await page.waitForTimeout(600);
+    }
+  }
+
+  const checkPresento = scope.locator('input#presentoReconsideracion');
+  if (await checkPresento.count().catch(() => 0)) {
+    const enabled = await checkPresento.isEnabled().catch(() => false);
+    if (enabled && !(await checkPresento.isChecked().catch(() => false))) {
+      await scope.locator('label[for="presentoReconsideracion"]').click({ force: true }).catch(() => {});
+      await page.waitForTimeout(600);
+    }
+  }
+
+  return numeroReconsideracion;
+}
+
+/**
  * Abre el formulario de nuevo administrado
  */
 export async function abrirFormularioNuevoAdministrado(page: Page): Promise<void> {
@@ -342,6 +712,45 @@ export async function capturarPantalla(page: Page, nombreCaso: string, paso: str
   return nombreArchivo;
 }
 
+function normalizarParaNombre(valor: string): string {
+  return valor
+    .trim()
+    .replace(/\s+/g, '_')
+    .replace(/[^a-zA-Z0-9_-]/g, '')
+    .substring(0, 40);
+}
+
+function normalizarParaComparar(valor: string): string {
+  return valor
+    .toUpperCase()
+    .replace(/\d+/g, '')
+    .replace(/[_\-\s]+/g, '')
+    .trim();
+}
+
+function construirNombreScreenshot(
+  caso: string,
+  paso: string,
+  ref1?: string,
+  ref2?: string,
+  modal?: string
+): string {
+  const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
+  const casoNorm = normalizarParaComparar(caso);
+  const modalNorm = modal ? normalizarParaComparar(modal) : '';
+  const incluirModal = modal && modalNorm && modalNorm !== casoNorm;
+
+  const partes = [
+    caso,
+    incluirModal ? normalizarParaNombre(modal as string) : '',
+    paso,
+    ref1 ? normalizarParaNombre(ref1) : '',
+    ref2 ? normalizarParaNombre(ref2) : '',
+    timestamp
+  ].filter(Boolean);
+  return `./screenshots/${partes.join('_')}.png`;
+}
+
 /**
  * Obtiene screenshot mejorado con información detallada del caso
  * Formato: CASO_PASO_RUC_RAZONSOCIAL_TIMESTAMP.png
@@ -353,15 +762,54 @@ export async function capturarPantallaMejorada(
   ruc: string,
   razonSocial: string
 ): Promise<string> {
-  const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-  const nombreLimpio = razonSocial.replace(/\s+/g, '_').substring(0, 20);
-  // Incluye: caso_paso_razonsocial_timestamp (sin RUC, EXP, etc)
-  const nombreArchivo = `./screenshots/${caso}_${paso}_${nombreLimpio}_${timestamp}.png`;
+  const nombreArchivo = construirNombreScreenshot(caso, paso, ruc, razonSocial);
   
   // Captura full page para ver todo el contenido
   await page.screenshot({ path: nombreArchivo, fullPage: true });
   console.log(`📸 Screenshot: ${nombreArchivo}`);
   
+  return nombreArchivo;
+}
+
+/**
+ * Captura formulario lleno antes de guardar
+ */
+export async function capturarFormularioLleno(
+  page: Page,
+  caso: string,
+  ref1?: string,
+  ref2?: string,
+  modal?: string
+): Promise<string> {
+  const nombreArchivo = construirNombreScreenshot(caso, 'FORMULARIO', ref1, ref2, modal);
+  await page.screenshot({ path: nombreArchivo, fullPage: true });
+  console.log(`📸 Screenshot formulario lleno: ${nombreArchivo}`);
+  return nombreArchivo;
+}
+
+/**
+ * Captura mensaje de éxito (toast verde)
+ */
+export async function capturarToastExito(
+  page: Page,
+  caso: string,
+  etiqueta: string,
+  ref1?: string,
+  ref2?: string,
+  modal?: string
+): Promise<string | null> {
+  const toast = page
+    .locator('.p-toast-message-success, .p-toast-message')
+    .filter({ hasText: /registro|registrad|guardad|Éxito|exito/i })
+    .first();
+
+  const visible = await toast.isVisible({ timeout: 8000 }).catch(() => false);
+  if (!visible) return null;
+
+  const paso = /EXITO/i.test(etiqueta) ? etiqueta : `EXITO_${etiqueta}`;
+  const nombreArchivo = construirNombreScreenshot(caso, paso, ref1, ref2, modal);
+  await page.screenshot({ path: nombreArchivo, fullPage: true });
+  console.log(`📸 Screenshot toast éxito: ${nombreArchivo}`);
   return nombreArchivo;
 }
 

@@ -1,4 +1,5 @@
 @echo off
-REM Esperar a que el test termine
-timeout /t 60 /nobreak
-echo Test execution completed - check results
+REM Wrapper de utilidades/soporte.
+REM Script real: docs\scripts\utilidades\wait-test.bat
+call "%~dp0docs\scripts\utilidades\wait-test.bat"
+

@@ -1,16 +1,5 @@
-#!/bin/bash
-# Script para ejecutar Test 02 Refactorizado
-echo ""
-echo "=========================================="
-echo "  EJECUTANDO CASO 02 (REFACTORIZADO)"
-echo "  REGISTRAR SANCIÓN"
-echo "=========================================="
-echo ""
+﻿#!/usr/bin/env bash
+# Wrapper para ejecutar scripts del Caso 02 (Registrar SanciÃ³n).
+# Script real: docs\scripts\caso-02\run-test-02-clean.sh
+bash "$(dirname "$0")/docs\scripts\caso-02\run-test-02-clean.sh"
 
-cd "$(dirname "$0")"
-npm run test:caso-02 -- --headed
-
-echo ""
-echo "=========================================="
-echo "  TEST COMPLETADO"
-echo "=========================================="

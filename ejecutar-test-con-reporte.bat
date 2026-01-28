@@ -1,30 +1,5 @@
 @echo off
-REM Script para ejecutar test y generar reporte automáticamente
+REM Wrapper para ejecuci??n general de pruebas.
+REM Script real: docs\scripts\ejecucion\ejecutar-test-con-reporte.bat
+call "%~dp0docs\scripts\ejecucion\ejecutar-test-con-reporte.bat"
 
-echo.
-echo ========================================
-echo  SUNEDU - Registro de Administrados
-echo ========================================
-echo.
-
-REM Ejecutar test
-echo [1/3] Ejecutando test...
-call npm run test:admin:headed
-
-echo.
-echo [2/3] Generando reporte HTML...
-call node generar-reporte-html.js
-
-echo.
-echo [3/3] Abriendo reporte...
-start reporte-administrados.html
-
-echo.
-echo ========================================
-echo  ✅ Proceso completado
-echo ========================================
-echo.
-echo 📊 Reporte disponible: reporte-administrados.html
-echo 📋 Datos JSON: registros-administrados.json
-echo.
-pause

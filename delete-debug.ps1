@@ -1,2 +1,5 @@
-Remove-Item "D:\SUNEDU\SELENIUM\playwrigth\debug-colores.spec.ts" -Force -ErrorAction SilentlyContinue
-Write-Host "Archivo eliminado"
+﻿# Wrapper de utilidades/soporte.
+# Script real: docs\scripts\utilidades\delete-debug.ps1
+$ErrorActionPreference = 'Stop'
+& "$PSScriptRoot\docs\scripts\utilidades\delete-debug.ps1"
+

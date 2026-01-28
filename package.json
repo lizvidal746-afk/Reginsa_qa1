@@ -22,16 +22,17 @@
     "test:admin:headed": "playwright test tests/casos-prueba/01-agregar-administrado.spec.ts --headed && npm run reports:open",
     "report:generate": "node generar-reporte-html.js",
     "report:watch": "node generar-reporte-html.js --watch",
-    "report:playwright": "playwright show-report",
-    "report:allure:generate": "allure generate ./allure-results --clean -o ./allure-report",
-    "report:allure:open": "allure serve ./allure-results",
-    "reports:open": "echo ✨ Abriendo reportes... && npm run report:playwright & timeout /t 3 /nobreak & npm run report:allure:open"
+    "report:playwright": "npx playwright show-report",
+    "report:allure:generate": "npx allure generate ./allure-results --clean -o ./allure-report",
+    "report:allure:open": "npx allure serve ./allure-results",
+    "reports:open": "powershell -NoProfile -WindowStyle Hidden -Command \"Start-Process npx -ArgumentList 'playwright','show-report' -WindowStyle Hidden; Start-Process npx -ArgumentList 'allure','serve','./allure-results' -WindowStyle Hidden\""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@playwright/test": "latest",
+    "@types/node": "latest",
     "allure-commandline": "latest",
     "allure-playwright": "latest"
   }

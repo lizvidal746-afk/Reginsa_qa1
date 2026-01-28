@@ -1,28 +1,79 @@
 import { test } from '@playwright/test';
-import { iniciarSesionYNavegar } from '../utilidades/reginsa-actions';
+import path from 'path';
+import {
+  iniciarSesionYNavegar,
+  completarCabeceraReconsideracion,
+  capturarFormularioLleno,
+  capturarToastExito,
+  parseFechaTexto,
+  calcularFechaReconsideracion
+} from '../utilidades/reginsa-actions';
+
+/**
+ * CASO 04: RECONSIDERAR CON SANCIONES
+ *
+ * Flujo:
+ * 1. Login + navegación al módulo (reutiliza `iniciarSesionYNavegar`)
+ * 2. Buscar registro con detalle de sanciones disponible y campos vacíos
+ * 3. Click en “Reconsiderar”
+ * 4. Completar cabecera con archivo, número y fecha válidos (fecha > resolución y <= hoy) (reutiliza `completarCabeceraReconsideracion`)
+ * 5. Capturar formulario lleno (reutiliza `capturarFormularioLleno`)
+ * 6. Guardar cabecera y validar éxito (reutiliza `capturarToastExito`)
+ * 7. Ir a Detalle de sanciones
+ * 8. Editar registros y marcar opciones según sanción
+ */
 
 test.describe('04-RECONSIDERAR CON SANCIONES', () => {
   test('Reconsiderar - Buscar y abrir modal de sanción', async ({ page }) => {
-    test.setTimeout(180000);
+    test.setTimeout(300000);
 
     try {
       console.log('\n================================================================================');
       console.log('🔍 CASO 04: RECONSIDERAR CON SANCIONES');
       console.log('================================================================================\n');
 
-      // PASO 1: Iniciar sesión
+      // ═══════════════════════════════════════════════════════════════════
+      // PASO 1: LOGIN + NAVEGACIÓN
+      // Reutiliza `iniciarSesionYNavegar`
+      // ═══════════════════════════════════════════════════════════════════
       console.log('📋 PASO 1: Iniciando sesión...');
       await iniciarSesionYNavegar(page, 'infractor');
       console.log('✅ Sesión iniciada\n');
 
-      // PASO 2: Buscar registro
-      console.log('📋 PASO 2: Buscando registro...');
+      // ═══════════════════════════════════════════════════════════════════
+      // PASO 2: BUSCAR REGISTRO CON DETALLE DE SANCIONES
+      // ═══════════════════════════════════════════════════════════════════
+      console.log('📋 PASO 2: Buscando registro con F. Modificación, N° Reconsideración y F. Reconsideración vacíos...');
       await page.waitForTimeout(2000);
       const filas = page.locator('tr');
       let registroEncontrado = false;
       let paginaActual = 1;
       const maxPaginas = 15;
       let numeroFilaEncontrada = -1;
+      let fechaResolucionSeleccionada: Date | null = null;
+      const hoy = new Date();
+      hoy.setHours(0, 0, 0, 0);
+
+      
+
+      const obtenerIndiceColumna = async (regex: RegExp): Promise<number> => {
+        const headers = page.locator('thead tr th');
+        const total = await headers.count();
+        for (let i = 0; i < total; i++) {
+          const texto = (await headers.nth(i).textContent())?.trim() || '';
+          if (regex.test(texto)) return i;
+        }
+        return -1;
+      };
+
+      const idxAdmin = await obtenerIndiceColumna(/Administrado/i);
+      const idxFMod = await obtenerIndiceColumna(/F\.\s*Modificaci\w*|Modificaci\w*/i);
+      const idxNRec = await obtenerIndiceColumna(/N\W*Reconsideraci\w*/i);
+      const idxFRec = await obtenerIndiceColumna(/F\.\s*Reconsideraci\w*|Reconsideraci\w*/i);
+
+      if (idxFMod < 0 || idxNRec < 0 || idxFRec < 0) {
+        throw new Error('No se pudieron identificar las columnas F. Modificación, N° Reconsideración y F. Reconsideración.');
+      }
 
       while (!registroEncontrado && paginaActual <= maxPaginas) {
         const totalFilas = await filas.count();
@@ -32,31 +83,26 @@ test.describe('04-RECONSIDERAR CON SANCIONES', () => {
           const totalCeldas = await celdas.count();
 
           if (totalCeldas >= 9) {
-            const fModificacion = (await celdas.nth(totalCeldas - 3).textContent())?.trim() || '';
-            const nReconsid = (await celdas.nth(totalCeldas - 2).textContent())?.trim() || '';
-            const fReconsid = (await celdas.nth(totalCeldas - 1).textContent())?.trim() || '';
+            const fModificacion = (await celdas.nth(idxFMod).textContent())?.trim() || '';
+            const nReconsid = (await celdas.nth(idxNRec).textContent())?.trim() || '';
+            const fReconsid = (await celdas.nth(idxFRec).textContent())?.trim() || '';
+
+            const fechasDetectadas: Date[] = [];
+            for (let c = 0; c < totalCeldas; c++) {
+              const texto = (await celdas.nth(c).textContent())?.trim() || '';
+              const fecha = parseFechaTexto(texto);
+              if (fecha) fechasDetectadas.push(fecha);
+            }
+            const fechaResolucion = fechasDetectadas[0] || null;
 
             if (!fModificacion && !nReconsid && !fReconsid) {
-              const btnExpand = fila.locator('button').first();
-              if (await btnExpand.count() > 0) {
-                await btnExpand.click();
-                await page.waitForTimeout(2000);
-
-                const pageContent = await page.content();
-                const tieneTablaCompleta =
-                  pageContent.includes('Tipo Infractor') &&
-                  pageContent.includes('Hecho Infractor') &&
-                  pageContent.includes('Sanción Impuesta') &&
-                  pageContent.includes('¿Pagó?');
-
-                if (tieneTablaCompleta && !pageContent.includes('Sin detalles de infracción')) {
-                  numeroFilaEncontrada = i;
-                  registroEncontrado = true;
-                } else {
-                  await btnExpand.click();
-                  await page.waitForTimeout(800);
-                }
-              }
+              const administrado = idxAdmin >= 0
+                ? (await celdas.nth(idxAdmin).textContent())?.trim() || 'N/D'
+                : (await celdas.nth(0).textContent())?.trim() || 'N/D';
+              console.log(`   👤 Administrado: ${administrado}`);
+              numeroFilaEncontrada = i;
+              registroEncontrado = true;
+              fechaResolucionSeleccionada = fechaResolucion;
             }
           }
         }
@@ -78,7 +124,9 @@ test.describe('04-RECONSIDERAR CON SANCIONES', () => {
       }
       console.log('✅ Registro encontrado\n');
 
-      // PASO 3: Clickear RECONSIDERAR
+      // ═══════════════════════════════════════════════════════════════════
+      // PASO 3: CLICK EN RECONSIDERAR
+      // ═══════════════════════════════════════════════════════════════════
       console.log('📋 PASO 3: Clickeando RECONSIDERAR...');
       const filaSeleccionada = filas.nth(numeroFilaEncontrada);
       const btnReconsiderar = filaSeleccionada.locator('button.p-button-warning');
@@ -86,69 +134,179 @@ test.describe('04-RECONSIDERAR CON SANCIONES', () => {
       await page.waitForTimeout(3000);
       console.log('✅ RECONSIDERAR clickeado\n');
 
-      // PASO 4-10: Editar cabecera y guardar
+      // ═══════════════════════════════════════════════════════════════════
+      // PASO 3.5: VALIDAR DATOS DE ADMINISTRADO
+      // ═══════════════════════════════════════════════════════════════════
+      console.log('📋 PASO 3.5: Validando datos de administrado...');
+      const adminInput = page
+        .getByRole('textbox', { name: /Administrado|Razón Social|R\.U\.C|RUC/i })
+        .first();
+      const adminValor = await adminInput.inputValue().catch(() => '');
+      if (adminValor) {
+        console.log(`   👤 Administrado (formulario): ${adminValor}`);
+      } else {
+        console.log('   👤 Administrado (formulario): N/D');
+      }
+
+      // ═══════════════════════════════════════════════════════════════════
+      // PASO 4-10: COMPLETAR CABECERA (ARCHIVO + NÚMERO + FECHA)
+      // Reutiliza `completarCabeceraReconsideracion`
+      // ═══════════════════════════════════════════════════════════════════
       console.log('📋 PASO 4-10: Rellenando datos de cabecera...');
-      const btnEditarCabecera = page.getByRole('button', { name: 'Editar cabecera' });
-      await btnEditarCabecera.click();
-      await page.waitForTimeout(1500);
-
-      const checkbox = page.locator('.p-checkbox-box').first();
-      await checkbox.click();
-      await page.waitForTimeout(500);
-
       const rutaArchivo = 'D:\\SUNEDU\\SELENIUM\\playwrigth\\test-files\\GENERAL N° 00001-2026-SUNEDU-SG-OTI.pdf';
-      const btnSeleccionar = page.getByText('Seleccionar archivo').nth(1);
-      const [fileChooser] = await Promise.all([
-        page.waitForEvent('filechooser', { timeout: 10000 }),
-        btnSeleccionar.click()
-      ]);
-      await fileChooser.setFiles(rutaArchivo);
-      await page.waitForTimeout(7000);
+      const fechaReconsideracion = calcularFechaReconsideracion(fechaResolucionSeleccionada);
 
-      const numeroAleatorio = String(Math.floor(Math.random() * 9000) + 1000);
-      const numeroReconsideracion = `Reconsid N° ${numeroAleatorio}-2026`;
-      const inputNumero = page.getByRole('textbox').nth(2);
-      await inputNumero.fill(numeroReconsideracion);
-      await page.waitForTimeout(4000);
-
-      const btnFecha = page.getByRole('button', { name: 'Choose Date' }).nth(1);
-      await btnFecha.click();
-      await page.waitForTimeout(5000);
-      const diaBtn = page.getByText('20', { exact: true });
-      await diaBtn.click();
-      await page.waitForTimeout(4000);
-
+      const numeroReconsideracion = await completarCabeceraReconsideracion(page, rutaArchivo, fechaReconsideracion);
       console.log('✅ Datos rellenados\n');
+
+      // Validar archivo, número y fecha antes de guardar (reintentos)
+      const nombreArchivo = path.basename(rutaArchivo);
+      const numeroLabel = page.locator('label').filter({ hasText: /N\W*Reconsideraci/i }).first();
+      const inputNumero = (await numeroLabel.count().catch(() => 0))
+        ? numeroLabel.locator('xpath=following::input[1]')
+        : page.getByRole('textbox').nth(2);
+      const fechaLabel = page.locator('label').filter({ hasText: /Fecha.*Reconsideraci/i }).first();
+      const btnFecha = (await fechaLabel.count().catch(() => 0))
+        ? fechaLabel.locator('xpath=following::button[contains(@aria-label,"Choose") or contains(@aria-label,"Seleccionar")][1]')
+        : page.getByRole('button', { name: /Choose|Seleccionar/i }).nth(1);
+      const fechaInput = (await fechaLabel.count().catch(() => 0))
+        ? fechaLabel.locator('xpath=following::input[1]')
+        : btnFecha.locator('..').locator('input');
+      const validarCabecera = async (): Promise<boolean> => {
+        const numeroValor = await inputNumero.inputValue().catch(() => '');
+        const fechaValor = await fechaInput.inputValue().catch(() => '');
+        const archivoVisible = await page
+          .locator('.p-fileupload-filename, .p-fileupload-files')
+          .filter({ hasText: nombreArchivo })
+          .first()
+          .isVisible()
+          .catch(() => false);
+        const archivoTexto = await page.getByText(nombreArchivo).first().isVisible().catch(() => false);
+        const archivoRuta = await page
+          .locator('text=/Archivo:/i')
+          .first()
+          .isVisible()
+          .catch(() => false);
+        const archivoOk = archivoVisible || archivoTexto || archivoRuta;
+        console.log(`   🧾 Cabecera -> Archivo: ${archivoOk ? 'OK' : 'NO'} | Número: ${numeroValor ? 'OK' : 'NO'} | Fecha: ${fechaValor ? 'OK' : 'NO'}`);
+        return Boolean(numeroValor) && Boolean(fechaValor) && archivoOk;
+      };
+
+      let cabeceraOk = await validarCabecera();
+      for (let intento = 0; intento < 2 && !cabeceraOk; intento++) {
+        console.log('⚠️ Cabecera incompleta, reintentando carga de archivo/número/fecha...');
+        await completarCabeceraReconsideracion(page, rutaArchivo, fechaReconsideracion);
+        cabeceraOk = await validarCabecera();
+      }
+
+      if (!cabeceraOk) {
+        throw new Error('❌ No se pudo validar archivo, número o fecha en cabecera antes de guardar.');
+      }
+
+      // Captura formulario lleno antes de guardar (reutiliza `capturarFormularioLleno`)
+      await capturarFormularioLleno(page, '04-RECONSIDERAR-CON-SANCIONES', numeroReconsideracion, '', 'CABECERA_RECONSIDERACION');
 
       // Guardar cabecera
       const btnGuardar = page.getByRole('button', { name: 'Guardar cabecera' });
+      await btnGuardar.waitFor({ state: 'visible', timeout: 10000 });
+      for (let i = 0; i < 3; i++) {
+        const enabled = await btnGuardar.isEnabled().catch(() => false);
+        if (enabled) break;
+        await page.waitForTimeout(800);
+      }
       await btnGuardar.click();
       await page.waitForTimeout(5000);
+      const toastCabecera = await capturarToastExito(
+        page,
+        '04-RECONSIDERAR-CON-SANCIONES',
+        'EXITO_CABECERA',
+        numeroReconsideracion,
+        '',
+        'CABECERA_RECONSIDERACION'
+      );
+
+      // Capturar mensaje de confirmación en esquina superior izquierda (si existe)
+      const toastIzq = page.locator('.p-toast-top-left .p-toast-message, .p-toast-top-left').first();
+      if (!toastCabecera && (await toastIzq.isVisible().catch(() => false))) {
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
+        const archivo = `./screenshots/04-RECONSIDERAR-CON-SANCIONES_TOAST_IZQ_${timestamp}.png`;
+        await toastIzq.screenshot({ path: archivo });
+      }
       console.log('✅ Cabecera guardada\n');
 
-      // PASO 11: Tab Detalle de sanciones
+      // ═══════════════════════════════════════════════════════════════════
+      // PASO 11: ACCEDER A DETALLE DE SANCIONES
+      // ═══════════════════════════════════════════════════════════════════
       console.log('📋 PASO 11: Accediendo a Detalle de sanciones...');
+      if (page.isClosed()) {
+        throw new Error('La página se cerró antes de abrir Detalle de sanciones.');
+      }
       const tabDetalle = page.getByRole('tab', { name: 'Detalle de sanciones' });
+      await tabDetalle.waitFor({ state: 'visible', timeout: 10000 });
       await tabDetalle.click();
-      await page.waitForTimeout(3000);
+      await page.waitForLoadState('networkidle').catch(() => {});
+      await page.waitForTimeout(1500);
       console.log('✅ Tab Detalle abierto\n');
 
-      // PASO 12: Procesar registros
+      // ═══════════════════════════════════════════════════════════════════
+      // PASO 12: PROCESAR REGISTROS (MODAL + CHECKBOXES)
+      // ═══════════════════════════════════════════════════════════════════
       console.log('📋 PASO 12: Procesando detalles de sanciones...\n');
       
-      const filasTR = page.locator('tr');
+      const tablaDetalle = page
+        .locator('table')
+        .filter({ has: page.locator('th', { hasText: /Sanci[oó]n/i }) })
+        .first();
+      const filasTR = tablaDetalle.locator('tbody tr');
+      const headersDetalle = tablaDetalle.locator('thead tr th');
       const totalFilasTabla = await filasTR.count();
       console.log(`📊 Total de registros: ${totalFilasTabla}\n`);
       
       let registrosEditados = 0;
-      const maxRegistrosAEditar = Math.min(5, totalFilasTabla - 1);
+      const maxRegistrosAEditar = Math.min(5, totalFilasTabla);
 
-      for (let filaIdx = 1; filaIdx <= maxRegistrosAEditar && filaIdx < totalFilasTabla; filaIdx++) {
+      const obtenerIndiceDetalle = async (regex: RegExp): Promise<number> => {
+        const total = await headersDetalle.count();
+        for (let i = 0; i < total; i++) {
+          const texto = (await headersDetalle.nth(i).textContent())?.trim() || '';
+          if (regex.test(texto)) return i;
+        }
+        return -1;
+      };
+
+      const idxSancion = await obtenerIndiceDetalle(/Sanci[oó]n/i);
+      const idxPago = await obtenerIndiceDetalle(/Pag[oó]/i);
+      const idxReconsidera = await obtenerIndiceDetalle(/Reconsidera/i);
+
+      for (let filaIdx = 0; filaIdx < maxRegistrosAEditar; filaIdx++) {
         console.log(`\n╔════════════════════════════════════════════════════════════════╗`);
-        console.log(`║ REGISTRO ${filaIdx} de ${maxRegistrosAEditar}`);
+        console.log(`║ REGISTRO ${filaIdx + 1} de ${maxRegistrosAEditar}`);
         console.log(`╚════════════════════════════════════════════════════════════════╝\n`);
 
         const fila = filasTR.nth(filaIdx);
+        const celdas = fila.locator('td');
+
+        const sancionTexto = idxSancion >= 0
+          ? (await celdas.nth(idxSancion).innerText().catch(() => '')).trim()
+          : (await fila.innerText().catch(() => '')).trim();
+        const tieneMulta = /Multa/i.test(sancionTexto);
+        const tieneSuspension = /Suspensi[oó]n/i.test(sancionTexto);
+        const tieneCancelacion = /Cancelaci[oó]n/i.test(sancionTexto);
+
+        const pagoActual = idxPago >= 0
+          ? await celdas.nth(idxPago).locator('input[type="checkbox"]').getAttribute('aria-checked').then(v => v === 'true').catch(() => false)
+          : false;
+        const reconsideraActual = idxReconsidera >= 0
+          ? await celdas.nth(idxReconsidera).locator('input[type="checkbox"]').getAttribute('aria-checked').then(v => v === 'true').catch(() => false)
+          : false;
+
+        const debeMarcarPago = tieneMulta;
+        const debeMarcarReconsidera = tieneMulta || tieneSuspension || tieneCancelacion;
+        if (debeMarcarPago === pagoActual && debeMarcarReconsidera === reconsideraActual) {
+          console.log(`   ✅ Registro ${filaIdx + 1} ya cumple Pagó/Reconsidera, se omite edición.`);
+          continue;
+        }
+
         const btnLapiz = fila.locator('button i.pi-pencil, button[icon="pi pi-pencil"]').first();
         
         try {
@@ -159,24 +317,50 @@ test.describe('04-RECONSIDERAR CON SANCIONES', () => {
           console.log(`   🖱️  Abriendo modal...`);
           await btnLapiz.click();
           await page.waitForTimeout(4000);
+          const dialog = page.locator('[role="dialog"]').first();
+          await dialog.waitFor({ state: 'visible', timeout: 10000 }).catch(() => {});
+          await dialog.locator('p-checkbox').first().waitFor({ state: 'visible', timeout: 10000 }).catch(() => {});
+
+          const encontrarCheckboxPorLabel = async (regex: RegExp) => {
+            const labels = dialog.locator('label').filter({ hasText: regex });
+            const total = await labels.count();
+            if (total === 0) return null;
+            const label = labels.first();
+            const forId = await label.getAttribute('for');
+            if (forId) {
+              return dialog.locator(`#${forId}`);
+            }
+            const inputFallback = label.locator('xpath=following::input[@type="checkbox"][1]');
+            if (await inputFallback.count().catch(() => 0)) {
+              return inputFallback;
+            }
+            return null;
+          };
           
-          // Obtener checkboxes con selector ID para PAGÓ (más confiable)
+          // Obtener checkboxes con selector ID (más confiable)
           console.log(`   🔍 Obteniendo referencias de checkboxes...`);
           await page.waitForTimeout(1000);
-          
-          // Obtener checkboxes de sanciones por su posición
-          const allInputs = page.locator('input[type="checkbox"]');
-          const chkMulta = allInputs.first();
-          const chkSuspension = allInputs.nth(1);
-          const chkCancelacion = allInputs.nth(2);
+          const chkMulta = (await encontrarCheckboxPorLabel(/Multa/i)) ?? dialog.locator('input#reconsMulta');
+          const chkSuspension = (await encontrarCheckboxPorLabel(/Suspensi[oó]n/i)) ?? dialog.locator('input#reconsSuspension');
+          const chkCancelacion = (await encontrarCheckboxPorLabel(/Cancelaci[oó]n/i)) ?? dialog.locator('input#reconsCancelacion');
           
           console.log(`   🔍 Verificando sanciones...`);
           await page.waitForTimeout(800);
           
           // Verificar sanciones marcadas
-          const multaMarcada = await chkMulta.isChecked().catch(() => false);
-          const suspensionMarcada = await chkSuspension.isChecked().catch(() => false);
-          const cancelacionMarcada = await chkCancelacion.isChecked().catch(() => false);
+          let multaMarcada = await chkMulta.isChecked().catch(() => false);
+          let suspensionMarcada = await chkSuspension.isChecked().catch(() => false);
+          let cancelacionMarcada = await chkCancelacion.isChecked().catch(() => false);
+
+          if (!multaMarcada && !suspensionMarcada && !cancelacionMarcada) {
+            const allInputs = dialog.locator('input[type="checkbox"]');
+            const altMulta = allInputs.first();
+            const altSuspension = allInputs.nth(1);
+            const altCancelacion = allInputs.nth(2);
+            multaMarcada = await altMulta.isChecked().catch(() => false);
+            suspensionMarcada = await altSuspension.isChecked().catch(() => false);
+            cancelacionMarcada = await altCancelacion.isChecked().catch(() => false);
+          }
           
           console.log(`   Sanciones encontradas:`);
           console.log(`      Multa: ${multaMarcada ? '✅ SÍ' : '⭕ NO'}`);
@@ -185,44 +369,67 @@ test.describe('04-RECONSIDERAR CON SANCIONES', () => {
           
           console.log(`   Marcando opciones...`);
           
-          // FORCE RECOMPILE v2 - Marcar según lo encontrado
-          if (multaMarcada) {
-            console.log(`      → Multa encontrada, marcando PAGÓ + ¿Presentó recurso de reconsideración?`);
-            
-            // Marcar PAGÓ
-            const esPagoYaMarcado = await page.evaluate(() => {
-              return (document.querySelector('input#reconsPago') as HTMLInputElement)?.checked || false;
-            });
-            
-            if (!esPagoYaMarcado) {
-              console.log(`         PAGÓ no está marcado, clickeando vía JavaScript...`);
-              
-              await page.evaluate(() => {
-                const label = document.querySelector('label[for="reconsPago"]') as HTMLElement;
-                if (label) label.click();
-              });
-              await page.waitForTimeout(2500);
-              
-              const pagoCheckedFirst = await page.evaluate(() => {
-                return (document.querySelector('input#reconsPago') as HTMLInputElement)?.checked || false;
-              });
-              
-              if (!pagoCheckedFirst) {
-                console.log(`         Reintentando clic doble vía JavaScript...`);
-                await page.evaluate(() => {
-                  const label = document.querySelector('label[for="reconsPago"]') as HTMLElement;
-                  if (label) {
-                    label.click();
-                    label.click();
-                  }
-                });
-                await page.waitForTimeout(2500);
+          // REGLAS DE MARCADO (según sanción en la tabla)
+          const debeMarcarPago = tieneMulta;
+          const debeMarcarReconsidera = tieneMulta || tieneSuspension || tieneCancelacion;
+
+          const obtenerEstadoCheck = async (id: string) => {
+            const checkbox = dialog.locator(`p-checkbox[inputid="${id}"]`).first();
+            const input = checkbox.locator('input[type="checkbox"]');
+            const box = checkbox.locator('.p-checkbox-box');
+            const ariaChecked = await input.getAttribute('aria-checked').catch(() => null);
+            const dataHighlight = await box.getAttribute('data-p-highlight').catch(() => null);
+            const className = await box.getAttribute('class').catch(() => '');
+            const checked = ariaChecked === 'true' || dataHighlight === 'true' || className?.includes('p-highlight');
+            const disabled = (await box.getAttribute('data-p-disabled').catch(() => null)) === 'true';
+            const visible = await box.isVisible().catch(() => false);
+            return { checkbox, input, box, checked, disabled, visible };
+          };
+
+          const forzarCheck = async (id: string, etiqueta: string): Promise<boolean> => {
+            for (let intento = 0; intento < 8; intento++) {
+              const estado = await obtenerEstadoCheck(id);
+              console.log(`         ${etiqueta}: visible=${estado.visible} disabled=${estado.disabled} checked=${estado.checked}`);
+
+              if (estado.checked) return true;
+              if (estado.disabled) {
+                await page.waitForTimeout(700);
+                continue;
               }
+
+              if (estado.visible) {
+                await estado.box.click({ force: true });
+              } else {
+                await estado.input.click({ force: true }).catch(() => {});
+              }
+              await page.waitForTimeout(1000);
+
+              const estado2 = await obtenerEstadoCheck(id);
+              if (estado2.checked) return true;
+
+              await dialog.evaluate((root, checkboxId) => {
+                const input = root.querySelector(`p-checkbox[inputid="${checkboxId}"] input[type="checkbox"]`) as HTMLInputElement | null;
+                const box = root.querySelector(`p-checkbox[inputid="${checkboxId}"] .p-checkbox-box`) as HTMLElement | null;
+                if (box) {
+                  box.click();
+                } else if (input) {
+                  input.checked = true;
+                  input.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+              }, id);
+              await page.waitForTimeout(1000);
             }
-            
-            const pagoMarcado = await page.evaluate(() => {
-              return (document.querySelector('input#reconsPago') as HTMLInputElement)?.checked || false;
-            });
+
+            const final = await obtenerEstadoCheck(id);
+            if (!final.checked) {
+              console.log(`         ⚠️ No se pudo marcar ${etiqueta}`);
+            }
+            return final.checked;
+          };
+
+          if (debeMarcarPago) {
+            console.log(`      → Multa encontrada, marcando PAGÓ + ¿Presentó recurso de reconsideración?`);
+            const pagoMarcado = await forzarCheck('reconsPago', 'PAGÓ');
             console.log(`         ✓ PAGÓ: ${pagoMarcado ? '✅ MARCADO' : '⭕ NO'}`);
             
             // Marcar "¿Presentó recurso de reconsideración?"
@@ -265,55 +472,25 @@ test.describe('04-RECONSIDERAR CON SANCIONES', () => {
             }
           }
           
-          // Marcar RECONSIDERA si hay CUALQUIER sanción (Multa, Suspensión, Cancelación)
-          // FORCE RECOMPILE v3
-          if (multaMarcada || suspensionMarcada || cancelacionMarcada) {
+          // Marcar RECONSIDERA según reglas
+          if (debeMarcarReconsidera) {
             const sanciones = [];
-            if (multaMarcada) sanciones.push('Multa');
-            if (suspensionMarcada) sanciones.push('Suspensión');
-            if (cancelacionMarcada) sanciones.push('Cancelación');
+            if (tieneMulta) sanciones.push('Multa');
+            if (tieneSuspension) sanciones.push('Suspensión');
+            if (tieneCancelacion) sanciones.push('Cancelación');
             console.log(`      → ${sanciones.join(' + ')} encontrada(s), marcando RECONSIDERA`);
-            console.log(`         Suspensión: ${suspensionMarcada}, Cancelación: ${cancelacionMarcada}`);
+            console.log(`         Suspensión: ${tieneSuspension}, Cancelación: ${tieneCancelacion}`);
             
-            // Verificar estado usando JavaScript
-            const esReconsideraYaMarcado = await page.evaluate(() => {
-              return (document.querySelector('input#reconsReconsidera') as HTMLInputElement)?.checked || false;
-            });
+            const esReconsideraYaMarcado = await dialog.locator('input#reconsReconsidera').isChecked().catch(() => false);
             
             console.log(`         Estado inicial RECONSIDERA: ${esReconsideraYaMarcado ? '✅ YA' : '⭕ NO'}`);
             
             if (!esReconsideraYaMarcado) {
               console.log(`         RECONSIDERA no está marcado, clickeando vía JavaScript...`);
-              
-              // Usar JavaScript para hacer clic
-              await page.evaluate(() => {
-                const label = document.querySelector('label[for="reconsReconsidera"]') as HTMLElement;
-                if (label) label.click();
-              });
-              await page.waitForTimeout(2500);
-              
-              // Reintento si no funcionó
-              const reconsideraCheckFirst = await page.evaluate(() => {
-                return (document.querySelector('input#reconsReconsidera') as HTMLInputElement)?.checked || false;
-              });
-              
+              const reconsideraCheckFirst = await forzarCheck('reconsReconsidera', 'RECONSIDERA');
               console.log(`         Después de primer clic: ${reconsideraCheckFirst ? '✅ SÍ' : '⭕ NO'}`);
-              
-              if (!reconsideraCheckFirst) {
-                console.log(`         Reintentando clic doble vía JavaScript...`);
-                await page.evaluate(() => {
-                  const label = document.querySelector('label[for="reconsReconsidera"]') as HTMLElement;
-                  if (label) {
-                    label.click();
-                    label.click();
-                  }
-                });
-                await page.waitForTimeout(2500);
-              }
             }
-            const reconsideraMarcado = await page.evaluate(() => {
-              return (document.querySelector('input#reconsReconsidera') as HTMLInputElement)?.checked || false;
-            });
+            const reconsideraMarcado = await dialog.locator('input#reconsReconsidera').isChecked().catch(() => false);
             console.log(`         ✓ RECONSIDERA FINAL: ${reconsideraMarcado ? '✅ MARCADO' : '⭕ NO'}`);
           }
           
@@ -329,38 +506,40 @@ test.describe('04-RECONSIDERAR CON SANCIONES', () => {
           const cancelacionFinal = await page.evaluate(() => {
             return (document.querySelector('input#reconsCancelacion') as HTMLInputElement)?.checked || false;
           });
-          const pagoFinal = await page.evaluate(() => {
-            return (document.querySelector('input#reconsPago') as HTMLInputElement)?.checked || false;
-          });
-          const reconsideraFinal = await page.evaluate(() => {
-            return (document.querySelector('input#reconsReconsidera') as HTMLInputElement)?.checked || false;
-          });
+          const pagoFinal = (await obtenerEstadoCheck('reconsPago')).checked;
+          const reconsideraFinal = (await obtenerEstadoCheck('reconsReconsidera')).checked;
           
           console.log(`      Estado final: Multa: ${multaFinal ? '✅' : '⭕'} | Suspensión: ${suspensionFinal ? '✅' : '⭕'} | Cancelación: ${cancelacionFinal ? '✅' : '⭕'} | Pagó: ${pagoFinal ? '✅' : '⭕'} | Reconsidera: ${reconsideraFinal ? '✅' : '⭕'}`);
+
+          const pagoDisabled = (await obtenerEstadoCheck('reconsPago')).disabled;
+          if (debeMarcarPago && !pagoDisabled && !pagoFinal) {
+            throw new Error('No se pudo marcar PAGÓ en el modal.');
+          }
+          if (debeMarcarReconsidera && !reconsideraFinal) {
+            throw new Error('No se pudo marcar RECONSIDERA en el modal.');
+          }
           
           // Guardar
           console.log(`   💾 Guardando...`);
           await page.waitForTimeout(2500);
-          const btnAceptar = page.getByRole('button', { name: 'Aceptar' });
+          const btnAceptar = dialog.getByRole('button', { name: 'Aceptar' });
           await btnAceptar.waitFor({ state: 'visible', timeout: 8000 });
           await page.waitForTimeout(1500);
           await btnAceptar.click();
+          await dialog.waitFor({ state: 'hidden', timeout: 10000 }).catch(() => {});
           
-          // Captura de éxito
+          // Captura de éxito (toast verde) (reutiliza `capturarToastExito`)
           console.log(`   ⏳ Esperando confirmación...`);
           await page.waitForTimeout(2000);
-          let timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
-          const archivoExito = `./screenshots/04-mensaje-exito-registro-${filaIdx}_${timestamp}.png`;
-          await page.screenshot({ path: archivoExito, fullPage: true });
-          console.log(`   📸 Captura guardada: ${archivoExito}`);
+          await capturarToastExito(page, '04-RECONSIDERAR-CON-SANCIONES', `EXITO_REG_${filaIdx + 1}`, numeroReconsideracion, '', 'DETALLE_SANCION');
           
           await page.waitForTimeout(2000);
           
-          console.log(`✅ Registro ${filaIdx} completado\n`);
+          console.log(`✅ Registro ${filaIdx + 1} completado\n`);
           registrosEditados++;
           
         } catch (error) {
-          console.warn(`⚠️ Error en registro ${filaIdx}: ${error instanceof Error ? error.message : String(error)}`);
+          console.warn(`⚠️ Error en registro ${filaIdx + 1}: ${error instanceof Error ? error.message : String(error)}`);
           try {
             const btnCancelar = page.getByRole('button', { name: 'Cancelar' });
             if (await btnCancelar.isVisible().catch(() => false)) {

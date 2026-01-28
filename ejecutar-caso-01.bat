@@ -1,27 +1,5 @@
 @echo off
-REM ============================================
-REM Ejecutar Caso 01 + Abrir reportes automáticamente
-REM ============================================
-echo.
-echo 🚀 Ejecutando Caso 01 - Agregar Administrado...
-echo.
+REM Wrapper para ejecutar scripts del Caso 01 (Agregar Administrado).
+REM Script real: docs\scripts\caso-01\ejecutar-caso-01.bat
+call "%~dp0docs\scripts\caso-01\ejecutar-caso-01.bat"
 
-call npm run test:01
-
-echo.
-echo ✨ Abriendo reportes automáticamente...
-echo.
-
-REM Abrir Playwright
-start /b npx playwright show-report
-
-REM Generar y abrir Allure
-allure generate ./allure-results --clean -o ./allure-report
-start /b allure open ./allure-report
-
-echo.
-echo ✅ Reportes abiertos en:
-echo    - Playwright: http://localhost:9323
-echo    - Allure: http://localhost:4050
-echo.
-pause
