@@ -1689,6 +1689,26 @@
 				"-Command",
 				"git add .vscode/tasks.json docs/CASOS_PRUEBA_ACTUALES.md tests/casos-prueba/03-reconsiderar-sin-sanciones.spec.ts tests/casos-prueba/04-reconsiderar-con-sanciones.spec.ts; git commit -m 'Actualiza flujo casos 03-04'; git push"
 			]
+		},
+		{
+			"label": "Git status check (yellow M)",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"git status -sb"
+			]
+		},
+		{
+			"label": "Git add tasks.json and push",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-Command",
+				"git add .vscode/tasks.json; git commit -m 'Actualiza tareas de VS Code'; git push"
+			]
 		}
 	]
 }
