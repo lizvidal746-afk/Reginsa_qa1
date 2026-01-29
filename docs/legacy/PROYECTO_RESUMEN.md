@@ -1,133 +1,133 @@
-# 📊 RESUMEN DEL PROYECTO - REGINSA SUNEDU
+﻿# ðŸ“Š RESUMEN DEL PROYECTO - REGINSA SUNEDU
 
-## 🎯 Objetivo General
-Suite de automatización de pruebas para la plataforma REGINSA SUNEDU utilizando Playwright y TypeScript.
+## ðŸŽ¯ Objetivo General
+Suite de automatizaciÃ³n de pruebas para la plataforma REGINSA SUNEDU utilizando Playwright y TypeScript.
 
 ---
 
-## ✅ Caso de Prueba 01: AGREGAR ADMINISTRADO
+## âœ… Caso de Prueba 01: AGREGAR ADMINISTRADO
 
-### 📍 Estado: COMPLETADO
+### ðŸ“ Estado: COMPLETADO
 
-### Características Implementadas:
-- ✅ Generación automática de RUC (11 dígitos únicos)
-- ✅ Reintentos automáticos si RUC duplicado (máx. 3)
-- ✅ Screenshots ANTES y DESPUÉS de guardar
-- ✅ Datos nombrados con razón social para fácil búsqueda
-- ✅ Reporte JSON persistente
-- ✅ Reporte HTML visual actualizable
-- ✅ Integración Playwright + Allure
+### CaracterÃ­sticas Implementadas:
+- âœ… GeneraciÃ³n automÃ¡tica de RUC (11 dÃ­gitos Ãºnicos)
+- âœ… Reintentos automÃ¡ticos si RUC duplicado (mÃ¡x. 3)
+- âœ… Screenshots ANTES y DESPUÃ‰S de guardar
+- âœ… Datos nombrados con razÃ³n social para fÃ¡cil bÃºsqueda
+- âœ… Reporte JSON persistente
+- âœ… Reporte HTML visual actualizable
+- âœ… IntegraciÃ³n Playwright + Allure
 
-### 📁 Archivos Principales:
+### ðŸ“ Archivos Principales:
 ```
 tests/casos-prueba/
-├── 01-agregar-administrado.spec.ts    ✅ Implementado
-├── 02-caso-prueba-siguiente.spec.ts   🔄 Template
-└── README.md                           📖 Documentación
+â”œâ”€â”€ 01-agregar-administrado.spec.ts    âœ… Implementado
+â”œâ”€â”€ 02-caso-prueba-siguiente.spec.ts   ðŸ”„ Template
+â””â”€â”€ README.md                           ðŸ“– DocumentaciÃ³n
 ```
 
-### 🚀 Ejecutar Caso 01:
+### ðŸš€ Ejecutar Caso 01:
 ```bash
 npm run test:admin:headed
 ```
 
 ---
 
-## 🔄 Caso de Prueba 02: EN DESARROLLO
+## ðŸ”„ Caso de Prueba 02: EN DESARROLLO
 
-### 📍 Estado: PENDIENTE DE ESPECIFICACIONES
+### ðŸ“ Estado: PENDIENTE DE ESPECIFICACIONES
 
-### 📁 Archivo:
+### ðŸ“ Archivo:
 ```
 tests/casos-prueba/02-caso-prueba-siguiente.spec.ts  (Template)
 ```
 
-### ⏳ Próximos Pasos:
+### â³ PrÃ³ximos Pasos:
 1. Definir requisitos del segundo caso de prueba
-2. Actualizar template con pasos específicos
+2. Actualizar template con pasos especÃ­ficos
 3. Implementar validaciones
 4. Ejecutar y generar reportes
 
 ---
 
-## 📊 Estructura Actualizada del Proyecto
+## ðŸ“Š Estructura Actualizada del Proyecto
 
 ```
 D:\SUNEDU\SELENIUM\playwrigth/
-│
-├── 📁 tests/
-│   ├── casos-prueba/
-│   │   ├── 01-agregar-administrado.spec.ts    ✅
-│   │   ├── 02-caso-prueba-siguiente.spec.ts   🔄
-│   │   └── README.md                          📖
-│   │
-│   └── [Tests antiguos - referencia]
-│       ├── test-1.spec.ts
-│       ├── example.spec.js
-│       └── test-admin-2registros.spec.ts
-│
-├── 📁 screenshots/
-│   ├── Empresa_comercial_1_RUC_*_ANTES_GUARDAR.png
-│   └── Empresa_comercial_1_RUC_*_DESPUES_GUARDAR.png
-│
-├── 📁 reportes/
-│   ├── registros-administrados.json
-│   ├── reporte-administrados.html
-│   ├── playwright-report/
-│   └── allure-report/
-│
-├── 📁 scripts/
-│   ├── ejecutar-todo.bat
-│   ├── ejecutar-test-con-reporte.bat
-│   └── generar-reporte-html.js
-│
-├── 📁 config/
-│   └── playwright.config.js
-│
-├── 📁 docs/
-│   ├── README.md
-│   ├── PROMPT_REQUISITO.md
-│   ├── CAMBIOS_IMPLEMENTADOS.md
-│   └── CASOS_PRUEBA.md
-│
-├── package.json
-├── tsconfig.json
-└── .gitignore
+â”‚
+â”œâ”€â”€ ðŸ“ tests/
+â”‚   â”œâ”€â”€ casos-prueba/
+â”‚   â”‚   â”œâ”€â”€ 01-agregar-administrado.spec.ts    âœ…
+â”‚   â”‚   â”œâ”€â”€ 02-caso-prueba-siguiente.spec.ts   ðŸ”„
+â”‚   â”‚   â””â”€â”€ README.md                          ðŸ“–
+â”‚   â”‚
+â”‚   â””â”€â”€ [Tests antiguos - referencia]
+â”‚       â”œâ”€â”€ test-1.spec.ts
+â”‚       â”œâ”€â”€ example.spec.js
+â”‚       â””â”€â”€ test-admin-2registros.spec.ts
+â”‚
+â”œâ”€â”€ ðŸ“ screenshots/
+â”‚   â”œâ”€â”€ Empresa_comercial_1_RUC_*_ANTES_GUARDAR.png
+â”‚   â””â”€â”€ Empresa_comercial_1_RUC_*_DESPUES_GUARDAR.png
+â”‚
+â”œâ”€â”€ ðŸ“ reportes/
+â”‚   â”œâ”€â”€ registros-administrados.json
+â”‚   â”œâ”€â”€ reporte-administrados.html
+â”‚   â”œâ”€â”€ playwright-report/
+â”‚   â””â”€â”€ allure-report/
+â”‚
+â”œâ”€â”€ ðŸ“ scripts/
+â”‚   â”œâ”€â”€ ejecutar-todo.bat
+â”‚   â”œâ”€â”€ ejecutar-test-con-reporte.bat
+â”‚   â””â”€â”€ generar-reporte-html.js
+â”‚
+â”œâ”€â”€ ðŸ“ config/
+â”‚   â””â”€â”€ playwright.config.js
+â”‚
+â”œâ”€â”€ ðŸ“ docs/
+â”‚   â”œâ”€â”€ README.md
+â”‚   â”œâ”€â”€ PROMPT_REQUISITO.md
+â”‚   â”œâ”€â”€ CAMBIOS_IMPLEMENTADOS.md
+â”‚   â””â”€â”€ CASOS_PRUEBA.md
+â”‚
+â”œâ”€â”€ package.json
+â”œâ”€â”€ tsconfig.json
+â””â”€â”€ .gitignore
 ```
 
 ---
 
-## 📈 Reportes Disponibles
+## ðŸ“ˆ Reportes Disponibles
 
 ### 1. Reporte JSON
-- **Ubicación:** `reportes/registros-administrados.json`
+- **UbicaciÃ³n:** `reportes/registros-administrados.json`
 - **Uso:** Base de datos de registros
-- **Actualización:** Automática después de cada ejecución
+- **ActualizaciÃ³n:** AutomÃ¡tica despuÃ©s de cada ejecuciÃ³n
 
 ### 2. Reporte HTML
-- **Ubicación:** `reporte-administrados.html`
-- **Características:** Tabla visual, estadísticas, links a screenshots
-- **Actualización:** Automática con cada test
+- **UbicaciÃ³n:** `reporte-administrados.html`
+- **CaracterÃ­sticas:** Tabla visual, estadÃ­sticas, links a screenshots
+- **ActualizaciÃ³n:** AutomÃ¡tica con cada test
 
 ### 3. Reporte Playwright
-- **Ubicación:** `playwright-report/`
+- **UbicaciÃ³n:** `playwright-report/`
 - **Comando:** `npm run report:playwright`
-- **Contenido:** Detalles técnicos, trazas, tiempos
+- **Contenido:** Detalles tÃ©cnicos, trazas, tiempos
 
 ### 4. Reporte Allure
-- **Ubicación:** `allure-report/`
+- **UbicaciÃ³n:** `allure-report/`
 - **Comando:** `npm run report:allure:open`
-- **Contenido:** Gráficos, timeline, historial
+- **Contenido:** GrÃ¡ficos, timeline, historial
 
 ---
 
-## 🚀 Quick Commands
+## ðŸš€ Quick Commands
 
 ```bash
 # Ejecutar caso 01
 npm run test:admin:headed
 
-# Ejecutar todos los casos (cuando haya múltiples)
+# Ejecutar todos los casos (cuando haya mÃºltiples)
 npm run test:all
 
 # Generar reportes
@@ -145,28 +145,28 @@ npm run report:allure:open
 
 ---
 
-## 🔐 Credenciales Usadas
+## ðŸ” Credenciales Usadas
 
 ```
 URL: https://reginsaqa.sunedu.gob.pe/#/home
 Usuario: lizvidal
-Contraseña: QA1234510qa
+ContraseÃ±a: QA1234510qa
 ```
 
 ---
 
-## 📝 Datos Automáticos - Caso 01
+## ðŸ“ Datos AutomÃ¡ticos - Caso 01
 
-| Campo | Valor | Generación |
+| Campo | Valor | GeneraciÃ³n |
 |-------|-------|-----------|
-| RUC | 11 dígitos | Automática + única |
-| Razón Social | Empresa comercial 1 | Fija |
+| RUC | 11 dÃ­gitos | AutomÃ¡tica + Ãºnica |
+| RazÃ³n Social | Empresa comercial 1 | Fija |
 | Nombre Comercial | Empresa comercial 1 | Fija |
-| Estado | Licenciada | Selección fija |
+| Estado | Licenciada | SelecciÃ³n fija |
 
 ---
 
-## 🎯 Próximas Acciones
+## ðŸŽ¯ PrÃ³ximas Acciones
 
 ### Corto Plazo:
 - [ ] Definir especificaciones del Caso 02
@@ -175,29 +175,29 @@ Contraseña: QA1234510qa
 - [ ] Validar reportes
 
 ### Mediano Plazo:
-- [ ] Agregar más casos de prueba
+- [ ] Agregar mÃ¡s casos de prueba
 - [ ] Integrar CI/CD
 - [ ] Crear dashboard
 - [ ] Automatizar notificaciones
 
 ### Largo Plazo:
 - [ ] Selenium Grid para tests masivos
-- [ ] Integración con gestores de tickets
-- [ ] Machine Learning para detección de fallos
-- [ ] Análisis de performance
+- [ ] IntegraciÃ³n con gestores de tickets
+- [ ] Machine Learning para detecciÃ³n de fallos
+- [ ] AnÃ¡lisis de performance
 
 ---
 
-## 📞 Soporte
+## ðŸ“ž Soporte
 
-### Documentación
-- [README.md](README.md) - Información general
+### DocumentaciÃ³n
+- [README.md](README.md) - InformaciÃ³n general
 - [PROMPT_REQUISITO.md](PROMPT_REQUISITO.md) - Especificaciones
 - [CAMBIOS_IMPLEMENTADOS.md](CAMBIOS_IMPLEMENTADOS.md) - Log de cambios
 - [tests/casos-prueba/README.md](tests/casos-prueba/README.md) - Detalles de casos
 
 ### Troubleshooting
-1. **Error de módulos:** `npm install`
+1. **Error de mÃ³dulos:** `npm install`
 2. **Playwright no funciona:** `npx playwright install`
 3. **Reportes no generan:** `npm run report:generate`
 4. **Allure requiere Java:** Instala Java JDK
@@ -205,6 +205,8 @@ Contraseña: QA1234510qa
 ---
 
 **Proyecto:** REGINSA SUNEDU Automation  
-**Versión:** 1.0.0  
+**VersiÃ³n:** 1.0.0  
 **Fecha:** Enero 2026  
-**Estado:** ✅ Caso 01 Completado | 🔄 Caso 02 En Desarrollo
+**Estado:** âœ… Caso 01 Completado | ðŸ”„ Caso 02 En Desarrollo
+
+

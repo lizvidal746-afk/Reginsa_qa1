@@ -1,7 +1,7 @@
-# 🧭 Guía Operativa (Ejecución, Limpieza y Reportes)
+﻿# ðŸ§­ GuÃ­a Operativa (EjecuciÃ³n, Limpieza y Reportes)
 
-## ✅ Ejecución rápida
-### Opción recomendada (PowerShell)
+## âœ… EjecuciÃ³n rÃ¡pida
+### OpciÃ³n recomendada (PowerShell)
 ```powershell
 npm run test:all
 ```
@@ -14,22 +14,22 @@ npm run test:03
 npm run test:04
 ```
 
-### Ver ejecución en vivo (UI Mode)
+### Ver ejecuciÃ³n en vivo (UI Mode)
 ```powershell
 npx playwright test --ui
 ```
 
-### URLs útiles
+### URLs Ãºtiles
 - Playwright Report: http://localhost:9323
 - Allure Report: http://localhost:4050
 - Playwright UI: http://localhost:6500
 
 ---
 
-## 🧹 Limpieza
+## ðŸ§¹ Limpieza
 ### Limpieza total
 ```powershell
-cd "d:\SUNEDU\SELENIUM\playwrigth"; Remove-Item -Path allure-results, allure-report, playwright-report, test-results, screenshots, registros-administrados.json, reporte-administrados.html -Recurse -Force -ErrorAction SilentlyContinue; Write-Host "✅ Todo limpiado"
+cd "d:\SUNEDU\SELENIUM\playwrigth"; Remove-Item -Path allure-results, allure-report, playwright-report, test-results, screenshots, registros-administrados.json, reporte-administrados.html -Recurse -Force -ErrorAction SilentlyContinue; Write-Host "âœ… Todo limpiado"
 ```
 
 ### Limpieza por caso
@@ -38,12 +38,12 @@ Remove-Item -Path screenshots/01-*.png -Force -ErrorAction SilentlyContinue
 Remove-Item -Path screenshots/02-*.png -Force -ErrorAction SilentlyContinue
 ```
 
-### Opción más simple
+### OpciÃ³n mÃ¡s simple
 - Script interactivo: `limpiar-todo.bat` (doble clic)
 
 ---
 
-## 📊 Reportes
+## ðŸ“Š Reportes
 ### Playwright
 ```powershell
 npm run report:playwright
@@ -55,19 +55,19 @@ npm run report:allure:generate
 npm run report:allure:open
 ```
 
-### Abrir ambos automáticamente
+### Abrir ambos automÃ¡ticamente
 ```powershell
 npm run reports:open
 ```
 
-### Allure rápido (sin generar explícito)
+### Allure rÃ¡pido (sin generar explÃ­cito)
 ```powershell
 allure serve allure-results
 ```
 
 ---
 
-## 🔄 Secuencias recomendadas
+## ðŸ”„ Secuencias recomendadas
 ### Ejecutar + ver reportes
 ```powershell
 npm run test:01
@@ -81,8 +81,9 @@ cd "d:\SUNEDU\SELENIUM\playwrigth"; Remove-Item -Path allure-results, allure-rep
 
 ---
 
-## ✅ Checklist de ejecución
+## âœ… Checklist de ejecuciÃ³n
 - [ ] Cerrar browsers abiertos
 - [ ] Limpiar si aplica
 - [ ] Ejecutar caso(s)
 - [ ] Abrir reportes
+

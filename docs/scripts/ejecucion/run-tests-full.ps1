@@ -1,4 +1,4 @@
-#!/usr/bin/env pwsh
+﻿#!/usr/bin/env pwsh
 # Script para ejecutar pruebas Caso 01 y Caso 02 con reportes
 # Encoding: UTF-8
 
@@ -134,25 +134,26 @@ if (Test-Path "reportes") {
 Write-Host "`n" -ForegroundColor Green
 
 if ($totalTests -eq $passedTests) {
-    Write-Host "╔════════════════════════════════════════════════════════════╗" -ForegroundColor Green
-    Write-Host "║                  🎉 TODAS LAS PRUEBAS PASARON 🎉          ║" -ForegroundColor Green
-    Write-Host "╚════════════════════════════════════════════════════════════╝" -ForegroundColor Green
+    Write-Host "â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—" -ForegroundColor Green
+    Write-Host "â•‘                  ðŸŽ‰ TODAS LAS PRUEBAS PASARON ðŸŽ‰          â•‘" -ForegroundColor Green
+    Write-Host "â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•" -ForegroundColor Green
 } else {
-    Write-Host "╔════════════════════════════════════════════════════════════╗" -ForegroundColor Yellow
-    Write-Host "║              ⚠️  ALGUNAS PRUEBAS FALLARON ⚠️              ║" -ForegroundColor Yellow
-    Write-Host "╚════════════════════════════════════════════════════════════╝" -ForegroundColor Yellow
+    Write-Host "â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—" -ForegroundColor Yellow
+    Write-Host "â•‘              âš ï¸  ALGUNAS PRUEBAS FALLARON âš ï¸              â•‘" -ForegroundColor Yellow
+    Write-Host "â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•" -ForegroundColor Yellow
 }
 
 Write-Host "`n" -ForegroundColor Green
 
 # Salida final
 $totalDuration = $caso01Duration + $caso02Duration
-Write-Host "⏱️  TIEMPO TOTAL: $totalDuration segundos" -ForegroundColor Cyan
+Write-Host "â±ï¸  TIEMPO TOTAL: $totalDuration segundos" -ForegroundColor Cyan
 Write-Host "`n" -ForegroundColor Green
 
-# Retornar código de salida
+# Retornar cÃ³digo de salida
 if ($totalTests -eq $passedTests) {
     exit 0
 } else {
     exit 1
 }
+

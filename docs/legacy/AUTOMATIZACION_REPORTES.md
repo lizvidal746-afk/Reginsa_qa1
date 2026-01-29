@@ -1,20 +1,20 @@
-# 📋 RESUMEN: Automatización de Reportes
+﻿# ðŸ“‹ RESUMEN: AutomatizaciÃ³n de Reportes
 
-## ✅ Lo que se hizo
+## âœ… Lo que se hizo
 
-### 1. Actualicé `package.json`
+### 1. ActualicÃ© `package.json`
 ```json
 "test:02": "playwright test ... --headed && npm run reports:open"
-"reports:open": "echo ✨ Abriendo... && npm run report:playwright & npm run report:allure:generate && npm run report:allure:open"
+"reports:open": "echo âœ¨ Abriendo... && npm run report:playwright & npm run report:allure:generate && npm run report:allure:open"
 ```
 
-**Resultado:** Después de ejecutar test, automáticamente se abren ambos reportes.
+**Resultado:** DespuÃ©s de ejecutar test, automÃ¡ticamente se abren ambos reportes.
 
 ---
 
-### 2. Creé 3 archivos Batch (Windows)
+### 2. CreÃ© 3 archivos Batch (Windows)
 
-| Archivo | Propósito | Uso |
+| Archivo | PropÃ³sito | Uso |
 |---------|-----------|-----|
 | `ejecutar-caso-01.bat` | Ejecutar Caso 01 + abrir reportes | Doble clic |
 | `ejecutar-caso-02.bat` | Ejecutar Caso 02 + abrir reportes | Doble clic |
@@ -22,27 +22,27 @@
 
 ---
 
-### 3. Documentación creada
+### 3. DocumentaciÃ³n creada
 
-- **`REPORTES_AUTOMATICOS.md`** - Detalles técnicos
+- **`REPORTES_AUTOMATICOS.md`** - Detalles tÃ©cnicos
 - **`INICIO_RAPIDO.md`** - Actualizado con instrucciones nuevas
 
 ---
 
-## 🚀 CÓMO USAR (3 Opciones)
+## ðŸš€ CÃ“MO USAR (3 Opciones)
 
-### Opción 1: Terminal (MÁS RECOMENDADO)
+### OpciÃ³n 1: Terminal (MÃS RECOMENDADO)
 ```bash
 npm run test:02
 ```
 
-### Opción 2: Batch file (Click directo)
+### OpciÃ³n 2: Batch file (Click directo)
 ```
 D:\SUNEDU\SELENIUM\playwrigth\ejecutar-caso-02.bat
 ```
 Haz doble clic y listo.
 
-### Opción 3: Scripts npm individuales
+### OpciÃ³n 3: Scripts npm individuales
 ```bash
 npm run report:playwright        # Solo Playwright
 npm run report:allure:open       # Solo Allure
@@ -50,62 +50,62 @@ npm run report:allure:open       # Solo Allure
 
 ---
 
-## 📊 Flujo automático
+## ðŸ“Š Flujo automÃ¡tico
 
 ```
 npm run test:02
-    ↓
+    â†“
 [Ejecuta Caso 02 - 46.1 segundos]
-    ↓
+    â†“
 [Test termina exitosamente]
-    ↓ (AUTOMÁTICO)
-┌─────────────────────────────────┐
-│ npm run reports:open            │
-├─────────────────────────────────┤
-│ Abre Playwright Report          │
-│ http://localhost:9323           │
-│ (en navegador automáticamente)  │
-│                                 │
-│ Genera y abre Allure Report     │
-│ http://localhost:4050           │
-│ (en navegador automáticamente)  │
-└─────────────────────────────────┘
+    â†“ (AUTOMÃTICO)
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚ npm run reports:open            â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚ Abre Playwright Report          â”‚
+â”‚ http://localhost:9323           â”‚
+â”‚ (en navegador automÃ¡ticamente)  â”‚
+â”‚                                 â”‚
+â”‚ Genera y abre Allure Report     â”‚
+â”‚ http://localhost:4050           â”‚
+â”‚ (en navegador automÃ¡ticamente)  â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
 ```
 
 ---
 
-## 🎯 Lo que verás
+## ðŸŽ¯ Lo que verÃ¡s
 
 **Terminal:**
 ```
-✨ Abriendo reportes...
+âœ¨ Abriendo reportes...
 Serving HTML report at http://localhost:9323. Press Ctrl+C to close.
 Serving Allure report at http://localhost:4050
 ```
 
 **Navegador 1:** Playwright Report con screenshots y videos  
-**Navegador 2:** Allure Report con estadísticas y gráficas
+**Navegador 2:** Allure Report con estadÃ­sticas y grÃ¡ficas
 
 ---
 
-## 💡 Ventajas
+## ðŸ’¡ Ventajas
 
-✅ **100% Automático** - Sin hacer nada manualmente  
-✅ **Dos reportes** - En paralelo, ambos accesibles  
-✅ **Windows** - Batch files para click directo  
-✅ **Terminal** - Scripts npm si prefieres  
-✅ **Documentado** - Fácil de entender y mantener  
+âœ… **100% AutomÃ¡tico** - Sin hacer nada manualmente  
+âœ… **Dos reportes** - En paralelo, ambos accesibles  
+âœ… **Windows** - Batch files para click directo  
+âœ… **Terminal** - Scripts npm si prefieres  
+âœ… **Documentado** - FÃ¡cil de entender y mantener  
 
 ---
 
-## 🔧 Configuración Técnica
+## ðŸ”§ ConfiguraciÃ³n TÃ©cnica
 
-**En `package.json` se agregó:**
+**En `package.json` se agregÃ³:**
 ```json
-"reports:open": "echo ✨ Abriendo reportes... && npm run report:playwright & npm run report:allure:generate && npm run report:allure:open"
+"reports:open": "echo âœ¨ Abriendo reportes... && npm run report:playwright & npm run report:allure:generate && npm run report:allure:open"
 ```
 
-**Cómo funciona:**
+**CÃ³mo funciona:**
 - `&&` = Si test pasa, ejecuta siguiente
 - `&` = Ejecuta en paralelo (Playwright no espera Allure)
 - `npm run report:playwright` = `playwright show-report`
@@ -114,14 +114,16 @@ Serving Allure report at http://localhost:4050
 
 ---
 
-## 📝 Próximos pasos
+## ðŸ“ PrÃ³ximos pasos
 
 1. Ejecuta: `npm run test:02`
 2. Espera ~50 segundos
-3. Verás ambos reportes abiertos automáticamente
-4. ¡Revisa los resultados!
+3. VerÃ¡s ambos reportes abiertos automÃ¡ticamente
+4. Â¡Revisa los resultados!
 
 ---
 
-**Última actualización:** Enero 20, 2026  
-**Estado:** ✅ Listo para usar
+**Ãšltima actualizaciÃ³n:** Enero 20, 2026  
+**Estado:** âœ… Listo para usar
+
+

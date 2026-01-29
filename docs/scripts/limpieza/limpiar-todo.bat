@@ -1,11 +1,11 @@
-@echo off
+﻿@echo off
 REM ========================================
 REM SCRIPT DE LIMPIEZA - ELIGE UNA OPCION
 REM ========================================
 
 cls
 echo.
-echo 🧹 LIMPIADOR DE REPORTES Y DATOS
+echo ðŸ§¹ LIMPIADOR DE REPORTES Y DATOS
 echo =====================================
 echo.
 echo 1) Limpiar TODO (reportes, screenshots, datos)
@@ -26,7 +26,7 @@ goto opcion_invalida
 :limpiar_todo
 cls
 echo.
-echo 🧹 Limpiando TODO...
+echo ðŸ§¹ Limpiando TODO...
 echo.
 rmdir /s /q allure-results 2>nul
 rmdir /s /q allure-report 2>nul
@@ -36,7 +36,7 @@ rmdir /s /q screenshots 2>nul
 del /q registros-administrados.json 2>nul
 del /q reporte-administrados.html 2>nul
 echo.
-echo ✅ Todo limpiado correctamente
+echo âœ… Todo limpiado correctamente
 echo.
 pause
 goto fin
@@ -44,11 +44,11 @@ goto fin
 :limpiar_caso01
 cls
 echo.
-echo 🧹 Limpiando CASO 01...
+echo ðŸ§¹ Limpiando CASO 01...
 echo.
 del /q screenshots\01-*.png 2>nul
 echo.
-echo ✅ Caso 01 limpiado
+echo âœ… Caso 01 limpiado
 echo.
 pause
 goto fin
@@ -56,11 +56,11 @@ goto fin
 :limpiar_caso02
 cls
 echo.
-echo 🧹 Limpiando CASO 02...
+echo ðŸ§¹ Limpiando CASO 02...
 echo.
 del /q screenshots\02-*.png 2>nul
 echo.
-echo ✅ Caso 02 limpiado
+echo âœ… Caso 02 limpiado
 echo.
 pause
 goto fin
@@ -68,10 +68,11 @@ goto fin
 :opcion_invalida
 cls
 echo.
-echo ❌ Opción inválida. Intenta de nuevo.
+echo âŒ OpciÃ³n invÃ¡lida. Intenta de nuevo.
 echo.
 pause
 goto limpiar-todo.bat
 
 :fin
 exit /b
+

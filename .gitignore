@@ -1,7 +1,19 @@
+# Dependencias
 node_modules/
-test-results/
+
+# Reportes y resultados
 playwright-report/
 allure-results/
 allure-report/
+test-results/
+
+# Evidencias
 screenshots/
-.env
+videos/
+
+# Logs
+*.log
+
+# VS Code (opcional)
+.vscode/settings.json
+

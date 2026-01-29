@@ -1,14 +1,14 @@
-# ✅ RESPUESTAS A TUS PREGUNTAS
+﻿# âœ… RESPUESTAS A TUS PREGUNTAS
 
 ## Pregunta 1: "Seleccionar cualquier administrado o alguno ya creado"
 
-### ✅ Respuesta: Ahora el test selecciona automáticamente
+### âœ… Respuesta: Ahora el test selecciona automÃ¡ticamente
 
 **Cambios Realizados:**
 
-1. **7 estrategias de búsqueda** en lugar de 5
+1. **7 estrategias de bÃºsqueda** en lugar de 5
    - Las nuevas estrategias 6 y 7 buscan `li` directamente en el dropdown
-   - Una de ellas debería encontrar los administrados visibles
+   - Una de ellas deberÃ­a encontrar los administrados visibles
 
 2. **Herramienta de debug para verificar:**
    ```bash
@@ -18,13 +18,13 @@
    Este comando:
    - Abre el formulario
    - Abre el dropdown
-   - Te muestra EXACTAMENTE cuántos administrados hay
+   - Te muestra EXACTAMENTE cuÃ¡ntos administrados hay
    - Te muestra el nombre exacto de cada uno
-   - Te dice cuál selector los encuentra
+   - Te dice cuÃ¡l selector los encuentra
 
-3. **Cómo funciona en el test:**
+3. **CÃ³mo funciona en el test:**
    ```typescript
-   // En Caso 02, línea ~35
+   // En Caso 02, lÃ­nea ~35
    const administradoSeleccionado = await obtenerAdministradoAleatorio(page);
    
    // Esto ahora:
@@ -34,89 +34,89 @@
    // 4. Devuelve el nombre del administrado seleccionado
    ```
 
-**Próximo Paso:**
+**PrÃ³ximo Paso:**
 ```bash
 npm run test:debug-dropdown
 ```
-Esto te mostrará si encuentra los administrados. Si encuentra 0, me das el HTML que aparece en el log y busco nuevos selectores.
+Esto te mostrarÃ¡ si encuentra los administrados. Si encuentra 0, me das el HTML que aparece en el log y busco nuevos selectores.
 
 ---
 
-## Pregunta 2: "¿Donde debo guardar o almacenar el archivo adjunto?"
+## Pregunta 2: "Â¿Donde debo guardar o almacenar el archivo adjunto?"
 
-### ✅ Respuesta: En la carpeta `./files/`
+### âœ… Respuesta: En la carpeta `./files/`
 
-**Ubicación Exacta:**
+**UbicaciÃ³n Exacta:**
 ```
 Tu Proyecto/
-└── files/
-    ├── README.md                          (instrucciones)
-    └── GENERAL N° 00001-2026-SUNEDU-SG-OTI.pdf  ← AQUÍ VA TU PDF
+â””â”€â”€ files/
+    â”œâ”€â”€ README.md                          (instrucciones)
+    â””â”€â”€ GENERAL NÂ° 00001-2026-SUNEDU-SG-OTI.pdf  â† AQUÃ VA TU PDF
 ```
 
 **Ruta Completa:**
 ```
-d:\SUNEDU\SELENIUM\playwrigth\files\GENERAL N° 00001-2026-SUNEDU-SG-OTI.pdf
+d:\SUNEDU\SELENIUM\playwrigth\files\GENERAL NÂ° 00001-2026-SUNEDU-SG-OTI.pdf
 ```
 
-**Cómo Usar en el Test:**
+**CÃ³mo Usar en el Test:**
 
 Cuando llegues al campo "Seleccionar archivo" en el formulario:
 
 ```typescript
-// En test Caso 02 (después de llenar otros campos):
-const pdfPath = './files/GENERAL N° 00001-2026-SUNEDU-SG-OTI.pdf';
+// En test Caso 02 (despuÃ©s de llenar otros campos):
+const pdfPath = './files/GENERAL NÂ° 00001-2026-SUNEDU-SG-OTI.pdf';
 await page.locator('input[type="file"]').setInputFiles(pdfPath);
 ```
 
 **Detalles:**
-- ✅ Carpeta `./files/` ya existe
-- ✅ Lee el `./files/README.md` para instrucciones detalladas
-- ✅ Puedes poner múltiples PDFs aquí
-- ✅ Sigue el patrón de nombres: `TIPO_DOCUMENTO N° NUMERO-AÑO-INSTITUCION-CODIGO.pdf`
+- âœ… Carpeta `./files/` ya existe
+- âœ… Lee el `./files/README.md` para instrucciones detalladas
+- âœ… Puedes poner mÃºltiples PDFs aquÃ­
+- âœ… Sigue el patrÃ³n de nombres: `TIPO_DOCUMENTO NÂ° NUMERO-AÃ‘O-INSTITUCION-CODIGO.pdf`
 
 ---
 
-## 📋 Resumen de Acciones
+## ðŸ“‹ Resumen de Acciones
 
 ### Para la Pregunta 1:
 
 ```bash
-# Paso 1: Ver qué administrados hay
+# Paso 1: Ver quÃ© administrados hay
 npm run test:debug-dropdown
 
 # Paso 2: Ejecutar Caso 02 con las mejoras
 npm run test:02
 
 # Resultado esperado:
-# ✅ Selecciona un administrado (en lugar de "Admin_default")
-# ✅ Continúa llenando el formulario
+# âœ… Selecciona un administrado (en lugar de "Admin_default")
+# âœ… ContinÃºa llenando el formulario
 ```
 
 ### Para la Pregunta 2:
 
 ```
-Tu PDF debe ir aquí:
-→ ./files/GENERAL N° 00001-2026-SUNEDU-SG-OTI.pdf
+Tu PDF debe ir aquÃ­:
+â†’ ./files/GENERAL NÂ° 00001-2026-SUNEDU-SG-OTI.pdf
 
-Úsalo en el test así:
-→ './files/GENERAL N° 00001-2026-SUNEDU-SG-OTI.pdf'
+Ãšsalo en el test asÃ­:
+â†’ './files/GENERAL NÂ° 00001-2026-SUNEDU-SG-OTI.pdf'
 ```
 
 ---
 
-## 🔧 Próximos Pasos Inmediatos
+## ðŸ”§ PrÃ³ximos Pasos Inmediatos
 
 ### 1. Verificar Dropdown (5 min)
 ```bash
 npm run test:debug-dropdown
 ```
 
-**Abre el navegador y verás:**
+**Abre el navegador y verÃ¡s:**
 - El login
 - El formulario
 - El dropdown abierto con opciones
-- La consola muestra exactamente qué encontró
+- La consola muestra exactamente quÃ© encontrÃ³
 
 ### 2. Ejecutar Caso 02 Mejorado (5 min)
 ```bash
@@ -124,40 +124,41 @@ npm run test:02
 ```
 
 **Esperado:**
-- ✅ Login exitoso
-- ✅ Navegación exitosa
-- ✅ **Selecciona un administrado real** (no "Admin_default")
-- ✅ Llena expediente y resolución
+- âœ… Login exitoso
+- âœ… NavegaciÃ³n exitosa
+- âœ… **Selecciona un administrado real** (no "Admin_default")
+- âœ… Llena expediente y resoluciÃ³n
 - O error claro si hay otro problema
 
 ### 3. Analizar Resultados
-Si funciona: 🎉 ¡Excelente! Continúa con llenar más campos.
-Si no funciona: Mira el output de debug y envíame el HTML que aparece.
+Si funciona: ðŸŽ‰ Â¡Excelente! ContinÃºa con llenar mÃ¡s campos.
+Si no funciona: Mira el output de debug y envÃ­ame el HTML que aparece.
 
 ---
 
-## 💡 Preguntas Frecuentes
+## ðŸ’¡ Preguntas Frecuentes
 
-**P: ¿Qué pasa si el debug muestra 0 opciones?**
+**P: Â¿QuÃ© pasa si el debug muestra 0 opciones?**
 A: Significa que la estructura HTML del dropdown es diferente. Necesito ver el HTML que aparece en el log para buscar nuevos selectores.
 
-**P: ¿Y si el test aún falla después de estas mejoras?**
-A: El debug test te muestra exactamente qué estructura tiene el dropdown. Con esa información puedo ajustar selectores específicamente.
+**P: Â¿Y si el test aÃºn falla despuÃ©s de estas mejoras?**
+A: El debug test te muestra exactamente quÃ© estructura tiene el dropdown. Con esa informaciÃ³n puedo ajustar selectores especÃ­ficamente.
 
-**P: ¿Dónde creo el archivo PDF?**
-A: Puedes descargarlo, guardarlo en `./files/`, o crear un dummy PDF vacío ahora y usarlo después.
+**P: Â¿DÃ³nde creo el archivo PDF?**
+A: Puedes descargarlo, guardarlo en `./files/`, o crear un dummy PDF vacÃ­o ahora y usarlo despuÃ©s.
 
-**P: ¿Puedo tener múltiples PDFs?**
-A: Sí. Pon todos en `./files/` y luego especifica cuál usar en cada test.
+**P: Â¿Puedo tener mÃºltiples PDFs?**
+A: SÃ­. Pon todos en `./files/` y luego especifica cuÃ¡l usar en cada test.
 
 ---
 
-## 📊 Estado Actual
+## ðŸ“Š Estado Actual
 
-| Item | Estado | Acción |
+| Item | Estado | AcciÃ³n |
 |------|--------|--------|
-| Selector administrado | 🔄 Mejorado | Ejecuta debug test |
-| Tiempos de espera | ✅ Aumentados | Ya aplicado |
-| Carpeta de archivos | ✅ Creada | Ya lista |
-| Documentación | ✅ Completa | 6 documentos |
+| Selector administrado | ðŸ”„ Mejorado | Ejecuta debug test |
+| Tiempos de espera | âœ… Aumentados | Ya aplicado |
+| Carpeta de archivos | âœ… Creada | Ya lista |
+| DocumentaciÃ³n | âœ… Completa | 6 documentos |
+
 

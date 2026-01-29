@@ -143,7 +143,8 @@ async function registrarAdministrado(page: Page, numeroRegistro: number): Promis
         '01-AGREGAR_ADMINISTRADO',
         ruc,
         razonSocial,
-        'AGREGAR_ADMINISTRADO'
+        'AGREGAR_ADMINISTRADO',
+        '05_FORMULARIO'
       );
 
       // Guardar
@@ -159,9 +160,9 @@ async function registrarAdministrado(page: Page, numeroRegistro: number): Promis
         
         // Captura mensaje de éxito (toast verde) (reutiliza `capturarToastExito`)
         const screenshotDespues =
-          (await capturarToastExito(page, '01-AGREGAR_ADMINISTRADO', 'EXITO', ruc, razonSocial, 'AGREGAR_ADMINISTRADO')) ||
+          (await capturarToastExito(page, '01-AGREGAR_ADMINISTRADO', '06_EXITO', ruc, razonSocial, 'AGREGAR_ADMINISTRADO')) ||
           // Fallback de captura completa (reutiliza `capturarPantallaMejorada`)
-          (await capturarPantallaMejorada(page, '01-AGREGAR_ADMINISTRADO', 'EXITO', ruc, razonSocial));
+          (await capturarPantallaMejorada(page, '01-AGREGAR_ADMINISTRADO', '06_EXITO', ruc, razonSocial));
         
         // Actualizar reporte
         const registro: RegistroAdministrado = {

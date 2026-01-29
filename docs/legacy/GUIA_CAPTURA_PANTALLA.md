@@ -1,140 +1,140 @@
-# 📸 GUÍA PARA CAPTURAR LA PANTALLA DEL FORMULARIO
+﻿# ðŸ“¸ GUÃA PARA CAPTURAR LA PANTALLA DEL FORMULARIO
 
-## ¿QUÉ NECESITAS CAPTURAR?
+## Â¿QUÃ‰ NECESITAS CAPTURAR?
 
-El formulario de "Registrar Sanción" **con el campo de Administrado lleno** y todas las opciones visibles.
+El formulario de "Registrar SanciÃ³n" **con el campo de Administrado lleno** y todas las opciones visibles.
 
-### Ubicación esperada en el test:
+### UbicaciÃ³n esperada en el test:
 - **PASO 4**: Seleccionando administrado
-  - El dropdown debe estar abierto O ya cerrado (después de seleccionar)
+  - El dropdown debe estar abierto O ya cerrado (despuÃ©s de seleccionar)
   - El campo debe mostrar el administrado seleccionado
   - El formulario debe tener todos los campos accesibles
 
 ---
 
-## 🚀 PASOS PARA CAPTURAR
+## ðŸš€ PASOS PARA CAPTURAR
 
-### 1️⃣ Ejecutar el test
+### 1ï¸âƒ£ Ejecutar el test
 ```bash
 npm run test:02
 ```
 
-### 2️⃣ Esperar a que el test abra el formulario
-El test se detendrá cuando haya:
-- ✅ Login completado
-- ✅ Formulario abierto
-- ✅ Dropdown encontrado
-- ✅ Administrado seleccionado
+### 2ï¸âƒ£ Esperar a que el test abra el formulario
+El test se detendrÃ¡ cuando haya:
+- âœ… Login completado
+- âœ… Formulario abierto
+- âœ… Dropdown encontrado
+- âœ… Administrado seleccionado
 
-### 3️⃣ OPCIÓN A: Captura automática del test
-El test genera capturas automáticamente en:
+### 3ï¸âƒ£ OPCIÃ“N A: Captura automÃ¡tica del test
+El test genera capturas automÃ¡ticamente en:
 - `test-results/casos-prueba-02-registrar-sancion-chromium/`
 - Nombres: `test-failed-1.png`, `test-passed-1.png`
 
-### 4️⃣ OPCIÓN B: Captura manual mientras ejecuta
-Cuando el test esté corriendo:
+### 4ï¸âƒ£ OPCIÃ“N B: Captura manual mientras ejecuta
+Cuando el test estÃ© corriendo:
 1. Alt + Print Screen (captura ventana activa)
 2. O Print Screen (captura pantalla completa)
 3. Pegar en Paint o Gimp
 4. Guardar como PNG
 
-### 5️⃣ OPCIÓN C: Usar page.pause() en el test
+### 5ï¸âƒ£ OPCIÃ“N C: Usar page.pause() en el test
 Agregar una pausa interactiva en PASO 4 para inspeccionar:
 
-**Agregar esto en PASO 4 después de seleccionar administrado:**
+**Agregar esto en PASO 4 despuÃ©s de seleccionar administrado:**
 ```typescript
-await page.pause(); // El test se detiene aquí - puedes inspeccionar
+await page.pause(); // El test se detiene aquÃ­ - puedes inspeccionar
 ```
 
 ---
 
-## 📷 QUÉ DEBE VERSE EN LA CAPTURA
+## ðŸ“· QUÃ‰ DEBE VERSE EN LA CAPTURA
 
-### Mínimo requerido:
+### MÃ­nimo requerido:
 ```
-┌─────────────────────────────────────────┐
-│ Modal: Registrar Sanción                │
-├─────────────────────────────────────────┤
-│                                         │
-│  Administrado: [Nombre Seleccionado ✓]  │
-│  Número RUC: [_______________]          │
-│  Nº Expediente: [_______________]       │
-│  Nº Resolución: [_______________]       │
-│  Fecha: [_______________]               │
-│  ...                                    │
-│                                         │
-│  [Guardar] [Cancelar]                   │
-└─────────────────────────────────────────┘
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚ Modal: Registrar SanciÃ³n                â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚                                         â”‚
+â”‚  Administrado: [Nombre Seleccionado âœ“]  â”‚
+â”‚  NÃºmero RUC: [_______________]          â”‚
+â”‚  NÂº Expediente: [_______________]       â”‚
+â”‚  NÂº ResoluciÃ³n: [_______________]       â”‚
+â”‚  Fecha: [_______________]               â”‚
+â”‚  ...                                    â”‚
+â”‚                                         â”‚
+â”‚  [Guardar] [Cancelar]                   â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
 ```
 
-### Ideal (como se vería en navegador):
+### Ideal (como se verÃ­a en navegador):
 - Modal completamente visible
-- Campo de Administrado con valor seleccionado (NO vacío)
+- Campo de Administrado con valor seleccionado (NO vacÃ­o)
 - Al menos 4-5 campos del formulario visibles
-- Botones de acción visible (Guardar, Cancelar)
+- Botones de acciÃ³n visible (Guardar, Cancelar)
 
 ---
 
-## 🎬 SCRIPT MEJORADO PARA CAPTURA AUTOMÁTICA
+## ðŸŽ¬ SCRIPT MEJORADO PARA CAPTURA AUTOMÃTICA
 
 Si quieres que el test genere capturas con pausa:
 
 **En el archivo `02-registrar-sancion.spec.ts`, PASO 4, agregar:**
 
 ```typescript
-  // Después de seleccionar administrado (línea ~105)
+  // DespuÃ©s de seleccionar administrado (lÃ­nea ~105)
   console.log('   Tomando captura del formulario con administrado lleno...');
   await page.screenshot({ 
     path: 'screenshots/02-ADMINISTRADO_SELECCIONADO.png', 
     fullPage: true 
   });
   
-  // Pausa para inspección manual (comentar después de verificar)
+  // Pausa para inspecciÃ³n manual (comentar despuÃ©s de verificar)
   // await page.pause();
 ```
 
 ---
 
-## 📁 DÓNDE GUARDARSE LAS CAPTURAS
+## ðŸ“ DÃ“NDE GUARDARSE LAS CAPTURAS
 
-### Automáticamente en test results:
+### AutomÃ¡ticamente en test results:
 ```
 d:\SUNEDU\SELENIUM\playwrigth\
-├── test-results/
-│   └── casos-prueba-02-registrar--[hash]-chromium/
-│       ├── test-failed-1.png       (si falla)
-│       ├── test-passed-1.png       (si pasa)
-│       └── error-context.md
-└── screenshots/
-    └── 02-ADMINISTRADO_SELECCIONADO.png
+â”œâ”€â”€ test-results/
+â”‚   â””â”€â”€ casos-prueba-02-registrar--[hash]-chromium/
+â”‚       â”œâ”€â”€ test-failed-1.png       (si falla)
+â”‚       â”œâ”€â”€ test-passed-1.png       (si pasa)
+â”‚       â””â”€â”€ error-context.md
+â””â”€â”€ screenshots/
+    â””â”€â”€ 02-ADMINISTRADO_SELECCIONADO.png
 ```
 
 ### Manualmente:
 ```
 d:\SUNEDU\SELENIUM\playwrigth\screenshots\
-├── 02-FORMULARIO_LLENO.png
-├── 02-DROPDOWN_ABIERTO.png
-└── 02-CONFIRMACION_GUARDADO.png
+â”œâ”€â”€ 02-FORMULARIO_LLENO.png
+â”œâ”€â”€ 02-DROPDOWN_ABIERTO.png
+â””â”€â”€ 02-CONFIRMACION_GUARDADO.png
 ```
 
 ---
 
-## 🔍 VERIFICAR QUE LA CAPTURA ES VÁLIDA
+## ðŸ” VERIFICAR QUE LA CAPTURA ES VÃLIDA
 
-✅ **Captura válida si tiene:**
+âœ… **Captura vÃ¡lida si tiene:**
 - Modal/Formulario visible
-- Campo "Administrado" con valor (NO está vacío)
-- Al menos 3 campos más del formulario
-- Botones de acción visibles
+- Campo "Administrado" con valor (NO estÃ¡ vacÃ­o)
+- Al menos 3 campos mÃ¡s del formulario
+- Botones de acciÃ³n visibles
 
-❌ **Captura NO válida si:**
-- Solo muestra fondo gris (modal no se renderizó)
-- Campo de Administrado está vacío `[ ]`
+âŒ **Captura NO vÃ¡lida si:**
+- Solo muestra fondo gris (modal no se renderizÃ³)
+- Campo de Administrado estÃ¡ vacÃ­o `[ ]`
 - Texto ilegible o cortado
 
 ---
 
-## ⚡ COMANDO RÁPIDO PARA CAPTURAR
+## âš¡ COMANDO RÃPIDO PARA CAPTURAR
 
 ### Desde Git Bash:
 ```bash
@@ -153,14 +153,15 @@ npm run test:02
 
 ---
 
-## 📋 CHECKLIST FINAL
+## ðŸ“‹ CHECKLIST FINAL
 
 - [ ] Test ejecutado correctamente (`npm run test:02`)
 - [ ] Formulario abierto en pantalla
 - [ ] Campo de Administrado lleno con valor visible
-- [ ] Captura tomada (Print Screen o automática)
+- [ ] Captura tomada (Print Screen o automÃ¡tica)
 - [ ] Captura guardada en `screenshots/`
 - [ ] Captura tiene 1920x1080 o mayor (legible)
 - [ ] Imagen formato PNG
 - [ ] Nombre descriptivo (`02-ADMINISTRADO_SELECCIONADO.png`)
+
 

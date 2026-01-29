@@ -1,4 +1,4 @@
-@echo off
+﻿@echo off
 echo.
 echo ====================================
 echo EJECUTANDO PRUEBAS - CASO 01 Y 02
@@ -23,3 +23,4 @@ echo PRUEBAS COMPLETADAS
 echo ====================================
 echo.
 pause
+

@@ -29,6 +29,9 @@ test.describe('03-RECONSIDERAR SIN SANCIONES', () => {
     const nombreCaso = '03-reconsiderar-sin-sanciones';
 
     try {
+      console.log('\n================================================================================');
+      console.log('🧾 CASO 03: RECONSIDERAR SIN SANCIONES');
+      console.log('================================================================================\n');
       // ═══════════════════════════════════════════════════════════════════
       // PASO 1: LOGIN + NAVEGACIÓN
       // Reutiliza `iniciarSesionYNavegar`
@@ -151,7 +154,14 @@ test.describe('03-RECONSIDERAR SIN SANCIONES', () => {
       // ═══════════════════════════════════════════════════════════════════
       console.log('📋 PASO 9.5: Captura formulario lleno...');
       await page.waitForTimeout(1000);
-      await capturarFormularioLleno(page, '03-RECONSIDERAR-SIN-SANCIONES', numeroReconsideracion, '', 'CABECERA_RECONSIDERACION');
+      await capturarFormularioLleno(
+        page,
+        '03-RECONSIDERAR-SIN-SANCIONES',
+        numeroReconsideracion,
+        '',
+        'CABECERA_RECONSIDERACION',
+        '09_FORMULARIO_CABECERA'
+      );
 
       console.log('📋 PASO 10: Guardando cabecera...');
       await page.waitForTimeout(2000);
@@ -169,8 +179,20 @@ test.describe('03-RECONSIDERAR SIN SANCIONES', () => {
       // ═══════════════════════════════════════════════════════════════════
       console.log('📸 PASO 10.5: Captura mensaje de éxito (toast verde)...');
       console.log('   ⏳ Esperando que aparezca el mensaje de confirmación...');
-      await page.waitForTimeout(5000);
-      await capturarToastExito(page, '03-RECONSIDERAR-SIN-SANCIONES', 'EXITO', numeroReconsideracion, '', 'CABECERA_RECONSIDERACION');
+      await page
+        .locator('.p-toast-message-success, .p-toast-message')
+        .filter({ hasText: /registro|registrad|guardad|Éxito|exito/i })
+        .first()
+        .waitFor({ state: 'visible', timeout: 15000 })
+        .catch(() => {});
+      await capturarToastExito(
+        page,
+        '03-RECONSIDERAR-SIN-SANCIONES',
+        '10_EXITO_CABECERA',
+        numeroReconsideracion,
+        '',
+        'CABECERA_RECONSIDERACION'
+      );
 
       // ═══════════════════════════════════════════════════════════════════
       // PASO 11: ACCEDER A DETALLE DE SANCIONES
@@ -195,12 +217,6 @@ test.describe('03-RECONSIDERAR SIN SANCIONES', () => {
       if (haySinSanciones) {
         console.log('✅ Texto "Sin sanciones registradas" detectado\n');
         
-        console.log('📋 PASO 13: Capturando pantalla...');
-        const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
-        const archivo = `./screenshots/${nombreCaso}_sin-sanciones_${timestamp}.png`;
-        await page.screenshot({ path: archivo, fullPage: true });
-        console.log(`📸 Screenshot guardado\n`);
-
         console.log('================================================================================');
         console.log('✅ CASO 03 - SIN SANCIONES COMPLETADO');
         console.log('================================================================================');
@@ -212,10 +228,6 @@ test.describe('03-RECONSIDERAR SIN SANCIONES', () => {
         return;
       } else {
         console.log('ℹ️ Se encontraron sanciones en este registro\n');
-        const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
-        const archivo = `./screenshots/${nombreCaso}_con-contenido_${timestamp}.png`;
-        await page.screenshot({ path: archivo, fullPage: true });
-        console.log(`📸 Screenshot guardado (referencia)\n`);
       }
 
     } catch (error) {

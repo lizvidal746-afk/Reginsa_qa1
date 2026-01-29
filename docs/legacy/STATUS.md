@@ -1,77 +1,78 @@
-# ✅ ESTADO ACTUAL - PROYECTO LISTO
+﻿# âœ… ESTADO ACTUAL - PROYECTO LISTO
 
 **Fecha**: 19 de Enero 2026  
-**Caso**: Caso 02 - Registrar Sanción  
+**Caso**: Caso 02 - Registrar SanciÃ³n  
 
 ---
 
-## 🎯 COMPLETADO
+## ðŸŽ¯ COMPLETADO
 
-### ✅ Correcciones
+### âœ… Correcciones
 - 13 errores TypeScript corregidos
 - Selectores PrimeNG funcionando (`.p-dropdown-trigger`)
-- 5 estrategias de búsqueda de opciones
+- 5 estrategias de bÃºsqueda de opciones
 
-### ✅ Capturas Automáticas
-1. **PASO 10**: Agregar Sanción
+### âœ… Capturas AutomÃ¡ticas
+1. **PASO 10**: Agregar SanciÃ³n
 2. **PASO 15**: Validaciones en Datos del administrado  
-3. **PASO 15**: Botón Guardar
+3. **PASO 15**: BotÃ³n Guardar
 
-### ✅ Limpieza
+### âœ… Limpieza
 - `debug-dropdown.spec.ts` puede borrarse
 - Solo 2 casos: Caso 01 y Caso 02
 
 ---
 
-## 🚀 PARA EJECUTAR
+## ðŸš€ PARA EJECUTAR
 
 ```bash
 cd d:\SUNEDU\SELENIUM\playwrigth
 npm run test:02
 ```
 
-**Resultado**: 3 capturas automáticas en `test-results/`
+**Resultado**: 3 capturas automÃ¡ticas en `test-results/`
 
 ```
-├── 02-REGISTRAR_SANCION_01-AGREGAR_SANCION_[...].png
-├── 02-REGISTRAR_SANCION_02-VALIDACIONES_ADMINISTRADO_[...].png
-├── 02-REGISTRAR_SANCION_03-BOTON_GUARDAR_[...].png
-└── test-passed-1.png
+â”œâ”€â”€ 02-REGISTRAR_SANCION_01-AGREGAR_SANCION_[...].png
+â”œâ”€â”€ 02-REGISTRAR_SANCION_02-VALIDACIONES_ADMINISTRADO_[...].png
+â”œâ”€â”€ 02-REGISTRAR_SANCION_03-BOTON_GUARDAR_[...].png
+â””â”€â”€ test-passed-1.png
 ```
 
 ---
 
-## 📋 CAMBIO CLAVE
+## ðŸ“‹ CAMBIO CLAVE
 
 **PrimeNG p-dropdown - Selector correcto:**
 
 ```typescript
-// ❌ NO clickear el componente raíz
+// âŒ NO clickear el componente raÃ­z
 page.locator('p-dropdown[...]').click()
 
-// ✅ CLICKEAR el trigger interno
+// âœ… CLICKEAR el trigger interno
 page.locator('p-dropdown[...] .p-dropdown-trigger').click()
 ```
 
 ---
 
-## 📚 DOCUMENTACIÓN CREADA
+## ðŸ“š DOCUMENTACIÃ“N CREADA
 
-1. `INSTRUCCIONES_CASO_02.md` - Resumen técnico
+1. `INSTRUCCIONES_CASO_02.md` - Resumen tÃ©cnico
 2. `CASOS_PRUEBA_ACTUALES.md` - Estructura de tests
 3. `CAPTURAS_AUTOMATICAS.md` - Detalles de capturas
-4. `GUIA_CAPTURA_PANTALLA.md` - Cómo capturar
+4. `GUIA_CAPTURA_PANTALLA.md` - CÃ³mo capturar
 
 ---
 
-## ✅ LISTO PARA EJECUTAR
+## âœ… LISTO PARA EJECUTAR
 
 ```
-✅ Sin errores TypeScript
-✅ Selectores correctos
-✅ Capturas automáticas
-✅ Documentación completa
+âœ… Sin errores TypeScript
+âœ… Selectores correctos
+âœ… Capturas automÃ¡ticas
+âœ… DocumentaciÃ³n completa
 
-👉 npm run test:02
+ðŸ‘‰ npm run test:02
 ```
+
 

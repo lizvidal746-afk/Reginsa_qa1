@@ -1,14 +1,14 @@
-# 🔍 ALLURE NO APARECE - SOLUCIONES
+﻿# ðŸ” ALLURE NO APARECE - SOLUCIONES
 
-## 🚨 Problema Identificado
+## ðŸš¨ Problema Identificado
 
 El script `reports:open` en Windows puede no funcionar correctamente con operador `&`.
 
-**Solución:** Usar comando directo de Allure
+**SoluciÃ³n:** Usar comando directo de Allure
 
 ---
 
-## ✅ SOLUCIÓN 1: Comando Directo (RECOMENDADO)
+## âœ… SOLUCIÃ“N 1: Comando Directo (RECOMENDADO)
 
 ### En PowerShell:
 ```powershell
@@ -20,28 +20,28 @@ cd "d:\SUNEDU\SELENIUM\playwrigth"; allure serve allure-results
 cd "d:\SUNEDU\SELENIUM\playwrigth" && allure serve allure-results
 ```
 
-**Qué hace:**
-- Genera el reporte automáticamente
+**QuÃ© hace:**
+- Genera el reporte automÃ¡ticamente
 - Lo abre en navegador (http://localhost:4050)
 - Mantiene el servicio activo
 
 ---
 
-## ✅ SOLUCIÓN 2: Script Batch (Windows)
+## âœ… SOLUCIÃ“N 2: Script Batch (Windows)
 
 **Haz doble clic:**
 ```
 D:\SUNEDU\SELENIUM\playwrigth\abrir-allure.bat
 ```
 
-**Qué hace:**
+**QuÃ© hace:**
 - Verifica que existan datos
 - Genera reporte
 - Abre en navegador
 
 ---
 
-## ✅ SOLUCIÓN 3: Script PowerShell
+## âœ… SOLUCIÃ“N 3: Script PowerShell
 
 **Ejecuta en PowerShell:**
 ```powershell
@@ -49,12 +49,12 @@ cd "d:\SUNEDU\SELENIUM\playwrigth"
 .\abrir-allure.ps1
 ```
 
-**Qué hace:**
+**QuÃ© hace:**
 - Lo mismo que batch pero en PowerShell
 
 ---
 
-## 🔧 FLUJO CORRECTO AHORA
+## ðŸ”§ FLUJO CORRECTO AHORA
 
 ### Paso 1: Limpiar
 **PowerShell:**
@@ -70,7 +70,7 @@ npm run test:02
 
 **Espera:**
 - ~50 segundos hasta que termine
-- Playwright Report se abrirá automáticamente
+- Playwright Report se abrirÃ¡ automÃ¡ticamente
 
 ### Paso 3: Abrir Allure
 **PowerShell:**
@@ -83,7 +83,7 @@ allure serve allure-results
 
 ---
 
-## 📋 SECUENCIA COMPLETA (PowerShell)
+## ðŸ“‹ SECUENCIA COMPLETA (PowerShell)
 
 ```powershell
 # 1. Limpiar
@@ -92,13 +92,13 @@ cd "d:\SUNEDU\SELENIUM\playwrigth"; Remove-Item -Path allure-results, allure-rep
 # 2. Ejecutar test (espera 50 segundos)
 npm run test:02
 
-# 3. En otra terminal o después de que termine, abrir Allure
+# 3. En otra terminal o despuÃ©s de que termine, abrir Allure
 allure serve allure-results
 ```
 
 ---
 
-## 📋 SECUENCIA COMPLETA (CMD)
+## ðŸ“‹ SECUENCIA COMPLETA (CMD)
 
 ```cmd
 # 1. Limpiar
@@ -113,9 +113,9 @@ cd "d:\SUNEDU\SELENIUM\playwrigth" && allure serve allure-results
 
 ---
 
-## ✅ VERIFICAR QUE ALLURE FUNCIONA
+## âœ… VERIFICAR QUE ALLURE FUNCIONA
 
-**Ver versión instalada:**
+**Ver versiÃ³n instalada:**
 ```powershell
 allure --version
 ```
@@ -132,7 +132,7 @@ npm install -g allure-commandline
 
 ---
 
-## 🎯 COMANDO MÁS SIMPLE
+## ðŸŽ¯ COMANDO MÃS SIMPLE
 
 Simplemente:
 ```powershell
@@ -143,12 +143,12 @@ Eso es TODO lo que necesitas para ver Allure.
 
 ---
 
-## 💡 Tips
+## ðŸ’¡ Tips
 
-1. **Allure tarda más que Playwright** - Es normal
+1. **Allure tarda mÃ¡s que Playwright** - Es normal
 2. **Usa comando directo** - No depende del script npm
-3. **Abre Allure en otra terminal** - Después que terminen los tests
-4. **Si puerto 4050 está ocupado**, mata el proceso:
+3. **Abre Allure en otra terminal** - DespuÃ©s que terminen los tests
+4. **Si puerto 4050 estÃ¡ ocupado**, mata el proceso:
    ```powershell
    netstat -ano | findstr :4050
    taskkill /PID <PID> /F
@@ -156,15 +156,17 @@ Eso es TODO lo que necesitas para ver Allure.
 
 ---
 
-## ✨ Nueva Configuración
+## âœ¨ Nueva ConfiguraciÃ³n
 
 **Actualizado `package.json`:**
 ```json
 "report:allure:open": "allure serve ./allure-results"
 ```
 
-Ahora usa `allure serve` directamente (más confiable que `allure open`).
+Ahora usa `allure serve` directamente (mÃ¡s confiable que `allure open`).
 
 ---
 
-**Prueba ahora con: `allure serve allure-results` y dime qué pasa.** 🚀
+**Prueba ahora con: `allure serve allure-results` y dime quÃ© pasa.** ðŸš€
+
+

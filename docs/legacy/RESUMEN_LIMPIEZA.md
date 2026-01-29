@@ -1,23 +1,23 @@
-# ✅ RESUMEN: Limpieza y Optimización Completada
+﻿# âœ… RESUMEN: Limpieza y OptimizaciÃ³n Completada
 
-## 📌 Problema Identificado
+## ðŸ“Œ Problema Identificado
 
-**En Allure veías:**
+**En Allure veÃ­as:**
 ```
-Caso 01 ✅
-Caso 02 ✅
-Caso 02 siguiente ❓
-debug-dropdown ❓
-test-admin-registro ❓
+Caso 01 âœ…
+Caso 02 âœ…
+Caso 02 siguiente â“
+debug-dropdown â“
+test-admin-registro â“
 ```
 
 **Causa:** Datos de ejecuciones anteriores sin limpiar
 
 ---
 
-## ✨ Soluciones Implementadas
+## âœ¨ Soluciones Implementadas
 
-### 1️⃣ Scripts de Limpieza (3 opciones)
+### 1ï¸âƒ£ Scripts de Limpieza (3 opciones)
 
 **Archivo: `limpiar-datos.bat`**
 - Solo limpia (no ejecuta)
@@ -25,67 +25,67 @@ test-admin-registro ❓
 
 **Archivo: `limpiar-y-ejecutar-caso-02.bat`**
 - Limpia TODO + Ejecuta Caso 02 + Abre reportes
-- ⭐ RECOMENDADO para desarrollo
+- â­ RECOMENDADO para desarrollo
 
 **Archivo: `limpiar-y-ejecutar-todos.bat`**
 - Limpia TODO + Ejecuta Todos los Casos + Abre reportes
-- Para ver múltiples casos limpios en Allure
+- Para ver mÃºltiples casos limpios en Allure
 
-### 2️⃣ Screenshots Simplificados
+### 2ï¸âƒ£ Screenshots Simplificados
 
 **Antes:**
 ```
 02-REGISTRAR_SANCION_01-SANCION_LLENA_RUC_12345678901_Perfumerias_unidas_2026-01-20T10-30-45.png
 ```
 
-**Después:**
+**DespuÃ©s:**
 ```
 02-REGISTRAR_SANCION_01-SANCION_LLENA_2026-01-20T10-30-45.png
 ```
 
 **Cambios en `reginsa-actions.ts`:**
-- ❌ Eliminado: `RUC_${ruc}`
-- ❌ Eliminado: `${nombreLimpio}` (razón social)
-- ✅ Mantenido: `${caso}_${paso}_${timestamp}`
+- âŒ Eliminado: `RUC_${ruc}`
+- âŒ Eliminado: `${nombreLimpio}` (razÃ³n social)
+- âœ… Mantenido: `${caso}_${paso}_${timestamp}`
 
-### 3️⃣ Análisis de `generar-reporte-html.js`
+### 3ï¸âƒ£ AnÃ¡lisis de `generar-reporte-html.js`
 
-**Veredicto: ❌ NO es esencial**
+**Veredicto: âŒ NO es esencial**
 
 Razones:
 - Duplica funcionalidad de Allure
 - Solo aplica a Caso 01
-- Allure es más profesional
+- Allure es mÃ¡s profesional
 - Extra mantenimiento
 
-**Recomendación:** Archivo archivado (no eliminado por si luego lo necesitas)
+**RecomendaciÃ³n:** Archivo archivado (no eliminado por si luego lo necesitas)
 
-### 4️⃣ Documentación
+### 4ï¸âƒ£ DocumentaciÃ³n
 
 **Nueva: `GUIA_LIMPIAR_Y_EJECUTAR.md`**
-- Guía completa de limpieza
-- Explicación antes/después
+- GuÃ­a completa de limpieza
+- ExplicaciÃ³n antes/despuÃ©s
 - Workflow recomendado
 
 **Nueva: `ANALISIS_GENERAR_REPORTE.md`**
-- Análisis de utilidad del archivo
-- Recomendación de mantener o eliminar
+- AnÃ¡lisis de utilidad del archivo
+- RecomendaciÃ³n de mantener o eliminar
 
 ---
 
-## 🎯 Cómo usar AHORA
+## ðŸŽ¯ CÃ³mo usar AHORA
 
-### Opción A: Caso 02 limpio
+### OpciÃ³n A: Caso 02 limpio
 ```
 Doble clic: D:\SUNEDU\SELENIUM\playwrigth\limpiar-y-ejecutar-caso-02.bat
 ```
 
-### Opción B: Todos limpios
+### OpciÃ³n B: Todos limpios
 ```
 Doble clic: D:\SUNEDU\SELENIUM\playwrigth\limpiar-y-ejecutar-todos.bat
 ```
 
-### Opción C: Limpiar solo
+### OpciÃ³n C: Limpiar solo
 ```
 Doble clic: D:\SUNEDU\SELENIUM\playwrigth\limpiar-datos.bat
 ```
@@ -93,70 +93,72 @@ Luego ejecuta manualmente: `npm run test:02`
 
 ---
 
-## 📊 Resultado en Allure
+## ðŸ“Š Resultado en Allure
 
 **Antes:**
 ```
-❌ Mostraba tests antiguos/no existentes
-❌ Confusión sobre qué era cada cosa
-❌ Histórico sucio
+âŒ Mostraba tests antiguos/no existentes
+âŒ ConfusiÃ³n sobre quÃ© era cada cosa
+âŒ HistÃ³rico sucio
 ```
 
-**Después:**
+**DespuÃ©s:**
 ```
-✅ Solo muestra tests que se ejecutaron
-✅ Claro y limpio
-✅ Histórico exacto
+âœ… Solo muestra tests que se ejecutaron
+âœ… Claro y limpio
+âœ… HistÃ³rico exacto
 ```
 
 ---
 
-## 🔄 Flujo Recomendado
+## ðŸ”„ Flujo Recomendado
 
 ```
 1. Desarrollo en Caso 03
 2. Doble clic: limpiar-y-ejecutar-todos.bat
 3. Se limpian datos + se ejecutan todos (01, 02, 03)
 4. Allure muestra exactamente esos 3
-5. Sin confusión
+5. Sin confusiÃ³n
 ```
 
 ---
 
-## 📝 Archivos Modificados
+## ðŸ“ Archivos Modificados
 
 | Archivo | Cambio |
 |---------|--------|
 | `reginsa-actions.ts` | Simplificados nombres de screenshots |
-| `package.json` | ✅ Ya tenía scripts correctos |
-| `playwright.config.js` | ✅ Ya excluye `_referencias` |
+| `package.json` | âœ… Ya tenÃ­a scripts correctos |
+| `playwright.config.js` | âœ… Ya excluye `_referencias` |
 
-## 📝 Archivos Creados
+## ðŸ“ Archivos Creados
 
-| Archivo | Propósito |
+| Archivo | PropÃ³sito |
 |---------|-----------|
 | `limpiar-datos.bat` | Script de limpieza |
 | `limpiar-y-ejecutar-caso-02.bat` | Limpiar + Caso 02 |
 | `limpiar-y-ejecutar-todos.bat` | Limpiar + Todos |
-| `GUIA_LIMPIAR_Y_EJECUTAR.md` | Documentación completa |
-| `ANALISIS_GENERAR_REPORTE.md` | Análisis de archivo HTML |
+| `GUIA_LIMPIAR_Y_EJECUTAR.md` | DocumentaciÃ³n completa |
+| `ANALISIS_GENERAR_REPORTE.md` | AnÃ¡lisis de archivo HTML |
 
 ---
 
-## ✅ Próximo Paso
+## âœ… PrÃ³ximo Paso
 
 **Ejecuta AHORA:**
 ```
 limpiar-y-ejecutar-caso-02.bat
 ```
 
-Verás:
-1. ✨ Limpieza en terminal
-2. 🌐 Browser ejecutando Caso 02
-3. 📊 Allure Report limpísimo (solo Caso 02)
-4. 🎬 Playwright Report (screenshots limpios)
+VerÃ¡s:
+1. âœ¨ Limpieza en terminal
+2. ðŸŒ Browser ejecutando Caso 02
+3. ðŸ“Š Allure Report limpÃ­simo (solo Caso 02)
+4. ðŸŽ¬ Playwright Report (screenshots limpios)
 
 ---
 
-**Status:** 🟢 Listo para usar  
-**Última actualización:** Enero 20, 2026
+**Status:** ðŸŸ¢ Listo para usar  
+**Ãšltima actualizaciÃ³n:** Enero 20, 2026
+
+

@@ -1,4 +1,4 @@
-$ErrorActionPreference = "Stop"
+﻿$ErrorActionPreference = "Stop"
 $root = "D:\SUNEDU\SELENIUM\playwrigth"
 $docs = Join-Path $root "docs"
 $legacy = Join-Path $docs "legacy"
@@ -9,4 +9,6 @@ Get-ChildItem -Path $root -Filter *.md -File | Where-Object { $_.Name -ne "READM
   Move-Item -Path $_.FullName -Destination (Join-Path $legacy $_.Name) -Force
 }
 
-Write-Host "✅ Todos los .md fuera de docs se movieron a docs/legacy" -ForegroundColor Green
+Write-Host "âœ… Todos los .md fuera de docs se movieron a docs/legacy" -ForegroundColor Green
+
+

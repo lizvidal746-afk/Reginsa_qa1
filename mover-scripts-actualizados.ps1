@@ -1,4 +1,4 @@
-$ErrorActionPreference = "Stop"
+﻿$ErrorActionPreference = "Stop"
 $root = "D:\SUNEDU\SELENIUM\playwrigth"
 $docsScripts = Join-Path $root "docs\scripts"
 New-Item -ItemType Directory -Force -Path $docsScripts | Out-Null
@@ -64,7 +64,7 @@ function Get-Hash($path) {
   (Get-FileHash -Path $path -Algorithm SHA256).Hash
 }
 
-# Mover scripts desde raíz a docs/scripts y eliminar duplicados por contenido
+# Mover scripts desde raÃ­z a docs/scripts y eliminar duplicados por contenido
 Get-ChildItem -Path $root -File -Include *.bat,*.ps1,*.sh | ForEach-Object {
   $name = $_.Name
   $sub = $map[$name]
@@ -86,4 +86,6 @@ Get-ChildItem -Path $root -File -Include *.bat,*.ps1,*.sh | ForEach-Object {
   Move-Item -Path $_.FullName -Destination $dest -Force
 }
 
-Write-Host "✅ Scripts movidos a docs/scripts y duplicados eliminados" -ForegroundColor Green
+Write-Host "âœ… Scripts movidos a docs/scripts y duplicados eliminados" -ForegroundColor Green
+
+

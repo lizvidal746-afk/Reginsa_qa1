@@ -1,5 +1,5 @@
-cd "d:\SUNEDU\SELENIUM\playwrigth"
-Write-Host "🧹 Limpiando reportes y datos..." -ForegroundColor Cyan
+﻿cd "d:\SUNEDU\SELENIUM\playwrigth"
+Write-Host "ðŸ§¹ Limpiando reportes y datos..." -ForegroundColor Cyan
 Write-Host ""
 
 Remove-Item -Path allure-results -Recurse -Force -ErrorAction SilentlyContinue
@@ -11,5 +11,6 @@ Remove-Item -Path registros-administrados.json -Force -ErrorAction SilentlyConti
 Remove-Item -Path reporte-administrados.html -Force -ErrorAction SilentlyContinue
 
 Write-Host ""
-Write-Host "✅ Limpieza completada" -ForegroundColor Green
+Write-Host "âœ… Limpieza completada" -ForegroundColor Green
 Write-Host ""
+

@@ -1,4 +1,4 @@
-#!/usr/bin/env pwsh
+﻿#!/usr/bin/env pwsh
 # Script para ejecutar pruebas Playwright
 # Encoding: UTF-8
 
@@ -102,7 +102,7 @@ Write-Host "   Tasa exito: $successRate%" -ForegroundColor $(if ($successRate -e
 
 Write-Host "`n" -ForegroundColor Green
 
-# Retornar código de salida
+# Retornar cÃ³digo de salida
 if ($totalTests -eq $passedTests) {
     Write-Host "============================================================" -ForegroundColor Green
     Write-Host "              TODAS LAS PRUEBAS PASARON" -ForegroundColor Green
@@ -114,3 +114,4 @@ if ($totalTests -eq $passedTests) {
     Write-Host "============================================================" -ForegroundColor Yellow
     exit 1
 }
+

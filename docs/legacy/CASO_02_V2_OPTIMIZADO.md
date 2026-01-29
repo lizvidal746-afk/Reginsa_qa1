@@ -1,58 +1,58 @@
-# 📋 TEST V2 - OPTIMIZACIÓN COMPLETA
+﻿# ðŸ“‹ TEST V2 - OPTIMIZACIÃ“N COMPLETA
 
-## 📝 Resumen de Cambios
+## ðŸ“ Resumen de Cambios
 
 El archivo `02-registrar-sancion-v2.spec.ts` es una **reescritura completa** del test anterior con enfoque en **simplicidad y eficiencia**.
 
-### 🔴 Problemas en la Versión Anterior
+### ðŸ”´ Problemas en la VersiÃ³n Anterior
 
-1. **Selectores complejos y frágiles**
-   - Usar múltiples métodos para buscar el mismo elemento
-   - Genéricos como `[role="dialog"] input[type="checkbox"]` + `.nth()` inestables
+1. **Selectores complejos y frÃ¡giles**
+   - Usar mÃºltiples mÃ©todos para buscar el mismo elemento
+   - GenÃ©ricos como `[role="dialog"] input[type="checkbox"]` + `.nth()` inestables
    - Loops complejos con reintentos y fallbacks
 
 2. **Demasiado error handling**
    - Muchos `.catch(() => false)` que ocultaban problemas reales
-   - No clara qué selector funcionaba vs cuál no
+   - No clara quÃ© selector funcionaba vs cuÃ¡l no
 
 3. **Timing inconsistente**
    - `waitForTimeout()` aleatorio (500-2000ms)
    - No coordinado con cambios visuales
 
-4. **Regresión del test**
+4. **RegresiÃ³n del test**
    - De 4/5 sanciones a 1/5 de repente
    - Indica que cambios posteriores quebraron selectores trabajando
 
-### ✅ Soluciones en V2
+### âœ… Soluciones en V2
 
-#### 1️⃣ Selectores basados en CODEGEN
+#### 1ï¸âƒ£ Selectores basados en CODEGEN
 
-Usamos selectores probados que generó la herramienta Playwright Codegen:
+Usamos selectores probados que generÃ³ la herramienta Playwright Codegen:
 
 ```typescript
-// ✅ CHECKBOXES (del test-2.spec.ts)
+// âœ… CHECKBOXES (del test-2.spec.ts)
 .p-checkbox-box          // Selector CSS de PrimeNG
 
-// ✅ RADIOS (UIT/SOLES)
+// âœ… RADIOS (UIT/SOLES)
 [role="radio"]           // Selector semantic HTML
 
-// ✅ MONTO INPUT
+// âœ… MONTO INPUT
 getByRole('textbox', { name: '0.00' })   // Selector por placeholder
 
-// ✅ DROPDOWN TIEMPO
-p-dropdown + getByRole('option', { name: 'Año|Mes|Día' })
+// âœ… DROPDOWN TIEMPO
+p-dropdown + getByRole('option', { name: 'AÃ±o|Mes|DÃ­a' })
 
-// ✅ CANTIDAD INPUT  
+// âœ… CANTIDAD INPUT  
 getByPlaceholder('Cantidad')             // Selector por placeholder
 
-// ✅ BOTONES
+// âœ… BOTONES
 getByRole('button', { name: 'Guardar detalle' })
 ```
 
-#### 2️⃣ Eliminadas complejidades innecesarias
+#### 2ï¸âƒ£ Eliminadas complejidades innecesarias
 
 ```typescript
-// ❌ ANTES: Complejo y frágil
+// âŒ ANTES: Complejo y frÃ¡gil
 const checkboxes = page.locator('[role="dialog"] input[type="checkbox"]');
 for (let i = 0; i < 3; i++) {
   const checkbox = checkboxes.nth(i);
@@ -62,87 +62,87 @@ for (let i = 0; i < 3; i++) {
   }
 }
 
-// ✅ AHORA: Directo y claro
+// âœ… AHORA: Directo y claro
 const checkboxes = page.locator('.p-checkbox-box');
 const checkbox = checkboxes.nth(0);  // Primer checkbox = Multa
 await checkbox.click({ force: true });
 ```
 
-#### 3️⃣ Timeouts consistentes y predecibles
+#### 3ï¸âƒ£ Timeouts consistentes y predecibles
 
 ```typescript
-// Patrón consistente:
-await page.waitForTimeout(1500);      // Después de combobox
-await page.waitForTimeout(1000);      // Después de clicks normales
-await page.waitForTimeout(800);       // Después de checks
-await page.waitForTimeout(600);       // Después de inputs
+// PatrÃ³n consistente:
+await page.waitForTimeout(1500);      // DespuÃ©s de combobox
+await page.waitForTimeout(1000);      // DespuÃ©s de clicks normales
+await page.waitForTimeout(800);       // DespuÃ©s de checks
+await page.waitForTimeout(600);       // DespuÃ©s de inputs
 
 // Sin variabilidad aleatoria
 ```
 
-#### 4️⃣ Flujo más legible con logging estructurado
+#### 4ï¸âƒ£ Flujo mÃ¡s legible con logging estructurado
 
 ```typescript
-console.log(`\n  ┌─ SANCIÓN ${n}/5: ${nombre}`);
-console.log(`  │  ✓ RIS seleccionado`);
-console.log(`  │  ☑️  Marcando sanciones:`);
-console.log(`  │    ✓ Multa marcada`);
-console.log(`  │  ⏳ Llenando Monto...`);
-console.log(`  │    ✓ Monto: 500 SOLES`);
-console.log(`  │  ✅ GUARDADA`);
-console.log(`  └───────────────────────────────────────────────────────────────────`);
+console.log(`\n  â”Œâ”€ SANCIÃ“N ${n}/5: ${nombre}`);
+console.log(`  â”‚  âœ“ RIS seleccionado`);
+console.log(`  â”‚  â˜‘ï¸  Marcando sanciones:`);
+console.log(`  â”‚    âœ“ Multa marcada`);
+console.log(`  â”‚  â³ Llenando Monto...`);
+console.log(`  â”‚    âœ“ Monto: 500 SOLES`);
+console.log(`  â”‚  âœ… GUARDADA`);
+console.log(`  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€`);
 ```
 
-## 🎯 Estructura del Test V2
+## ðŸŽ¯ Estructura del Test V2
 
 ```
-TEST CASE 02: REGISTRAR SANCIÓN (V2)
-│
-├─ LOGIN + NAVEGACIÓN
-│  ├─ Acceso a REGINSA
-│  └─ Navegar a "Infractor y Sanción"
-│
-├─ DATOS BÁSICOS
-│  ├─ Abrirciones formulario
-│  ├─ Seleccionar 1 administrado aleatorio (IMPORTANTE: No repetir)
-│  ├─ Llenar expediente/resolución/fecha
-│  ├─ Subir PDF
-│  └─ Guardar medidas correctivas
-│
-├─ SANCIONES (5 registros para el MISMO administrado)
-│  ├─ Sanción 1: MULTA (SOLES 1-1600 o UIT 5)
-│  │  ├─ Mark checkbox Multa
-│  │  ├─ Select radio SOLES/UIT
-│  │  ├─ Fill cantidad
-│  │  └─ Save Guardar detalle
-│  │
-│  ├─ Sanción 2: SUSPENSIÓN (Año/Mes/Día)
-│  │  ├─ Mark checkbox Suspensión
-│  │  ├─ Select tipo tiempo
-│  │  ├─ Fill cantidad
-│  │  └─ Save Guardar detalle
-│  │
-│  ├─ Sanción 3: CANCELACIÓN (solo marcar)
-│  │  ├─ Mark checkbox Cancelación
-│  │  └─ Save Guardar detalle
-│  │
-│  ├─ Sanción 4: MULTA + SUSPENSIÓN (ambas)
-│  │  ├─ Mark checkboxes
-│  │  ├─ Fill monto
-│  │  ├─ Fill tiempo
-│  │  └─ Save Guardar detalle
-│  │
-│  └─ Sanción 5: MULTA + CANCELACIÓN (ambas)
-│     ├─ Mark checkboxes
-│     ├─ Fill monto
-│     ├─ Fill tiempo (Cancelación)
-│     └─ Save Guardar detalle
-│
-└─ GUARDAR FORMULARIO FINAL
-   └─ Click Guardar → Mensaje "1 registro creado"
+TEST CASE 02: REGISTRAR SANCIÃ“N (V2)
+â”‚
+â”œâ”€ LOGIN + NAVEGACIÃ“N
+â”‚  â”œâ”€ Acceso a REGINSA
+â”‚  â””â”€ Navegar a "Infractor y SanciÃ³n"
+â”‚
+â”œâ”€ DATOS BÃSICOS
+â”‚  â”œâ”€ Abrirciones formulario
+â”‚  â”œâ”€ Seleccionar 1 administrado aleatorio (IMPORTANTE: No repetir)
+â”‚  â”œâ”€ Llenar expediente/resoluciÃ³n/fecha
+â”‚  â”œâ”€ Subir PDF
+â”‚  â””â”€ Guardar medidas correctivas
+â”‚
+â”œâ”€ SANCIONES (5 registros para el MISMO administrado)
+â”‚  â”œâ”€ SanciÃ³n 1: MULTA (SOLES 1-1600 o UIT 5)
+â”‚  â”‚  â”œâ”€ Mark checkbox Multa
+â”‚  â”‚  â”œâ”€ Select radio SOLES/UIT
+â”‚  â”‚  â”œâ”€ Fill cantidad
+â”‚  â”‚  â””â”€ Save Guardar detalle
+â”‚  â”‚
+â”‚  â”œâ”€ SanciÃ³n 2: SUSPENSIÃ“N (AÃ±o/Mes/DÃ­a)
+â”‚  â”‚  â”œâ”€ Mark checkbox SuspensiÃ³n
+â”‚  â”‚  â”œâ”€ Select tipo tiempo
+â”‚  â”‚  â”œâ”€ Fill cantidad
+â”‚  â”‚  â””â”€ Save Guardar detalle
+â”‚  â”‚
+â”‚  â”œâ”€ SanciÃ³n 3: CANCELACIÃ“N (solo marcar)
+â”‚  â”‚  â”œâ”€ Mark checkbox CancelaciÃ³n
+â”‚  â”‚  â””â”€ Save Guardar detalle
+â”‚  â”‚
+â”‚  â”œâ”€ SanciÃ³n 4: MULTA + SUSPENSIÃ“N (ambas)
+â”‚  â”‚  â”œâ”€ Mark checkboxes
+â”‚  â”‚  â”œâ”€ Fill monto
+â”‚  â”‚  â”œâ”€ Fill tiempo
+â”‚  â”‚  â””â”€ Save Guardar detalle
+â”‚  â”‚
+â”‚  â””â”€ SanciÃ³n 5: MULTA + CANCELACIÃ“N (ambas)
+â”‚     â”œâ”€ Mark checkboxes
+â”‚     â”œâ”€ Fill monto
+â”‚     â”œâ”€ Fill tiempo (CancelaciÃ³n)
+â”‚     â””â”€ Save Guardar detalle
+â”‚
+â””â”€ GUARDAR FORMULARIO FINAL
+   â””â”€ Click Guardar â†’ Mensaje "1 registro creado"
 ```
 
-## 📊 Comparación de Selectores
+## ðŸ“Š ComparaciÃ³n de Selectores
 
 | Elemento | V1 (Viejo) | V2 (Nuevo) | Fuente |
 |----------|-----------|-----------|--------|
@@ -152,46 +152,47 @@ TEST CASE 02: REGISTRAR SANCIÓN (V2)
 | Dropdown Tiempo | `p-dropdown` + filter + `[role="combobox"]` | `p-dropdown` + button/combobox | Codegen |
 | Cantidad Tiempo | `input[name="cantidadTiempo"]` | `getByPlaceholder('Cantidad')` | Codegen |
 
-## 🧪 Cómo Ejecutar
+## ðŸ§ª CÃ³mo Ejecutar
 
-### Opción 1: Terminal
+### OpciÃ³n 1: Terminal
 ```bash
 cd d:\SUNEDU\SELENIUM\playwrigth
 npm run test:02-v2
 ```
 
-### Opción 2: PowerShell
+### OpciÃ³n 2: PowerShell
 ```powershell
 .\ejecutar-test-02-v2.ps1
 ```
 
-### Opción 3: Batch
+### OpciÃ³n 3: Batch
 ```batch
 ejecutar-test-02-v2.bat
 ```
 
-## ✨ Mejoras Esperadas
+## âœ¨ Mejoras Esperadas
 
-1. **Más rápido**: Selectores directos sin búsquedas múltiples
-2. **Más confiable**: Basado en código funcionando (codegen)
-3. **Más mantenible**: Código claro sin loops complejos
-4. **Mejor debugging**: Logging estructurado muestra exactamente qué pasa
+1. **MÃ¡s rÃ¡pido**: Selectores directos sin bÃºsquedas mÃºltiples
+2. **MÃ¡s confiable**: Basado en cÃ³digo funcionando (codegen)
+3. **MÃ¡s mantenible**: CÃ³digo claro sin loops complejos
+4. **Mejor debugging**: Logging estructurado muestra exactamente quÃ© pasa
 
-## 🔍 Próximos Pasos si Falla
+## ðŸ” PrÃ³ximos Pasos si Falla
 
 1. Verificar consola del navegador (devtools)
-2. Revisar si HTML cambió (selectores `.p-checkbox-box` sigue siendo válido?)
+2. Revisar si HTML cambiÃ³ (selectores `.p-checkbox-box` sigue siendo vÃ¡lido?)
 3. Comparar selectores contra archivo `test-2.spec.ts`
 4. Usar Playwright Inspector: `npx playwright test --debug`
 
-## 📝 Notas Importantes
+## ðŸ“ Notas Importantes
 
 - **UN administrado**: Se selecciona aleatorio al inicio, NO se repite
 - **5 sanciones**: Para el mismo administrado, agregadas con "Guardar detalle"
-- **Números aleatorios**: Rangos específicos por tipo (ver struct `sanciones[]`)
-- **Sin repetición**: Cada sanción usa diferentes checkboxes/campos
+- **NÃºmeros aleatorios**: Rangos especÃ­ficos por tipo (ver struct `sanciones[]`)
+- **Sin repeticiÃ³n**: Cada sanciÃ³n usa diferentes checkboxes/campos
 
 ---
-Versión: V2 OPTIMIZADA
+VersiÃ³n: V2 OPTIMIZADA
 Fecha: 2026-01-23
 Basado en: Codegen test-2.spec.ts + Estructura V1
+

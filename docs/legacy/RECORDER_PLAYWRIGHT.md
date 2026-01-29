@@ -1,6 +1,6 @@
-# 🎬 CREAR CASOS DE PRUEBA CON PLAYWRIGHT RECORDER
+﻿# ðŸŽ¬ CREAR CASOS DE PRUEBA CON PLAYWRIGHT RECORDER
 
-## ⚡ COMANDO RÁPIDO
+## âš¡ COMANDO RÃPIDO
 
 ```powershell
 npx playwright codegen --output tests/test-3.spec.ts https://reginsaqa.sunedu.gob.pe/#/home
@@ -8,14 +8,14 @@ npx playwright codegen --output tests/test-3.spec.ts https://reginsaqa.sunedu.go
 
 ---
 
-## 📋 TODOS LOS CASOS
+## ðŸ“‹ TODOS LOS CASOS
 
 ### Caso 01 (Agregar Administrado):
 ```powershell
 npx playwright codegen --output tests/casos-prueba/01-agregar-administrado.spec.ts https://reginsaqa.sunedu.gob.pe/#/home
 ```
 
-### Caso 02 (Registrar Sanción):
+### Caso 02 (Registrar SanciÃ³n):
 ```powershell
 npx playwright codegen --output tests/casos-prueba/02-registrar-sancion.spec.ts https://reginsaqa.sunedu.gob.pe/#/home
 ```
@@ -37,7 +37,7 @@ npx playwright codegen --output tests/test-5.spec.ts https://reginsaqa.sunedu.go
 
 ---
 
-## 🎯 PASOS PARA USAR RECORDER
+## ðŸŽ¯ PASOS PARA USAR RECORDER
 
 1. **Abre terminal** en VS Code (o PowerShell)
 2. **Navega a la carpeta del proyecto:**
@@ -52,49 +52,49 @@ npx playwright codegen --output tests/test-5.spec.ts https://reginsaqa.sunedu.go
 
 4. **En el navegador que se abre:**
    - Realiza login: `lizvidal` / `QA1234510qa`
-   - Navega a **Infractor y Sanción**
+   - Navega a **Infractor y SanciÃ³n**
    - Ejecuta todas las acciones del caso de prueba
 
-5. **El Inspector grabará todo** en tiempo real
+5. **El Inspector grabarÃ¡ todo** en tiempo real
 
 6. **Cuando termines:**
    - Cierra el Inspector
-   - El archivo `.spec.ts` se crea automáticamente ✅
+   - El archivo `.spec.ts` se crea automÃ¡ticamente âœ…
 
 ---
 
-## 📝 ESTRUCTURA DEL COMANDO
+## ðŸ“ ESTRUCTURA DEL COMANDO
 
 ```
 npx playwright codegen --output <RUTA_ARCHIVO> <URL>
 ```
 
-| Parámetro | Descripción |
+| ParÃ¡metro | DescripciÃ³n |
 |-----------|-------------|
 | `npx playwright codegen` | Abre el Recorder |
-| `--output` | Especifica dónde guardar el archivo |
+| `--output` | Especifica dÃ³nde guardar el archivo |
 | `<RUTA_ARCHIVO>` | Ruta donde se crea el `.spec.ts` |
-| `<URL>` | URL donde comienza la grabación |
+| `<URL>` | URL donde comienza la grabaciÃ³n |
 
 ---
 
-## 🎥 OPCIONES AVANZADAS
+## ðŸŽ¥ OPCIONES AVANZADAS
 
-### Grabar con más detalles:
+### Grabar con mÃ¡s detalles:
 ```powershell
 npx playwright codegen --target playwright/typescript --output tests/test-3.spec.ts https://reginsaqa.sunedu.gob.pe/#/home
 ```
 
-### Sin guardar automáticamente (solo mostrar código):
+### Sin guardar automÃ¡ticamente (solo mostrar cÃ³digo):
 ```powershell
 npx playwright codegen https://reginsaqa.sunedu.gob.pe/#/home
 ```
 
 ---
 
-## 📂 UBICACIONES DE ARCHIVOS
+## ðŸ“‚ UBICACIONES DE ARCHIVOS
 
-| Caso | Ubicación | Comando |
+| Caso | UbicaciÃ³n | Comando |
 |------|-----------|---------|
 | 01 | `tests/casos-prueba/01-agregar-administrado.spec.ts` | `npx playwright codegen --output tests/casos-prueba/01-agregar-administrado.spec.ts https://...` |
 | 02 | `tests/casos-prueba/02-registrar-sancion.spec.ts` | `npx playwright codegen --output tests/casos-prueba/02-registrar-sancion.spec.ts https://...` |
@@ -104,19 +104,19 @@ npx playwright codegen https://reginsaqa.sunedu.gob.pe/#/home
 
 ---
 
-## 💡 TIPS
+## ðŸ’¡ TIPS
 
-✅ **El Recorder crea el archivo automáticamente** - No necesitas crear el `.spec.ts` manualmente
+âœ… **El Recorder crea el archivo automÃ¡ticamente** - No necesitas crear el `.spec.ts` manualmente
 
-✅ **Puedes editar después** - El código generado es TypeScript normal, puedes mejorarlo
+âœ… **Puedes editar despuÃ©s** - El cÃ³digo generado es TypeScript normal, puedes mejorarlo
 
-✅ **Usa selectores robustos** - El Recorder intenta usar selectores estables (role, text)
+âœ… **Usa selectores robustos** - El Recorder intenta usar selectores estables (role, text)
 
-✅ **Agrega logs después** - Puedes agregar `console.log()` para documentar pasos
+âœ… **Agrega logs despuÃ©s** - Puedes agregar `console.log()` para documentar pasos
 
 ---
 
-## 🔗 REFERENCIA RÁPIDA
+## ðŸ”— REFERENCIA RÃPIDA
 
 **Para Caso 03 (copia y pega directo):**
 ```powershell
@@ -125,8 +125,10 @@ npx playwright codegen --output tests/test-3.spec.ts https://reginsaqa.sunedu.go
 
 **Credenciales:**
 - Usuario: `lizvidal`
-- Contraseña: `QA1234510qa`
+- ContraseÃ±a: `QA1234510qa`
 
 ---
 
-**¡Listo! Usa estos comandos para crear tus casos de prueba.** ✅
+**Â¡Listo! Usa estos comandos para crear tus casos de prueba.** âœ…
+
+

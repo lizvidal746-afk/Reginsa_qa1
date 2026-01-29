@@ -1,13 +1,13 @@
-$ErrorActionPreference = "Stop"
+﻿$ErrorActionPreference = "Stop"
 $root = "D:\SUNEDU\SELENIUM\playwrigth"
 $docsScripts = Join-Path $root "docs\scripts"
 
 function Get-Descripcion($subdir, $name) {
   switch ($subdir) {
     "caso-01" { return "Wrapper para ejecutar scripts del Caso 01 (Agregar Administrado)." }
-    "caso-02" { return "Wrapper para ejecutar scripts del Caso 02 (Registrar Sanción)." }
+    "caso-02" { return "Wrapper para ejecutar scripts del Caso 02 (Registrar SanciÃ³n)." }
     "caso-04" { return "Wrapper para ejecutar scripts del Caso 04 (Reconsiderar con sanciones)." }
-    "ejecucion" { return "Wrapper para ejecución general de pruebas." }
+    "ejecucion" { return "Wrapper para ejecuciÃ³n general de pruebas." }
     "limpieza" { return "Wrapper para limpieza de reportes/datos." }
     "reportes" { return "Wrapper para abrir/ver reportes." }
     "utilidades" { return "Wrapper de utilidades/soporte." }
@@ -43,4 +43,6 @@ Get-ChildItem -Path $docsScripts -Recurse -File | Where-Object { $_.Extension -i
   }
 }
 
-Write-Host "✅ Wrappers creados en la raíz con descripción" -ForegroundColor Green
+Write-Host "âœ… Wrappers creados en la raÃ­z con descripciÃ³n" -ForegroundColor Green
+
+

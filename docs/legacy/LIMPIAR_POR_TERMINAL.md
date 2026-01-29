@@ -1,22 +1,22 @@
-# ⚠️ Documento movido
+﻿# âš ï¸ Documento movido
 
 Este archivo fue movido a [docs/LIMPIAR_POR_TERMINAL.md](docs/LIMPIAR_POR_TERMINAL.md).
 
-# 🧹 LIMPIAR REGISTROS POR TIPO DE TERMINAL
+# ðŸ§¹ LIMPIAR REGISTROS POR TIPO DE TERMINAL
 
-## 🎯 ¿Cuál es tu terminal?
+## ðŸŽ¯ Â¿CuÃ¡l es tu terminal?
 
 Ejecuta esto para saberlo:
 
-| Terminal | Cómo verificar |
+| Terminal | CÃ³mo verificar |
 |----------|---|
-| **PowerShell** | Verás `PS C:\...>` al inicio |
-| **CMD** | Verás `C:\...>` al inicio |
-| **Bash** | Verás `$` o `bash-...` al inicio |
+| **PowerShell** | VerÃ¡s `PS C:\...>` al inicio |
+| **CMD** | VerÃ¡s `C:\...>` al inicio |
+| **Bash** | VerÃ¡s `$` o `bash-...` al inicio |
 
 ---
 
-## 1️⃣ POWERSHELL (Windows - Por defecto en VS Code)
+## 1ï¸âƒ£ POWERSHELL (Windows - Por defecto en VS Code)
 
 **Indicador:** `PS D:\...>`
 
@@ -25,7 +25,7 @@ Ejecuta esto para saberlo:
 cd "d:\SUNEDU\SELENIUM\playwrigth"; del registros-administrados.json, reporte-administrados.html -ErrorAction SilentlyContinue
 ```
 
-**Explicación:**
+**ExplicaciÃ³n:**
 - `cd "..."` - Cambia a la carpeta
 - `;` - Separador en PowerShell (NO `&&`)
 - `del` - Elimina archivos
@@ -39,7 +39,7 @@ PS D:\SUNEDU\SELENIUM\playwrigth>
 
 ---
 
-## 2️⃣ CMD (Command Prompt - Windows clásico)
+## 2ï¸âƒ£ CMD (Command Prompt - Windows clÃ¡sico)
 
 **Indicador:** `C:\...>` o `D:\...>`
 
@@ -48,9 +48,9 @@ PS D:\SUNEDU\SELENIUM\playwrigth>
 cd "d:\SUNEDU\SELENIUM\playwrigth" && del registros-administrados.json reporte-administrados.html 2>nul
 ```
 
-**Explicación:**
+**ExplicaciÃ³n:**
 - `cd "..."` - Cambia a la carpeta
-- `&&` - Separador en CMD (ejecuta si anterior tuvo éxito)
+- `&&` - Separador en CMD (ejecuta si anterior tuvo Ã©xito)
 - `del` - Elimina archivos
 - `2>nul` - Ignora errores si no existen
 
@@ -62,7 +62,7 @@ D:\SUNEDU\SELENIUM\playwrigth>
 
 ---
 
-## 3️⃣ BASH (Git Bash, Linux, Mac)
+## 3ï¸âƒ£ BASH (Git Bash, Linux, Mac)
 
 **Indicador:** `$` o `bash-...`
 
@@ -71,9 +71,9 @@ D:\SUNEDU\SELENIUM\playwrigth>
 cd "d:\SUNEDU\SELENIUM\playwrigth" && rm registros-administrados.json reporte-administrados.html 2>/dev/null
 ```
 
-**Explicación:**
+**ExplicaciÃ³n:**
 - `cd "..."` - Cambia a la carpeta
-- `&&` - Separador en Bash (ejecuta si anterior tuvo éxito)
+- `&&` - Separador en Bash (ejecuta si anterior tuvo Ã©xito)
 - `rm` - Elimina archivos (NO `del`)
 - `2>/dev/null` - Ignora errores si no existen
 
@@ -85,9 +85,9 @@ $
 
 ---
 
-## 📊 TABLA COMPARATIVA
+## ðŸ“Š TABLA COMPARATIVA
 
-| Acción | PowerShell | CMD | Bash |
+| AcciÃ³n | PowerShell | CMD | Bash |
 |--------|-----------|-----|------|
 | **Cambiar carpeta** | `cd "..."` | `cd "..."` | `cd "..."` |
 | **Separador** | `;` | `&&` | `&&` |
@@ -97,26 +97,26 @@ $
 
 ---
 
-## ✅ PASOS PARA LIMPIAR
+## âœ… PASOS PARA LIMPIAR
 
 ### Paso 1: Abre terminal en VS Code
 ```
 Ctrl + Shift + `
 ```
 
-### Paso 2: Verifica cuál terminal tienes
+### Paso 2: Verifica cuÃ¡l terminal tienes
 Mira el indicador al inicio:
-- `PS` → PowerShell ⬇️
-- `C:\` o `D:\` → CMD ⬇️
-- `$` → Bash ⬇️
+- `PS` â†’ PowerShell â¬‡ï¸
+- `C:\` o `D:\` â†’ CMD â¬‡ï¸
+- `$` â†’ Bash â¬‡ï¸
 
 ### Paso 3: Copia el comando CORRECTO para tu terminal
 
 ---
 
-## 🚀 COPIA EXACTO PARA TU TERMINAL
+## ðŸš€ COPIA EXACTO PARA TU TERMINAL
 
-### 👉 Si ves `PS D:\...>`
+### ðŸ‘‰ Si ves `PS D:\...>`
 
 ```powershell
 cd "d:\SUNEDU\SELENIUM\playwrigth"; del registros-administrados.json, reporte-administrados.html -ErrorAction SilentlyContinue
@@ -131,7 +131,7 @@ PS D:\SUNEDU\SELENIUM\playwrigth>
 
 ---
 
-### 👉 Si ves `D:\...>` (sin PS)
+### ðŸ‘‰ Si ves `D:\...>` (sin PS)
 
 ```cmd
 cd "d:\SUNEDU\SELENIUM\playwrigth" && del registros-administrados.json reporte-administrados.html 2>nul
@@ -146,7 +146,7 @@ D:\SUNEDU\SELENIUM\playwrigth>
 
 ---
 
-### 👉 Si ves `$` o `bash`
+### ðŸ‘‰ Si ves `$` o `bash`
 
 ```bash
 cd "d:\SUNEDU\SELENIUM\playwrigth" && rm registros-administrados.json reporte-administrados.html 2>/dev/null
@@ -161,7 +161,7 @@ $
 
 ---
 
-## 🔄 SECUENCIA COMPLETA (PowerShell)
+## ðŸ”„ SECUENCIA COMPLETA (PowerShell)
 
 ```powershell
 # 1. Limpiar pantalla
@@ -174,12 +174,12 @@ cd "d:\SUNEDU\SELENIUM\playwrigth"; del registros-administrados.json, reporte-ad
 npm run test:01
 
 # 4. Esperar a terminar (~2-3 minutos)
-# 5. Se abrirán los reportes automáticamente
+# 5. Se abrirÃ¡n los reportes automÃ¡ticamente
 ```
 
 ---
 
-## 🔄 SECUENCIA COMPLETA (CMD)
+## ðŸ”„ SECUENCIA COMPLETA (CMD)
 
 ```cmd
 # 1. Limpiar pantalla
@@ -192,12 +192,12 @@ cd "d:\SUNEDU\SELENIUM\playwrigth" && del registros-administrados.json reporte-a
 npm run test:01
 
 # 4. Esperar a terminar (~2-3 minutos)
-# 5. Se abrirán los reportes automáticamente
+# 5. Se abrirÃ¡n los reportes automÃ¡ticamente
 ```
 
 ---
 
-## 🔄 SECUENCIA COMPLETA (Bash)
+## ðŸ”„ SECUENCIA COMPLETA (Bash)
 
 ```bash
 # 1. Limpiar pantalla
@@ -210,52 +210,52 @@ cd "d:\SUNEDU\SELENIUM\playwrigth" && rm registros-administrados.json reporte-ad
 npm run test:01
 
 # 4. Esperar a terminar (~2-3 minutos)
-# 5. Se abrirán los reportes automáticamente
+# 5. Se abrirÃ¡n los reportes automÃ¡ticamente
 ```
 
 ---
 
-## ❌ ERRORES COMUNES
+## âŒ ERRORES COMUNES
 
-### Error: `&&` no válido en PowerShell
+### Error: `&&` no vÃ¡lido en PowerShell
 ```
-❌ INCORRECTO:
+âŒ INCORRECTO:
 cd "d:\SUNEDU\SELENIUM\playwrigth" && del registros-administrados.json
 
-✅ CORRECTO:
+âœ… CORRECTO:
 cd "d:\SUNEDU\SELENIUM\playwrigth"; del registros-administrados.json
 ```
 
 ### Error: `;` en CMD
 ```
-❌ INCORRECTO:
+âŒ INCORRECTO:
 cd "d:\..." ; del archivo.json
 
-✅ CORRECTO:
+âœ… CORRECTO:
 cd "d:\..." && del archivo.json
 ```
 
 ### Error: `del` en Bash
 ```
-❌ INCORRECTO:
+âŒ INCORRECTO:
 del archivo.json
 
-✅ CORRECTO:
+âœ… CORRECTO:
 rm archivo.json
 ```
 
 ---
 
-## 💡 TIPS
+## ðŸ’¡ TIPS
 
-1. **Si no sabes cuál terminal tienes**, mira el **símbolo al inicio**
-2. **PowerShell es la más común** en VS Code moderno
-3. **Si algo falla**, prueba con **CMD** (es más simple)
-4. **Los archivos se eliminan silenciosamente** (sin confirmación)
+1. **Si no sabes cuÃ¡l terminal tienes**, mira el **sÃ­mbolo al inicio**
+2. **PowerShell es la mÃ¡s comÃºn** en VS Code moderno
+3. **Si algo falla**, prueba con **CMD** (es mÃ¡s simple)
+4. **Los archivos se eliminan silenciosamente** (sin confirmaciÃ³n)
 
 ---
 
-## 🎯 RESUMEN FINAL
+## ðŸŽ¯ RESUMEN FINAL
 
 | Terminal | Comando Limpiar |
 |----------|---|
@@ -265,4 +265,6 @@ rm archivo.json
 
 ---
 
-**¿Cuál es tu terminal? Usa el comando de esa fila. ✅**
+**Â¿CuÃ¡l es tu terminal? Usa el comando de esa fila. âœ…**
+
+

@@ -1,6 +1,6 @@
-# ⚡ TODOS LOS COMANDOS POR TERMINAL
+﻿# âš¡ TODOS LOS COMANDOS POR TERMINAL
 
-## 🪟 POWERSHELL (Windows)
+## ðŸªŸ POWERSHELL (Windows)
 
 **Indicador:** `PS D:\...>`
 
@@ -41,7 +41,7 @@ Clear-Host
 
 ---
 
-## ⌨️ CMD (Windows Clásico)
+## âŒ¨ï¸ CMD (Windows ClÃ¡sico)
 
 **Indicador:** `D:\...>` o `C:\...>` (sin PS)
 
@@ -82,7 +82,7 @@ cls
 
 ---
 
-## 🐧 BASH (Git Bash, Linux, Mac)
+## ðŸ§ BASH (Git Bash, Linux, Mac)
 
 **Indicador:** `$` o `bash-...$`
 
@@ -123,9 +123,9 @@ clear
 
 ---
 
-## 📋 TABLA RÁPIDA DE SINTAXIS
+## ðŸ“‹ TABLA RÃPIDA DE SINTAXIS
 
-| Acción | PowerShell | CMD | Bash |
+| AcciÃ³n | PowerShell | CMD | Bash |
 |--------|-----------|-----|------|
 | **Separador** | `;` | `&&` | `&&` |
 | **Eliminar** | `del` | `del` | `rm` |
@@ -134,27 +134,28 @@ clear
 
 ---
 
-## 🎯 MI RECOMENDACIÓN
+## ðŸŽ¯ MI RECOMENDACIÃ“N
 
-Si estás en Windows:
-1. ✅ Usa **PowerShell** (más moderno)
-2. Si tengo dudas, usa **CMD** (más simple)
+Si estÃ¡s en Windows:
+1. âœ… Usa **PowerShell** (mÃ¡s moderno)
+2. Si tengo dudas, usa **CMD** (mÃ¡s simple)
 3. Si usas Git Bash, usa **Bash**
 
 ---
 
-## ✅ GUÍA VISUAL
+## âœ… GUÃA VISUAL
 
-**Ver qué terminal tienes:**
+**Ver quÃ© terminal tienes:**
 
 ```
-Mira el símbolo al inicio de la línea:
+Mira el sÃ­mbolo al inicio de la lÃ­nea:
 
-PS D:\...>          ← PowerShell    (Copia comandos PowerShell)
-D:\...>  o C:\...>  ← CMD           (Copia comandos CMD)
-$ o bash-$          ← Bash          (Copia comandos Bash)
+PS D:\...>          â† PowerShell    (Copia comandos PowerShell)
+D:\...>  o C:\...>  â† CMD           (Copia comandos CMD)
+$ o bash-$          â† Bash          (Copia comandos Bash)
 ```
 
 ---
 
-**¡Elige tu terminal y copia el comando que necesitas!** 🚀
+**Â¡Elige tu terminal y copia el comando que necesitas!** ðŸš€
+

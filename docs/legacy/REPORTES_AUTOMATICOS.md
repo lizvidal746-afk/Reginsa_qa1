@@ -1,8 +1,8 @@
-# ⚡ Ejecución Automática de Tests + Reportes
+﻿# âš¡ EjecuciÃ³n AutomÃ¡tica de Tests + Reportes
 
-## 🎯 Métodos de Ejecución
+## ðŸŽ¯ MÃ©todos de EjecuciÃ³n
 
-### Opción 1: Scripts en `package.json` (Terminal)
+### OpciÃ³n 1: Scripts en `package.json` (Terminal)
 
 ```bash
 # Caso 01 + Abrir reportes
@@ -15,18 +15,18 @@ npm run test:02
 npm run test:all
 ```
 
-**Qué hace:**
-1. ✅ Ejecuta los tests
-2. ✅ Automáticamente abre Playwright Report
-3. ✅ Automáticamente genera y abre Allure Report
+**QuÃ© hace:**
+1. âœ… Ejecuta los tests
+2. âœ… AutomÃ¡ticamente abre Playwright Report
+3. âœ… AutomÃ¡ticamente genera y abre Allure Report
 
 ---
 
-### Opción 2: Archivos Batch (Click directo)
+### OpciÃ³n 2: Archivos Batch (Click directo)
 
 **Para Windows - Haz doble clic:**
 
-| Archivo | Acción |
+| Archivo | AcciÃ³n |
 |---------|--------|
 | `ejecutar-caso-01.bat` | Ejecuta Caso 01 + abre ambos reportes |
 | `ejecutar-caso-02.bat` | Ejecuta Caso 02 + abre ambos reportes |
@@ -35,8 +35,8 @@ npm run test:all
 **Ejemplo:**
 ```
 D:\SUNEDU\SELENIUM\playwrigth\
-└── ejecutar-caso-02.bat  ← Haz doble clic aquí
-    ↓
+â””â”€â”€ ejecutar-caso-02.bat  â† Haz doble clic aquÃ­
+    â†“
     Ejecuta Caso 02
     Abre Playwright Report (navegador 1)
     Abre Allure Report (navegador 2)
@@ -44,67 +44,67 @@ D:\SUNEDU\SELENIUM\playwrigth\
 
 ---
 
-## 📊 Dónde aparecerán los reportes
+## ðŸ“Š DÃ³nde aparecerÃ¡n los reportes
 
 ### Playwright Report
 - **URL:** `http://localhost:9323`
-- **Tiempo:** Se abre automáticamente en navegador
+- **Tiempo:** Se abre automÃ¡ticamente en navegador
 - **Contenido:**
   - Screenshots de cada paso
-  - Videos de ejecución
+  - Videos de ejecuciÃ³n
   - Tiempos
   - Logs
 
 ### Allure Report
 - **URL:** `http://localhost:4050`
-- **Tiempo:** Se abre automáticamente en navegador (después de generar)
+- **Tiempo:** Se abre automÃ¡ticamente en navegador (despuÃ©s de generar)
 - **Contenido:**
-  - Estadísticas de tests
+  - EstadÃ­sticas de tests
   - Detalles por caso
   - Historial de ejecuciones
-  - Gráficas
+  - GrÃ¡ficas
 
 ---
 
-## 🔄 Flujo Automático Actual
+## ðŸ”„ Flujo AutomÃ¡tico Actual
 
 ```
 npm run test:02
-    ↓
-┌───────────────────────────────────────┐
-│ 1. Ejecuta tests                      │
-│    (browser visible)                  │
-└───────────────────────────────────────┘
-    ↓
-┌───────────────────────────────────────┐
-│ 2. Test terminado                     │
-│    pytest exit code → 0 (success)     │
-└───────────────────────────────────────┘
-    ↓
-┌───────────────────────────────────────┐
-│ 3. npm run reports:open               │
-│    (ejecuta automáticamente)          │
-└───────────────────────────────────────┘
-    ↓ (en paralelo)
-┌─────────────────────┬─────────────────┐
-│ Playwright Report   │ Allure Report   │
-│ http://9323         │ http://4050     │
-│ Abre inmediatamente │ Genera luego    │
-│                     │ abre            │
-└─────────────────────┴─────────────────┘
+    â†“
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚ 1. Ejecuta tests                      â”‚
+â”‚    (browser visible)                  â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+    â†“
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚ 2. Test terminado                     â”‚
+â”‚    pytest exit code â†’ 0 (success)     â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+    â†“
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚ 3. npm run reports:open               â”‚
+â”‚    (ejecuta automÃ¡ticamente)          â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
+    â†“ (en paralelo)
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¬â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚ Playwright Report   â”‚ Allure Report   â”‚
+â”‚ http://9323         â”‚ http://4050     â”‚
+â”‚ Abre inmediatamente â”‚ Genera luego    â”‚
+â”‚                     â”‚ abre            â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”´â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
 ```
 
 ---
 
-## ⚙️ Configuración Técnica
+## âš™ï¸ ConfiguraciÃ³n TÃ©cnica
 
 **En `package.json`:**
 ```json
 "test:02": "playwright test ... --headed && npm run reports:open",
-"reports:open": "echo ✨ Abriendo... && npm run report:playwright & npm run report:allure:generate && npm run report:allure:open"
+"reports:open": "echo âœ¨ Abriendo... && npm run report:playwright & npm run report:allure:generate && npm run report:allure:open"
 ```
 
-**Cómo funciona:**
+**CÃ³mo funciona:**
 - `&&` = Si test pasa, ejecuta siguiente
 - `&` = Ejecuta en paralelo (Playwright no espera Allure)
 - `npm run report:playwright` = `playwright show-report`
@@ -113,21 +113,21 @@ npm run test:02
 
 ---
 
-## 💡 Ventajas
+## ðŸ’¡ Ventajas
 
-✅ **Sin manual:** No necesitas abrir reportes a mano  
-✅ **Automático:** Se abre en navegador apenas termina  
-✅ **Dos reportes:** Ambos visibles simultáneamente  
-✅ **Windows:** Bat files para click directo  
-✅ **Terminal:** Scripts npm si prefieres línea de comando  
+âœ… **Sin manual:** No necesitas abrir reportes a mano  
+âœ… **AutomÃ¡tico:** Se abre en navegador apenas termina  
+âœ… **Dos reportes:** Ambos visibles simultÃ¡neamente  
+âœ… **Windows:** Bat files para click directo  
+âœ… **Terminal:** Scripts npm si prefieres lÃ­nea de comando  
 
 ---
 
-## 🚨 Si no se abre el reporte
+## ðŸš¨ Si no se abre el reporte
 
 **Problema 1: Puerto ocupado**
 ```bash
-# Ver qué usa puerto 4050
+# Ver quÃ© usa puerto 4050
 netstat -ano | findstr :4050
 
 # Matar proceso
@@ -136,14 +136,14 @@ taskkill /PID <PID> /F
 
 **Problema 2: Allure no genera**
 ```bash
-# Verificar Allure está instalado
+# Verificar Allure estÃ¡ instalado
 allure --version
 
 # Si no:
 npm install -g allure-commandline
 ```
 
-**Problema 3: No abre automáticamente**
+**Problema 3: No abre automÃ¡ticamente**
 ```bash
 # Abrir manualmente
 npx playwright show-report        # Playwright
@@ -152,14 +152,16 @@ allure serve allure-results      # Allure
 
 ---
 
-## 📝 Próximos Pasos
+## ðŸ“ PrÃ³ximos Pasos
 
-1. ✅ Scripts configurados
-2. ✅ Batch files creados
-3. 🔄 Ejecuta: `npm run test:02`
-4. 🎉 Verás ambos reportes automáticamente
+1. âœ… Scripts configurados
+2. âœ… Batch files creados
+3. ðŸ”„ Ejecuta: `npm run test:02`
+4. ðŸŽ‰ VerÃ¡s ambos reportes automÃ¡ticamente
 
 ---
 
 **Actualizado:** Enero 20, 2026  
-**Autores:** Arquitectura automatizada con reportes 100% automáticos
+**Autores:** Arquitectura automatizada con reportes 100% automÃ¡ticos
+
+

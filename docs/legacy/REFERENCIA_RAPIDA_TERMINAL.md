@@ -1,6 +1,6 @@
-# 🚀 REFERENCIA RÁPIDA POR TERMINAL
+﻿# ðŸš€ REFERENCIA RÃPIDA POR TERMINAL
 
-## 🔷 POWERSHELL (Windows)
+## ðŸ”· POWERSHELL (Windows)
 
 ```powershell
 # Ejecutar tests
@@ -29,7 +29,7 @@ npx playwright test tests/casos-prueba/01-agregar-administrado.spec.ts --ui
 
 ---
 
-## 🔶 CMD (Windows Command Prompt)
+## ðŸ”¶ CMD (Windows Command Prompt)
 
 ```cmd
 # Ejecutar tests
@@ -60,7 +60,7 @@ npx playwright test tests/casos-prueba/01-agregar-administrado.spec.ts --ui
 
 ---
 
-## 🔵 BASH (Git Bash, WSL, Linux)
+## ðŸ”µ BASH (Git Bash, WSL, Linux)
 
 ```bash
 # Ejecutar tests
@@ -83,7 +83,7 @@ npx playwright test tests/casos-prueba/01-agregar-administrado.spec.ts --ui
 
 ---
 
-## 🟣 ZSH (macOS, Linux)
+## ðŸŸ£ ZSH (macOS, Linux)
 
 ```zsh
 # Ejecutar tests
@@ -106,7 +106,7 @@ npx playwright test tests/casos-prueba/01-agregar-administrado.spec.ts --ui
 
 ---
 
-## 🔑 DIFERENCIAS CLAVE
+## ðŸ”‘ DIFERENCIAS CLAVE
 
 | Aspecto | PowerShell | CMD | Bash | ZSH |
 |--------|-----------|-----|------|-----|
@@ -117,7 +117,7 @@ npx playwright test tests/casos-prueba/01-agregar-administrado.spec.ts --ui
 
 ---
 
-## 💡 ATAJOS ÚTILES
+## ðŸ’¡ ATAJOS ÃšTILES
 
 ### Ejecutar + Ver Allure (copia y pega):
 
@@ -157,4 +157,6 @@ rm -rf allure-results allure-report playwright-report test-results screenshots &
 
 ---
 
-**¡Elige tu terminal y copia/pega!** ✅
+**Â¡Elige tu terminal y copia/pega!** âœ…
+
+

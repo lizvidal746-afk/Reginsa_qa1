@@ -32,6 +32,10 @@ import {
 test('02-REGISTRAR SANCIÓN: 5 sanciones para 1 administrado', async ({ page }) => {
   test.setTimeout(300000); // 5 minutos de timeout
 
+  console.log('\n================================================================================');
+  console.log('⚖️ CASO 02: REGISTRAR SANCIÓN');
+  console.log('================================================================================\n');
+
   // ═══════════════════════════════════════════════════════════════════
   // PASO 1: LOGIN + NAVEGACIÓN
   // Reutiliza `iniciarSesionYNavegar`
@@ -415,7 +419,9 @@ test('02-REGISTRAR SANCIÓN: 5 sanciones para 1 administrado', async ({ page }) 
       console.log(`  │  ✅ GUARDADA`);
       exitosas++;
 
-      await capturarToastCaso(`DETALLE_${sancion.numero}`);
+      if (sancion.numero === 5) {
+        await capturarToastCaso(`08_DETALLE_${sancion.numero}_EXITO`);
+      }
 
       // PASO 8I: CERRAR MODAL
       await page.keyboard.press('Escape');
@@ -440,7 +446,7 @@ test('02-REGISTRAR SANCIÓN: 5 sanciones para 1 administrado', async ({ page }) 
 
   // Captura formulario lleno antes de guardar
   // Reutiliza `capturarFormularioLleno`
-  await capturarFormularioLleno(page, '02-REGISTRAR_SANCION', admin, '', 'REGISTRAR_SANCION');
+  await capturarFormularioLleno(page, '02-REGISTRAR_SANCION', admin, '', 'REGISTRAR_SANCION', '09_FORMULARIO_FINAL');
 
   await page.waitForTimeout(2000);
   const btnGuardarFinal = page.getByRole('button', { name: 'Guardar' });
@@ -450,11 +456,11 @@ test('02-REGISTRAR SANCIÓN: 5 sanciones para 1 administrado', async ({ page }) 
     console.log('  ✅ Formulario guardado');
 
     // Reutiliza `capturarToastExito`
-    await capturarToastExito(page, '02-REGISTRAR_SANCION', 'EXITO_GUARDAR_GENERAL', admin, '', 'REGISTRAR_SANCION');
+    await capturarToastExito(page, '02-REGISTRAR_SANCION', '10_EXITO_GUARDAR_GENERAL', admin, '', 'REGISTRAR_SANCION');
 
     try {
       // Reutiliza `capturarPantallaMejorada`
-      await capturarPantallaMejorada(page, '02-REGISTRAR_SANCION', 'FINAL', 'Éxito', 'Final');
+      await capturarPantallaMejorada(page, '02-REGISTRAR_SANCION', '11_FINAL', 'Éxito', 'Final');
     } catch (e) {}
   }
 

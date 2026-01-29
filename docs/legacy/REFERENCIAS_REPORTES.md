@@ -1,37 +1,37 @@
-# 🎯 REFERENCIAS RÁPIDAS PARA REPORTES AUTOMÁTICOS
+﻿# ðŸŽ¯ REFERENCIAS RÃPIDAS PARA REPORTES AUTOMÃTICOS
 
-## 📌 Accesos directos Windows
+## ðŸ“Œ Accesos directos Windows
 
-**Ejecutar con reportes automáticos - 3 opciones:**
+**Ejecutar con reportes automÃ¡ticos - 3 opciones:**
 
 ```
-1️⃣ Doble clic en:
+1ï¸âƒ£ Doble clic en:
    D:\SUNEDU\SELENIUM\playwrigth\ejecutar-caso-02.bat
 
-2️⃣ O en Terminal:
+2ï¸âƒ£ O en Terminal:
    cd D:\SUNEDU\SELENIUM\playwrigth
    npm run test:02
 
-3️⃣ O en PowerShell:
+3ï¸âƒ£ O en PowerShell:
    cd "D:\SUNEDU\SELENIUM\playwrigth"
    npm run test:02
 ```
 
 ---
 
-## 📊 Qué verás
+## ðŸ“Š QuÃ© verÃ¡s
 
-| Paso | Tiempo | Acción |
+| Paso | Tiempo | AcciÃ³n |
 |------|--------|--------|
 | 1 | 0s | Browser abre y comienza Caso 02 |
-| 2 | 46s | Caso 02 termina exitosamente ✅ |
-| 3 | 48s | Playwright Report se abre automáticamente |
-| 4 | 50s | Allure Report se abre automáticamente |
+| 2 | 46s | Caso 02 termina exitosamente âœ… |
+| 3 | 48s | Playwright Report se abre automÃ¡ticamente |
+| 4 | 50s | Allure Report se abre automÃ¡ticamente |
 | 5 | 50s+ | Tienes ambos reportes para revisar |
 
 ---
 
-## 🔗 URLs de los reportes
+## ðŸ”— URLs de los reportes
 
 ```
 Playwright: http://localhost:9323
@@ -40,19 +40,19 @@ Allure:     http://localhost:4050
 
 ---
 
-## 📁 Archivos relevantes
+## ðŸ“ Archivos relevantes
 
-| Archivo | Propósito |
+| Archivo | PropÃ³sito |
 |---------|-----------|
 | `package.json` | Scripts npm (test:02, reports:open) |
 | `ejecutar-caso-02.bat` | Batch file para click directo |
-| `AUTOMATIZACION_REPORTES.md` | Documentación completa |
-| `REPORTES_AUTOMATICOS.md` | Detalles técnicos |
-| `INICIO_RAPIDO.md` | Guía rápida |
+| `AUTOMATIZACION_REPORTES.md` | DocumentaciÃ³n completa |
+| `REPORTES_AUTOMATICOS.md` | Detalles tÃ©cnicos |
+| `INICIO_RAPIDO.md` | GuÃ­a rÃ¡pida |
 
 ---
 
-## ⚡ Un comando para todo
+## âš¡ Un comando para todo
 
 ```bash
 npm run test:02
@@ -62,13 +62,13 @@ npm run test:02
 
 ---
 
-## 🆘 Si algo no funciona
+## ðŸ†˜ Si algo no funciona
 
 ```bash
 # Verificar Allure instalado
 allure --version
 
-# Si no está, instalar
+# Si no estÃ¡, instalar
 npm install -g allure-commandline
 
 # Verificar puerto 4050 disponible
@@ -80,4 +80,6 @@ rm -r allure-report allure-results
 
 ---
 
-**Creado:** Enero 20, 2026 | **Status:** ✅ Listo para usar
+**Creado:** Enero 20, 2026 | **Status:** âœ… Listo para usar
+
+

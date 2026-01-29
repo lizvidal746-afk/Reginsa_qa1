@@ -1,4 +1,4 @@
-$ErrorActionPreference = "Stop"
+﻿$ErrorActionPreference = "Stop"
 $root = "D:\SUNEDU\SELENIUM\playwrigth"
 $docsScripts = Join-Path $root "docs\scripts"
 
@@ -69,4 +69,6 @@ foreach ($name in $map.Keys) {
   $dest = Join-Path $destDir $name
   Move-Item -Path $src -Destination $dest -Force
 }
-Write-Host "✅ Scripts organizados en docs/scripts" -ForegroundColor Green
+Write-Host "âœ… Scripts organizados en docs/scripts" -ForegroundColor Green
+
+

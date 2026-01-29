@@ -11,6 +11,16 @@ El proyecto tiene 2 tipos de reportes configurados en `playwright.config.js`:
 
 ## 🚀 CÓMO VER LOS REPORTES
 
+### Opción 0: Automático (recomendado)
+
+Los comandos `npm run test:*` abren **Playwright** y **Allure** al finalizar, incluso si hay fallas:
+
+```bash
+npm run test:all
+# o un caso específico
+npm run test:02
+```
+
 ### Opción 1: Comando Manual
 
 #### Ver Playwright Report (HTML)
@@ -128,11 +138,8 @@ proyecto/
 ### Después de ejecutar test
 
 ```bash
-# Terminal 1: Ver resultado HTML
-npx playwright show-report
-
-# Terminal 2: Ver resultado Allure
-allure serve allure-results
+# Ejecutar tests y abrir ambos reportes al final
+npm run test:all
 
 # Resultado:
 # - Playwright se abre en: http://localhost:3000
@@ -173,7 +180,7 @@ allure serve allure-results --port 5000
 
 | Acción | Comando |
 |--------|---------|
-| Ejecutar test | `npm run test:02` |
+| Ejecutar test (abre reportes) | `npm run test:02` |
 | Ver Playwright | `npx playwright show-report` |
 | Ver Allure | `allure serve allure-results` |
 | Script Windows | `.\view-reports.bat` |

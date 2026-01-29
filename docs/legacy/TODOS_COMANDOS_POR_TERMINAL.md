@@ -1,6 +1,6 @@
-# 📋 TODOS LOS COMANDOS POR TERMINAL
+﻿# ðŸ“‹ TODOS LOS COMANDOS POR TERMINAL
 
-## 🎯 POWERSHELL (Windows)
+## ðŸŽ¯ POWERSHELL (Windows)
 
 ### Tests
 ```powershell
@@ -34,7 +34,7 @@ npx playwright test tests/casos-prueba/01-agregar-administrado.spec.ts --ui
 
 ---
 
-## 🎯 CMD (Windows Command Prompt)
+## ðŸŽ¯ CMD (Windows Command Prompt)
 
 ### Tests
 ```cmd
@@ -50,10 +50,10 @@ allure serve allure-results
 
 ### Limpiar
 ```cmd
-# Opción A: Script
+# OpciÃ³n A: Script
 limpiar-todo.bat
 
-# Opción B: Comando
+# OpciÃ³n B: Comando
 cd D:\SUNEDU\SELENIUM\playwrigth
 rmdir /s /q allure-results allure-report playwright-report test-results screenshots
 del /q registros-administrados.json reporte-administrados.html
@@ -73,7 +73,7 @@ npx playwright test tests/casos-prueba/01-agregar-administrado.spec.ts --ui
 
 ---
 
-## 🎯 BASH (Git Bash, WSL, Linux)
+## ðŸŽ¯ BASH (Git Bash, WSL, Linux)
 
 ### Tests
 ```bash
@@ -106,7 +106,7 @@ npx playwright test tests/casos-prueba/01-agregar-administrado.spec.ts --ui
 
 ---
 
-## 🎯 ZSH (macOS, Linux)
+## ðŸŽ¯ ZSH (macOS, Linux)
 
 ### Tests
 ```zsh
@@ -139,9 +139,9 @@ npx playwright test tests/casos-prueba/01-agregar-administrado.spec.ts --ui
 
 ---
 
-## 📊 TABLA COMPARATIVA
+## ðŸ“Š TABLA COMPARATIVA
 
-| Acción | PowerShell | CMD | Bash | ZSH |
+| AcciÃ³n | PowerShell | CMD | Bash | ZSH |
 |--------|-----------|-----|------|-----|
 | **Ejecutar Caso 01** | `npm run test:01` | `npm run test:01` | `npm run test:01` | `npm run test:01` |
 | **Ejecutar Caso 02** | `npm run test:02` | `npm run test:02` | `npm run test:02` | `npm run test:02` |
@@ -152,7 +152,7 @@ npx playwright test tests/casos-prueba/01-agregar-administrado.spec.ts --ui
 
 ---
 
-## 🔑 SEPARADORES POR TERMINAL
+## ðŸ”‘ SEPARADORES POR TERMINAL
 
 | Terminal | Separador | Uso |
 |----------|-----------|-----|
@@ -163,7 +163,7 @@ npx playwright test tests/casos-prueba/01-agregar-administrado.spec.ts --ui
 
 ---
 
-## 💡 NOTAS IMPORTANTES
+## ðŸ’¡ NOTAS IMPORTANTES
 
 ### PowerShell
 - Usa `;` para separar comandos
@@ -171,18 +171,18 @@ npx playwright test tests/casos-prueba/01-agregar-administrado.spec.ts --ui
 - Ejemplo: `npm run test:01; allure serve allure-results`
 
 ### CMD
-- Usa `&&` para ejecutar secuencial (solo si anterior tiene éxito)
+- Usa `&&` para ejecutar secuencial (solo si anterior tiene Ã©xito)
 - Usa `dir` en lugar de `ls`
 - Ejemplo: `npm run test:01 && allure serve allure-results`
 
 ### Bash / ZSH
-- Usa `&&` para ejecutar secuencial (solo si anterior tiene éxito)
+- Usa `&&` para ejecutar secuencial (solo si anterior tiene Ã©xito)
 - Usa `||` para ejecutar si anterior falla
 - Ejemplo: `npm run test:01 && allure serve allure-results`
 
 ---
 
-## 🚀 CICLOS RECOMENDADOS
+## ðŸš€ CICLOS RECOMENDADOS
 
 ### Ciclo A: Limpiar + Ejecutar + Ver Allure
 
@@ -226,4 +226,6 @@ npx playwright test tests/casos-prueba/01-agregar-administrado.spec.ts --ui
 
 ---
 
-**¡Usa el comando que corresponda a tu terminal!** ✅
+**Â¡Usa el comando que corresponda a tu terminal!** âœ…
+
+

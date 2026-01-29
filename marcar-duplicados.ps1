@@ -1,4 +1,4 @@
-$ErrorActionPreference = "Stop"
+﻿$ErrorActionPreference = "Stop"
 $root = "D:\SUNEDU\SELENIUM\playwrigth"
 $docs = Join-Path $root "docs"
 $legacy = Join-Path $docs "legacy"
@@ -34,8 +34,10 @@ foreach ($f in $targets) {
 }
 
 if ($renamed.Count -gt 0) {
-  Write-Host "✅ Marcados para eliminar:" -ForegroundColor Yellow
+  Write-Host "âœ… Marcados para eliminar:" -ForegroundColor Yellow
   $renamed | ForEach-Object { Write-Host " - $_" }
 } else {
-  Write-Host "✅ No se encontraron duplicados fuera de docs/" -ForegroundColor Green
+  Write-Host "âœ… No se encontraron duplicados fuera de docs/" -ForegroundColor Green
 }
+
+

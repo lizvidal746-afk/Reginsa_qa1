@@ -11,7 +11,7 @@ module.exports = defineConfig({
   timeout: 120000,
   expect: { timeout: 15000 },
   reporter: [
-    ['html'],
+    ['html', { open: 'never', outputFolder: 'playwright-report' }],
     ['allure-playwright', { outputFolder: 'allure-results' }]
   ],
   use: {

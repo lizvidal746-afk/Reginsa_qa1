@@ -1,4 +1,4 @@
-$ErrorActionPreference = "Stop"
+﻿$ErrorActionPreference = "Stop"
 $root = "D:\SUNEDU\SELENIUM\playwrigth"
 $docs = Join-Path $root "docs"
 $legacy = Join-Path $docs "legacy"
@@ -6,7 +6,7 @@ $legacy = Join-Path $docs "legacy"
 New-Item -ItemType Directory -Force -Path $docs | Out-Null
 New-Item -ItemType Directory -Force -Path $legacy | Out-Null
 
-# Documentos útiles que deben quedar en docs/
+# Documentos Ãºtiles que deben quedar en docs/
 $activos = @(
   "ARBOL_PROYECTO.md",
   "ARQUITECTURA_REUTILIZACION.md",
@@ -41,4 +41,6 @@ Get-ChildItem -Path $root -Filter *.md -File | ForEach-Object {
   }
 }
 
-Write-Host "✅ Documentación organizada: activos en docs/ y redundantes en docs/legacy" -ForegroundColor Green
+Write-Host "âœ… DocumentaciÃ³n organizada: activos en docs/ y redundantes en docs/legacy" -ForegroundColor Green
+
+

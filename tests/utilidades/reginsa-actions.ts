@@ -779,9 +779,10 @@ export async function capturarFormularioLleno(
   caso: string,
   ref1?: string,
   ref2?: string,
-  modal?: string
+  modal?: string,
+  paso?: string
 ): Promise<string> {
-  const nombreArchivo = construirNombreScreenshot(caso, 'FORMULARIO', ref1, ref2, modal);
+  const nombreArchivo = construirNombreScreenshot(caso, paso ?? 'FORMULARIO', ref1, ref2, modal);
   await page.screenshot({ path: nombreArchivo, fullPage: true });
   console.log(`📸 Screenshot formulario lleno: ${nombreArchivo}`);
   return nombreArchivo;
@@ -803,7 +804,7 @@ export async function capturarToastExito(
     .filter({ hasText: /registro|registrad|guardad|Éxito|exito/i })
     .first();
 
-  const visible = await toast.isVisible({ timeout: 8000 }).catch(() => false);
+  const visible = await toast.isVisible({ timeout: 15000 }).catch(() => false);
   if (!visible) return null;
 
   const paso = /EXITO/i.test(etiqueta) ? etiqueta : `EXITO_${etiqueta}`;

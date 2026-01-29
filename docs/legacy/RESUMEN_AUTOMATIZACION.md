@@ -1,35 +1,35 @@
-# 🎯 RESUMEN EJECUTIVO - TODA LA AUTOMATIZACIÓN
+﻿# ðŸŽ¯ RESUMEN EJECUTIVO - TODA LA AUTOMATIZACIÃ“N
 
-## ⚡ LAS 4 ACCIONES PRINCIPALES
+## âš¡ LAS 4 ACCIONES PRINCIPALES
 
-### 1️⃣ EJECUTAR TESTS
+### 1ï¸âƒ£ EJECUTAR TESTS
 ```powershell
 npm run test:01     # Caso 01
 npm run test:02     # Caso 02
 npm run test:all    # Todos
 ```
 
-### 2️⃣ VER ALLURE REPORT
+### 2ï¸âƒ£ VER ALLURE REPORT
 ```
 Dobla clic: abrir-allure.bat
 O comando: allure serve allure-results
 URL: http://localhost:4050
 ```
 
-### 3️⃣ VER TESTS EN VIVO
+### 3ï¸âƒ£ VER TESTS EN VIVO
 ```powershell
 npx playwright test tests/casos-prueba/01-agregar-administrado.spec.ts --ui
 ```
 
-### 4️⃣ LIMPIAR TODO
+### 4ï¸âƒ£ LIMPIAR TODO
 ```
 Dobla clic: limpiar-todo.bat
-Elige: Opción 1
+Elige: OpciÃ³n 1
 ```
 
 ---
 
-## 📚 DOCUMENTACIÓN
+## ðŸ“š DOCUMENTACIÃ“N
 
 | Necesitas | Abre este documento |
 |-----------|-------------------|
@@ -37,27 +37,27 @@ Elige: Opción 1
 | Ver Allure | ALLURE_GUIA_COMPLETA.md |
 | Ver tests en vivo | VER_TESTS_EN_VENTANA.md |
 | Limpiar datos | LIMPIAR_GUIA_FINAL.md |
-| Comandos rápidos | INDICE_PRINCIPAL.md |
+| Comandos rÃ¡pidos | INDICE_PRINCIPAL.md |
 
 ---
 
-## 🛠️ SCRIPTS
+## ðŸ› ï¸ SCRIPTS
 
-| Script | Acción |
+| Script | AcciÃ³n |
 |--------|--------|
 | `limpiar-todo.bat` | Limpiar reportes y datos |
 | `abrir-allure.bat` | Abrir Allure Report |
 
 ---
 
-## 🔄 CICLOS TÍPICOS
+## ðŸ”„ CICLOS TÃPICOS
 
 ### Ciclo A: Ejecutar + Ver Allure
 ```powershell
 # Terminal 1
 npm run test:all
 
-# Terminal 2 (después)
+# Terminal 2 (despuÃ©s)
 allure serve allure-results
 
 # Navegador
@@ -67,7 +67,7 @@ http://localhost:4050
 ### Ciclo B: Limpiar + Ejecutar + Ver Allure
 ```powershell
 # Terminal 1
-# Dobla clic: limpiar-todo.bat (Elige opción 1)
+# Dobla clic: limpiar-todo.bat (Elige opciÃ³n 1)
 # Espera a que termine
 
 # Terminal 1
@@ -91,7 +91,7 @@ allure serve allure-results
 
 ---
 
-## ✅ URLS IMPORTANTES
+## âœ… URLS IMPORTANTES
 
 | Herramienta | URL |
 |-------------|-----|
@@ -101,37 +101,38 @@ allure serve allure-results
 
 ---
 
-## 🎯 ARCHIVOS MÁS IMPORTANTES
+## ðŸŽ¯ ARCHIVOS MÃS IMPORTANTES
 
 ```
 d:\SUNEDU\SELENIUM\playwrigth\
-├── INDICE_PRINCIPAL.md ← COMIENZA AQUÍ
-├── EJECUTAR_TESTS_PASO_A_PASO.md
-├── ALLURE_GUIA_COMPLETA.md
-├── LIMPIAR_GUIA_FINAL.md
-├── VER_TESTS_EN_VENTANA.md
-├── limpiar-todo.bat
-├── abrir-allure.bat
-└── tests/
-    └── casos-prueba/
-        ├── 01-agregar-administrado.spec.ts
-        └── 02-registrar-sancion.spec.ts
+â”œâ”€â”€ INDICE_PRINCIPAL.md â† COMIENZA AQUÃ
+â”œâ”€â”€ EJECUTAR_TESTS_PASO_A_PASO.md
+â”œâ”€â”€ ALLURE_GUIA_COMPLETA.md
+â”œâ”€â”€ LIMPIAR_GUIA_FINAL.md
+â”œâ”€â”€ VER_TESTS_EN_VENTANA.md
+â”œâ”€â”€ limpiar-todo.bat
+â”œâ”€â”€ abrir-allure.bat
+â””â”€â”€ tests/
+    â””â”€â”€ casos-prueba/
+        â”œâ”€â”€ 01-agregar-administrado.spec.ts
+        â””â”€â”€ 02-registrar-sancion.spec.ts
 ```
 
 ---
 
-## 🚀 PRIMER PASO
+## ðŸš€ PRIMER PASO
 
-### Opción A: Ejecutar y ver reportes
+### OpciÃ³n A: Ejecutar y ver reportes
 ```powershell
 npm run test:all; allure serve allure-results
 ```
 
-### Opción B: Ver test en vivo
+### OpciÃ³n B: Ver test en vivo
 ```powershell
 npx playwright test tests/casos-prueba/01-agregar-administrado.spec.ts --ui
 ```
 
 ---
 
-**¡Todo está listo para empezar!** 🎉
+**Â¡Todo estÃ¡ listo para empezar!** ðŸŽ‰
+

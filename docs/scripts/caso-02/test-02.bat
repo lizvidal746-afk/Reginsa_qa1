@@ -1,4 +1,4 @@
-@echo off
+﻿@echo off
 cls
 echo.
 echo ================================================================================================
@@ -8,3 +8,4 @@ echo.
 cd /d d:\SUNEDU\SELENIUM\playwrigth
 npm run test:02
 pause
+

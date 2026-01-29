@@ -1,41 +1,41 @@
-# 📊 ABRIR ALLURE REPORT - GUÍA
+﻿# ðŸ“Š ABRIR ALLURE REPORT - GUÃA
 
-## 🎯 LAS 3 MANERAS MÁS FÁCILES
+## ðŸŽ¯ LAS 3 MANERAS MÃS FÃCILES
 
 ```
-┌─────────────────────────────────────────────────────────────┐
-│ 1️⃣  FORMA MÁS FÁCIL (Recomendado)                           │
-│     Dobla clic → abrir-allure.bat                           │
-│     ¡Listo! Se abre Allure en http://localhost:4050        │
-├─────────────────────────────────────────────────────────────┤
-│ 2️⃣  COMANDO DIRECTO (PowerShell)                            │
-│     allure serve allure-results                             │
-├─────────────────────────────────────────────────────────────┤
-│ 3️⃣  COMANDO DIRECTO (CMD)                                   │
-│     allure serve allure-results                             │
-└─────────────────────────────────────────────────────────────┘
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚ 1ï¸âƒ£  FORMA MÃS FÃCIL (Recomendado)                           â”‚
+â”‚     Dobla clic â†’ abrir-allure.bat                           â”‚
+â”‚     Â¡Listo! Se abre Allure en http://localhost:4050        â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚ 2ï¸âƒ£  COMANDO DIRECTO (PowerShell)                            â”‚
+â”‚     allure serve allure-results                             â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚ 3ï¸âƒ£  COMANDO DIRECTO (CMD)                                   â”‚
+â”‚     allure serve allure-results                             â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
 ```
 
 ---
 
-## ✅ OPCIÓN 1: SCRIPT BAT (RECOMENDADO)
+## âœ… OPCIÃ“N 1: SCRIPT BAT (RECOMENDADO)
 
 ### Pasos:
 1. Abre carpeta: `d:\SUNEDU\SELENIUM\playwrigth`
 2. Dobla clic en: **`abrir-allure.bat`**
-3. Se abre automáticamente: http://localhost:4050
-4. ✅ Listo
+3. Se abre automÃ¡ticamente: http://localhost:4050
+4. âœ… Listo
 
 **Ventajas:**
-- ✅ Más fácil (dobla clic)
-- ✅ Verifica que haya datos
-- ✅ Mensaje claro si hay error
+- âœ… MÃ¡s fÃ¡cil (dobla clic)
+- âœ… Verifica que haya datos
+- âœ… Mensaje claro si hay error
 
 ---
 
-## ✅ OPCIÓN 2: COMANDO POWERSHELL
+## âœ… OPCIÃ“N 2: COMANDO POWERSHELL
 
-### Una línea:
+### Una lÃ­nea:
 ```powershell
 allure serve allure-results
 ```
@@ -49,9 +49,9 @@ allure serve allure-results
 
 ---
 
-## ✅ OPCIÓN 3: COMANDO CMD
+## âœ… OPCIÃ“N 3: COMANDO CMD
 
-### Una línea:
+### Una lÃ­nea:
 ```cmd
 allure serve allure-results
 ```
@@ -60,9 +60,9 @@ allure serve allure-results
 
 ---
 
-## ✅ OPCIÓN 4: COMANDO BASH
+## âœ… OPCIÃ“N 4: COMANDO BASH
 
-### Una línea:
+### Una lÃ­nea:
 ```bash
 allure serve allure-results
 ```
@@ -71,7 +71,7 @@ allure serve allure-results
 
 ---
 
-## 📌 CICLOS TÍPICOS
+## ðŸ“Œ CICLOS TÃPICOS
 
 ### Ciclo 1: Ejecutar test + Ver Allure (PowerShell)
 
@@ -80,7 +80,7 @@ allure serve allure-results
 npm run test:01
 ```
 
-**Terminal 2 (después):**
+**Terminal 2 (despuÃ©s):**
 ```powershell
 allure serve allure-results
 ```
@@ -94,7 +94,7 @@ allure serve allure-results
 npm run test:01
 ```
 
-**Terminal 2 (después):**
+**Terminal 2 (despuÃ©s):**
 ```cmd
 allure serve allure-results
 ```
@@ -108,7 +108,7 @@ allure serve allure-results
 npm run test:01
 ```
 
-**Terminal 2 (después):**
+**Terminal 2 (despuÃ©s):**
 ```bash
 allure serve allure-results
 ```
@@ -122,15 +122,15 @@ allure serve allure-results
 npm run test:all
 ```
 
-**Terminal 2 (después):**
+**Terminal 2 (despuÃ©s):**
 ```powershell
 allure serve allure-results
 ```
 
 **Resultado:**
-- Verás: Caso 01 + Caso 02 en Allure
+- VerÃ¡s: Caso 01 + Caso 02 en Allure
 - Playwright Report con nuevos screenshots
-- Allure con estadísticas actualizadas
+- Allure con estadÃ­sticas actualizadas
 
 ---
 
@@ -161,13 +161,13 @@ npm run test:all && allure serve allure-results
 
 ---
 
-## 🚨 ERRORES COMUNES
+## ðŸš¨ ERRORES COMUNES
 
-### ❌ "No hay datos de Allure"
+### âŒ "No hay datos de Allure"
 
-**Significa:** No ejecutaste tests todavía
+**Significa:** No ejecutaste tests todavÃ­a
 
-**Solución:**
+**SoluciÃ³n:**
 ```powershell
 npm run test:01    # O test:02, O test:all
 ```
@@ -176,24 +176,25 @@ Luego abre Allure nuevamente.
 
 ---
 
-### ❌ "Puerto 4050 ya en uso"
+### âŒ "Puerto 4050 ya en uso"
 
-**Significa:** Allure ya está abierto en otra ventana
+**Significa:** Allure ya estÃ¡ abierto en otra ventana
 
-**Solución:**
+**SoluciÃ³n:**
 1. Cierra la otra ventana de Allure (Ctrl+C)
 2. Intenta nuevamente
 
 ---
 
-### ❌ "allure: No se reconoce como comando"
+### âŒ "allure: No se reconoce como comando"
 
-**Significa:** Allure no está instalado
+**Significa:** Allure no estÃ¡ instalado
 
-**Solución:**
+**SoluciÃ³n:**
 ```powershell
 npm install allure-commandline --save-dev
 npx allure serve allure-results
 ```
 
 ---
+

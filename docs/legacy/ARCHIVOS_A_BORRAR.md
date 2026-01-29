@@ -1,10 +1,10 @@
-# 🗑️ ARCHIVOS A BORRAR O IGNORAR
+﻿# ðŸ—‘ï¸ ARCHIVOS A BORRAR O IGNORAR
 
-## ⚠️ ARCHIVOS DUPLICADOS Y OBSOLETOS
+## âš ï¸ ARCHIVOS DUPLICADOS Y OBSOLETOS
 
 Estos archivos son ANTIGUOS y NO USAR. Puedes borrarlos:
 
-### 📄 Documentación Antigua (Borrar)
+### ðŸ“„ DocumentaciÃ³n Antigua (Borrar)
 ```
 ALLURE_NO_APARECE_SOLUCION.md
 ANALISIS_GENERAR_REPORTE.md
@@ -68,7 +68,7 @@ TODOS_COMANDOS.md
 99-CHECKLIST-FINAL.md
 ```
 
-### 📄 Scripts Antiguos (Borrar)
+### ðŸ“„ Scripts Antiguos (Borrar)
 ```
 delete-duplicate.ps1
 generar-reporte-html.js
@@ -100,7 +100,7 @@ view-reports.bat
 view-reports.sh
 ```
 
-### 🗂️ Carpetas Antiguas (Borrar si no usa)
+### ðŸ—‚ï¸ Carpetas Antiguas (Borrar si no usa)
 ```
 config/
 docs/
@@ -110,7 +110,7 @@ scripts/
 test-files/
 ```
 
-### 📄 Archivos Técnicos (Ignorar)
+### ðŸ“„ Archivos TÃ©cnicos (Ignorar)
 ```
 test-output.log
 .gitignore
@@ -121,11 +121,11 @@ package-lock.json
 
 ---
 
-## ✅ ARCHIVOS QUE SÍ USAR
+## âœ… ARCHIVOS QUE SÃ USAR
 
-### 📄 Documentación (Mantener)
+### ðŸ“„ DocumentaciÃ³n (Mantener)
 ```
-INDICE_PRINCIPAL.md ← COMIENZA AQUÍ
+INDICE_PRINCIPAL.md â† COMIENZA AQUÃ
 EJECUTAR_TESTS_PASO_A_PASO.md
 ALLURE_GUIA_COMPLETA.md
 VER_TESTS_EN_VENTANA.md
@@ -136,15 +136,15 @@ LIMPIEZA_ARCHIVOS_A_USAR.md
 RESUMEN_AUTOMATIZACION.md
 ```
 
-### 🛠️ Scripts (Mantener)
+### ðŸ› ï¸ Scripts (Mantener)
 ```
-limpiar-todo.bat ← USAR PARA LIMPIAR
+limpiar-todo.bat â† USAR PARA LIMPIAR
 limpiar-todo.ps1
-abrir-allure.bat ← USAR PARA ALLURE
+abrir-allure.bat â† USAR PARA ALLURE
 abrir-allure.ps1
 ```
 
-### ⚙️ Configuración (Mantener)
+### âš™ï¸ ConfiguraciÃ³n (Mantener)
 ```
 package.json
 playwright.config.js
@@ -153,19 +153,19 @@ tests/
 
 ---
 
-## 🧹 CÓMO LIMPIAR
+## ðŸ§¹ CÃ“MO LIMPIAR
 
-### Opción 1: Manual
+### OpciÃ³n 1: Manual
 1. Abre el File Explorer
 2. Selecciona archivos/carpetas a borrar
 3. Presiona: Delete
 4. Confirma
 
-### Opción 2: PowerShell
+### OpciÃ³n 2: PowerShell
 ```powershell
 cd "d:\SUNEDU\SELENIUM\playwrigth"
 
-# Borrar documentación antigua
+# Borrar documentaciÃ³n antigua
 Remove-Item -Path "ALLURE_NO_APARECE_SOLUCION.md", "ANALISIS_GENERAR_REPORTE.md", "ARBOL_PROYECTO.md" -Force
 
 # Borrar carpetas antiguas
@@ -174,10 +174,11 @@ Remove-Item -Path "config", "docs", "files", "reportes", "scripts", "test-files"
 
 ---
 
-## 💡 RECOMENDACIÓN
+## ðŸ’¡ RECOMENDACIÃ“N
 
-**Borra los archivos antiguos para no confunderte.** Solo mantén los de la lista ✅.
+**Borra los archivos antiguos para no confunderte.** Solo mantÃ©n los de la lista âœ….
 
 ---
 
-**Limpieza completa = Workspace ordenado** 🧹✨
+**Limpieza completa = Workspace ordenado** ðŸ§¹âœ¨
+

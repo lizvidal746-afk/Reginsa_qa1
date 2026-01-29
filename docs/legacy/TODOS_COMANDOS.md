@@ -1,6 +1,6 @@
-# 📋 TODOS LOS COMANDOS - COMPLETO
+﻿# ðŸ“‹ TODOS LOS COMANDOS - COMPLETO
 
-## 🧹 LIMPIAR
+## ðŸ§¹ LIMPIAR
 
 ### Limpiar Caso 01:
 ```bash
@@ -24,7 +24,7 @@ Clear-Host
 
 ---
 
-## ✅ EJECUTAR TESTS
+## âœ… EJECUTAR TESTS
 
 ### Ejecutar Caso 01:
 ```bash
@@ -43,7 +43,7 @@ cd "d:\SUNEDU\SELENIUM\playwrigth" && npm run test:all
 
 ---
 
-## 📊 VER REPORTES
+## ðŸ“Š VER REPORTES
 
 ### Ver Allure Report (Profesional):
 ```bash
@@ -59,7 +59,7 @@ cd "d:\SUNEDU\SELENIUM\playwrigth" && npx playwright show-report
 
 ---
 
-## 🔄 SECUENCIA COMPLETA
+## ðŸ”„ SECUENCIA COMPLETA
 
 ```bash
 # 1. Abrir terminal (Ctrl+Shift+` en VS Code)
@@ -82,17 +82,17 @@ clear
 # 7. Ejecutar Caso 02 (espera ~46 segundos)
 npm run test:02
 
-# 8. Ver Allure Report (abre en navegador automáticamente)
+# 8. Ver Allure Report (abre en navegador automÃ¡ticamente)
 # O si quieres abrirlo manualmente:
 allure serve allure-results
 
-# 9. Ejecutar Todos (en otra sesión):
+# 9. Ejecutar Todos (en otra sesiÃ³n):
 npm run test:all
 ```
 
 ---
 
-## ⚡ COPIAR UNA SOLA LÍNEA
+## âš¡ COPIAR UNA SOLA LÃNEA
 
 ### Caso 01 (Limpiar + Ejecutar):
 ```bash
@@ -121,9 +121,9 @@ cd "d:\SUNEDU\SELENIUM\playwrigth" && npx playwright show-report
 
 ---
 
-## 💡 COMANDOS ÚTILES
+## ðŸ’¡ COMANDOS ÃšTILES
 
-| Comando | Propósito |
+| Comando | PropÃ³sito |
 |---------|-----------|
 | `clear` o `cls` | Limpiar pantalla |
 | `cd carpeta` | Cambiar directorio |
@@ -137,4 +137,5 @@ cd "d:\SUNEDU\SELENIUM\playwrigth" && npx playwright show-report
 
 ---
 
-**¡Todos los comandos listos! Copia el que necesites.** ✅
+**Â¡Todos los comandos listos! Copia el que necesites.** âœ…
+

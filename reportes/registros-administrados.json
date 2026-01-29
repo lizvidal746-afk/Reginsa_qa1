@@ -229,5 +229,93 @@
     "screenshot": "./screenshots/01-AGREGAR_ADMINISTRADO_FORMULARIO_65536097148_EMPRESA_COMERCIAL_9993_SAC_2026-01-28T17-25-54.png",
     "screenshot_despues": "./screenshots/01-AGREGAR_ADMINISTRADO_EXITO_65536097148_EMPRESA_COMERCIAL_9993_SAC_2026-01-28T17-25-56.png",
     "estado_registro": "exitoso"
+  },
+  {
+    "id": 1,
+    "ruc": "85982993688",
+    "razonSocial": "CORPORACION COMERCIAL 2946 EIRL",
+    "nombreComercial": "CORPORACION COMERCIAL 2946",
+    "estado": "Licenciada",
+    "timestamp": "2026-01-28T20:46:56.014Z",
+    "screenshot": "./screenshots/01-AGREGAR_ADMINISTRADO_FORMULARIO_85982993688_CORPORACION_COMERCIAL_2946_EIRL_2026-01-28T20-46-54.png",
+    "screenshot_despues": "./screenshots/01-AGREGAR_ADMINISTRADO_EXITO_85982993688_CORPORACION_COMERCIAL_2946_EIRL_2026-01-28T20-46-55.png",
+    "estado_registro": "exitoso"
+  },
+  {
+    "id": 1,
+    "ruc": "10224127436",
+    "razonSocial": "INDUSTRIA COMERCIAL 5335 SRL",
+    "nombreComercial": "INDUSTRIA COMERCIAL 5335",
+    "estado": "Licenciada",
+    "timestamp": "2026-01-28T21:06:41.745Z",
+    "screenshot": "./screenshots/01-AGREGAR_ADMINISTRADO_FORMULARIO_10224127436_INDUSTRIA_COMERCIAL_5335_SRL_2026-01-28T21-06-39.png",
+    "screenshot_despues": "./screenshots/01-AGREGAR_ADMINISTRADO_EXITO_10224127436_INDUSTRIA_COMERCIAL_5335_SRL_2026-01-28T21-06-41.png",
+    "estado_registro": "exitoso"
+  },
+  {
+    "id": 1,
+    "ruc": "55404619907",
+    "razonSocial": "CONSORCIO COMERCIAL 2358 SRL",
+    "nombreComercial": "CONSORCIO COMERCIAL 2358",
+    "estado": "Licenciada",
+    "timestamp": "2026-01-28T21:19:18.932Z",
+    "screenshot": "./screenshots/01-AGREGAR_ADMINISTRADO_FORMULARIO_55404619907_CONSORCIO_COMERCIAL_2358_SRL_2026-01-28T21-19-16.png",
+    "screenshot_despues": "./screenshots/01-AGREGAR_ADMINISTRADO_EXITO_55404619907_CONSORCIO_COMERCIAL_2358_SRL_2026-01-28T21-19-18.png",
+    "estado_registro": "exitoso"
+  },
+  {
+    "id": 1,
+    "ruc": "08510066127",
+    "razonSocial": "CONSORCIO COMERCIAL 5230 EIRL",
+    "nombreComercial": "CONSORCIO COMERCIAL 5230",
+    "estado": "Licenciada",
+    "timestamp": "2026-01-28T21:26:53.601Z",
+    "screenshot": "./screenshots/01-AGREGAR_ADMINISTRADO_FORMULARIO_08510066127_CONSORCIO_COMERCIAL_5230_EIRL_2026-01-28T21-26-51.png",
+    "screenshot_despues": "./screenshots/01-AGREGAR_ADMINISTRADO_EXITO_08510066127_CONSORCIO_COMERCIAL_5230_EIRL_2026-01-28T21-26-53.png",
+    "estado_registro": "exitoso"
+  },
+  {
+    "id": 1,
+    "ruc": "08726767603",
+    "razonSocial": "UNIVERSIDAD COMERCIAL 9466 SRL",
+    "nombreComercial": "UNIVERSIDAD COMERCIAL 9466",
+    "estado": "Licenciada",
+    "timestamp": "2026-01-28T21:42:40.035Z",
+    "screenshot": "./screenshots/01-AGREGAR_ADMINISTRADO_05_FORMULARIO_08726767603_UNIVERSIDAD_COMERCIAL_9466_SRL_2026-01-28T21-42-38.png",
+    "screenshot_despues": "./screenshots/01-AGREGAR_ADMINISTRADO_06_EXITO_08726767603_UNIVERSIDAD_COMERCIAL_9466_SRL_2026-01-28T21-42-39.png",
+    "estado_registro": "exitoso"
+  },
+  {
+    "id": 1,
+    "ruc": "48771477948",
+    "razonSocial": "CORPORACION COMERCIAL 2111 SAC",
+    "nombreComercial": "CORPORACION COMERCIAL 2111",
+    "estado": "Licenciada",
+    "timestamp": "2026-01-28T21:56:56.654Z",
+    "screenshot": "./screenshots/01-AGREGAR_ADMINISTRADO_05_FORMULARIO_48771477948_CORPORACION_COMERCIAL_2111_SAC_2026-01-28T21-56-54.png",
+    "screenshot_despues": "./screenshots/01-AGREGAR_ADMINISTRADO_06_EXITO_48771477948_CORPORACION_COMERCIAL_2111_SAC_2026-01-28T21-56-56.png",
+    "estado_registro": "exitoso"
+  },
+  {
+    "id": 1,
+    "ruc": "32511665695",
+    "razonSocial": "CORPORACION COMERCIAL 3379 EIRL",
+    "nombreComercial": "CORPORACION COMERCIAL 3379",
+    "estado": "Licenciada",
+    "timestamp": "2026-01-28T22:07:00.545Z",
+    "screenshot": "./screenshots/01-AGREGAR_ADMINISTRADO_05_FORMULARIO_32511665695_CORPORACION_COMERCIAL_3379_EIRL_2026-01-28T22-06-58.png",
+    "screenshot_despues": "./screenshots/01-AGREGAR_ADMINISTRADO_06_EXITO_32511665695_CORPORACION_COMERCIAL_3379_EIRL_2026-01-28T22-07-00.png",
+    "estado_registro": "exitoso"
+  },
+  {
+    "id": 1,
+    "ruc": "46121947554",
+    "razonSocial": "CORPORACION COMERCIAL 6787 SRL",
+    "nombreComercial": "CORPORACION COMERCIAL 6787",
+    "estado": "Licenciada",
+    "timestamp": "2026-01-28T22:17:43.755Z",
+    "screenshot": "./screenshots/01-AGREGAR_ADMINISTRADO_05_FORMULARIO_46121947554_CORPORACION_COMERCIAL_6787_SRL_2026-01-28T22-17-41.png",
+    "screenshot_despues": "./screenshots/01-AGREGAR_ADMINISTRADO_06_EXITO_46121947554_CORPORACION_COMERCIAL_6787_SRL_2026-01-28T22-17-43.png",
+    "estado_registro": "exitoso"
   }
 ]

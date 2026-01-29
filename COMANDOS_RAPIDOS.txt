@@ -1,6 +1,6 @@
-# ⚡ COMANDOS LISTOS - Copia y Pega
+﻿# âš¡ COMANDOS LISTOS - Copia y Pega
 
-## 1️⃣ LIMPIAR CASO 01
+## 1ï¸âƒ£ LIMPIAR CASO 01
 
 **En Terminal:**
 ```bash
@@ -14,7 +14,7 @@ D:\SUNEDU\SELENIUM\playwrigth\limpiar-caso-01.bat
 
 ---
 
-## 2️⃣ EJECUTAR CASO 01
+## 2ï¸âƒ£ EJECUTAR CASO 01
 
 **En Terminal:**
 ```bash
@@ -22,15 +22,15 @@ cd "d:\SUNEDU\SELENIUM\playwrigth" && npm run test:01
 ```
 
 **Resultado:**
-- ✅ Browser abre y ejecuta
-- ✅ Playwright Report se abre automáticamente
-- ✅ Allure Report se abre automáticamente
-- ✅ Tiempo: ~2-3 minutos
-- ✅ Screenshots con razón social incluida
+- âœ… Browser abre y ejecuta
+- âœ… Playwright Report se abre automÃ¡ticamente
+- âœ… Allure Report se abre automÃ¡ticamente
+- âœ… Tiempo: ~2-3 minutos
+- âœ… Screenshots con razÃ³n social incluida
 
 ---
 
-## 3️⃣ EJECUTAR CASO 02
+## 3ï¸âƒ£ EJECUTAR CASO 02
 
 **En Terminal:**
 ```bash
@@ -38,16 +38,16 @@ cd "d:\SUNEDU\SELENIUM\playwrigth" && npm run test:02
 ```
 
 **Resultado:**
-- ✅ Browser abre y ejecuta
-- ✅ Playwright Report se abre automáticamente
-- ✅ Allure Report se abre automáticamente
-- ✅ Tiempo: ~46 segundos
-- ✅ Screenshots con razón social incluida
-- ✅ Allure muestra: Caso 01 + Caso 02
+- âœ… Browser abre y ejecuta
+- âœ… Playwright Report se abre automÃ¡ticamente
+- âœ… Allure Report se abre automÃ¡ticamente
+- âœ… Tiempo: ~46 segundos
+- âœ… Screenshots con razÃ³n social incluida
+- âœ… Allure muestra: Caso 01 + Caso 02
 
 ---
 
-## 4️⃣ EJECUTAR TODOS
+## 4ï¸âƒ£ EJECUTAR TODOS
 
 **En Terminal:**
 ```bash
@@ -55,15 +55,15 @@ cd "d:\SUNEDU\SELENIUM\playwrigth" && npm run test:all
 ```
 
 **Resultado:**
-- ✅ Ejecuta Caso 01 + Caso 02
-- ✅ Ambos reportes automáticos
-- ✅ Tiempo: ~3 minutos total
-- ✅ Allure muestra ambos limpios
-- ✅ Screenshots con razón social
+- âœ… Ejecuta Caso 01 + Caso 02
+- âœ… Ambos reportes automÃ¡ticos
+- âœ… Tiempo: ~3 minutos total
+- âœ… Allure muestra ambos limpios
+- âœ… Screenshots con razÃ³n social
 
 ---
 
-## 📋 SECUENCIA RECOMENDADA
+## ðŸ“‹ SECUENCIA RECOMENDADA
 
 ```bash
 # Paso 1: Abrir terminal en VS Code o CMD
@@ -84,7 +84,7 @@ npm run test:all
 
 ---
 
-## 🎯 COPIAR EXACTO
+## ðŸŽ¯ COPIAR EXACTO
 
 ### Limpiar + Caso 01:
 ```bash
@@ -113,11 +113,11 @@ cd "d:\SUNEDU\SELENIUM\playwrigth" && npx playwright show-report
 
 ---
 
-## ✨ Cambio en Screenshots
+## âœ¨ Cambio en Screenshots
 
 **Antes:**
 ```
-02-REGISTRAR_SANCION_RUC_12345678901_Exp_N°_123_2026...png
+02-REGISTRAR_SANCION_RUC_12345678901_Exp_NÂ°_123_2026...png
 ```
 
 **Ahora:**
@@ -126,11 +126,13 @@ cd "d:\SUNEDU\SELENIUM\playwrigth" && npx playwright show-report
 ```
 
 **Incluye:**
-- ✅ Caso
-- ✅ Paso
-- ✅ Razón Social ← AHORA INCLUIDO
-- ✅ Timestamp
+- âœ… Caso
+- âœ… Paso
+- âœ… RazÃ³n Social â† AHORA INCLUIDO
+- âœ… Timestamp
 
 ---
 
-**¡Listo! Copia un comando y ejecuta.** 🚀
+**Â¡Listo! Copia un comando y ejecuta.** ðŸš€
+
+

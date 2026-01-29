@@ -1,4 +1,4 @@
-# 🧹 LIMPIAR DATOS Y REPORTES
+﻿# 🧹 LIMPIAR DATOS Y REPORTES
 
 ## 🎯 RESUMEN RÁPIDO
 
@@ -101,7 +101,7 @@ echo "✅ Todo limpiado"
 | `allure-results/` | Datos de Allure (todos los casos) |
 | `allure-report/` | Reporte de Allure generado |
 | `playwright-report/` | Reporte de Playwright (todos los casos) |
-| `test-results/` | Resultados técnicos |
+| `test-results/` | Resultados tÃ©cnicos |
 | `screenshots/` | TODAS las screenshots |
 | `registros-administrados.json` | Datos de administrados registrados |
 | `reporte-administrados.html` | Reporte HTML |
@@ -155,6 +155,8 @@ npm run test:02
 
 ## 💡 RECOMENDACIÓN
 
-**Usa la OPCIÓN D:** `limpiar-todo.bat`
+**Usa la OPCIÃ“N D:** `limpiar-todo.bat`
 
 Es más fácil: solo dobla clic en el archivo y listo.
+
+

@@ -1,27 +1,27 @@
-# ✅ COMPLETADO - LISTO PARA EJECUTAR
+﻿# âœ… COMPLETADO - LISTO PARA EJECUTAR
 
-## 📸 Screenshots Actualizados
+## ðŸ“¸ Screenshots Actualizados
 
 **Cambio realizado en `reginsa-actions.ts`:**
 
 ```
 Antes:  caso_paso_timestamp.png
 Ahora:  caso_paso_razonsocial_timestamp.png
-                       ↑ INCLUIDO AHORA
+                       â†‘ INCLUIDO AHORA
 ```
 
 **Ejemplo real:**
 ```
 02-REGISTRAR_SANCION_01-SANCION_LLENA_Perfumerias_unidas_2026-01-20T10-30-45-123Z.png
-                                        ↑ Razón Social incluida
+                                        â†‘ RazÃ³n Social incluida
 ```
 
-✅ **Incluye:** Caso, Paso, Razón Social, Timestamp  
-❌ **NO incluye:** RUC, EXP, Medidas Correctivas
+âœ… **Incluye:** Caso, Paso, RazÃ³n Social, Timestamp  
+âŒ **NO incluye:** RUC, EXP, Medidas Correctivas
 
 ---
 
-## 🧹 Caso 01 Limpio
+## ðŸ§¹ Caso 01 Limpio
 
 **Script creado:** `limpiar-caso-01.bat`
 
@@ -32,7 +32,7 @@ del registros-administrados.json registros-administrados.html
 
 ---
 
-## 🚀 COMANDOS FINALES
+## ðŸš€ COMANDOS FINALES
 
 ### 1. Limpiar Caso 01:
 ```bash
@@ -66,45 +66,46 @@ cd "d:\SUNEDU\SELENIUM\playwrigth" && npx playwright show-report
 
 ---
 
-## 📊 Qué Esperar
+## ðŸ“Š QuÃ© Esperar
 
 | Comando | Tiempo | Resultado |
 |---------|--------|-----------|
-| `npm run test:01` | 2-3 min | Caso 01 + reportes automáticos |
-| `npm run test:02` | 46 seg | Caso 02 + reportes automáticos |
+| `npm run test:01` | 2-3 min | Caso 01 + reportes automÃ¡ticos |
+| `npm run test:02` | 46 seg | Caso 02 + reportes automÃ¡ticos |
 | `npm run test:all` | 3 min | Ambos + Allure limpio |
 
 ---
 
-## ✨ Status
+## âœ¨ Status
 
 | Tarea | Status |
 |-------|--------|
-| Screenshots con Razón Social | ✅ HECHO |
-| Limpiar Caso 01 | ✅ LISTO |
-| Comando Caso 01 | ✅ LISTO |
-| Comando Caso 02 | ✅ LISTO |
-| Comando Todos | ✅ LISTO |
+| Screenshots con RazÃ³n Social | âœ… HECHO |
+| Limpiar Caso 01 | âœ… LISTO |
+| Comando Caso 01 | âœ… LISTO |
+| Comando Caso 02 | âœ… LISTO |
+| Comando Todos | âœ… LISTO |
 
 ---
 
-## 🎯 AHORA
+## ðŸŽ¯ AHORA
 
 Elige UNO y ejecuta:
 
 ```bash
-# Opción 1: Limpiar + Caso 01
+# OpciÃ³n 1: Limpiar + Caso 01
 cd "d:\SUNEDU\SELENIUM\playwrigth" && del registros-administrados.json registros-administrados.html 2>nul && npm run test:01
 
-# Opción 2: Caso 02
+# OpciÃ³n 2: Caso 02
 cd "d:\SUNEDU\SELENIUM\playwrigth" && npm run test:02
 
-# Opción 3: Todos
+# OpciÃ³n 3: Todos
 cd "d:\SUNEDU\SELENIUM\playwrigth" && npm run test:all
 ```
 
 ---
 
-**Documentación:** Ver `COMANDOS_EJECUCION.md` o `COMANDOS_RAPIDOS.txt`
+**DocumentaciÃ³n:** Ver `COMANDOS_EJECUCION.md` o `COMANDOS_RAPIDOS.txt`
 
-**¡Listo! 🚀**
+**Â¡Listo! ðŸš€**
+

@@ -205,7 +205,14 @@ test.describe('04-RECONSIDERAR CON SANCIONES', () => {
       }
 
       // Captura formulario lleno antes de guardar (reutiliza `capturarFormularioLleno`)
-      await capturarFormularioLleno(page, '04-RECONSIDERAR-CON-SANCIONES', numeroReconsideracion, '', 'CABECERA_RECONSIDERACION');
+      await capturarFormularioLleno(
+        page,
+        '04-RECONSIDERAR-CON-SANCIONES',
+        numeroReconsideracion,
+        '',
+        'CABECERA_RECONSIDERACION',
+        '10_FORMULARIO_CABECERA'
+      );
 
       // Guardar cabecera
       const btnGuardar = page.getByRole('button', { name: 'Guardar cabecera' });
@@ -217,10 +224,16 @@ test.describe('04-RECONSIDERAR CON SANCIONES', () => {
       }
       await btnGuardar.click();
       await page.waitForTimeout(5000);
+      await page
+        .locator('.p-toast-message-success, .p-toast-message')
+        .filter({ hasText: /registro|registrad|guardad|Éxito|exito/i })
+        .first()
+        .waitFor({ state: 'visible', timeout: 15000 })
+        .catch(() => {});
       const toastCabecera = await capturarToastExito(
         page,
         '04-RECONSIDERAR-CON-SANCIONES',
-        'EXITO_CABECERA',
+        '11_EXITO_CABECERA',
         numeroReconsideracion,
         '',
         'CABECERA_RECONSIDERACION'
@@ -230,7 +243,7 @@ test.describe('04-RECONSIDERAR CON SANCIONES', () => {
       const toastIzq = page.locator('.p-toast-top-left .p-toast-message, .p-toast-top-left').first();
       if (!toastCabecera && (await toastIzq.isVisible().catch(() => false))) {
         const timestamp = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
-        const archivo = `./screenshots/04-RECONSIDERAR-CON-SANCIONES_TOAST_IZQ_${timestamp}.png`;
+        const archivo = `./screenshots/04-RECONSIDERAR-CON-SANCIONES_11_TOAST_IZQ_${timestamp}.png`;
         await toastIzq.screenshot({ path: archivo });
       }
       console.log('✅ Cabecera guardada\n');
@@ -321,6 +334,11 @@ test.describe('04-RECONSIDERAR CON SANCIONES', () => {
           const dialog = page.locator('[role="dialog"]').first();
           await dialog.waitFor({ state: 'visible', timeout: 10000 }).catch(() => {});
           await dialog.locator('p-checkbox').first().waitFor({ state: 'visible', timeout: 10000 }).catch(() => {});
+
+          // Captura antes de realizar checks en detalle de sanciones
+          const timestampAntes = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
+          const archivoAntes = `./screenshots/04-DETALLE-SANCIONES_12_ANTES_REG_${filaIdx + 1}_${timestampAntes}.png`;
+          await page.screenshot({ path: archivoAntes, fullPage: true });
 
           const encontrarCheckboxPorLabel = async (regex: RegExp) => {
             const labels = dialog.locator('label').filter({ hasText: regex });
@@ -512,6 +530,11 @@ test.describe('04-RECONSIDERAR CON SANCIONES', () => {
           
           console.log(`      Estado final: Multa: ${multaFinal ? '✅' : '⭕'} | Suspensión: ${suspensionFinal ? '✅' : '⭕'} | Cancelación: ${cancelacionFinal ? '✅' : '⭕'} | Pagó: ${pagoFinal ? '✅' : '⭕'} | Reconsidera: ${reconsideraFinal ? '✅' : '⭕'}`);
 
+          // Captura después de realizar checks en detalle de sanciones
+          const timestampDespues = new Date().toISOString().replace(/[:.]/g, '-').substring(0, 19);
+          const archivoDespues = `./screenshots/04-DETALLE-SANCIONES_13_DESPUES_REG_${filaIdx + 1}_${timestampDespues}.png`;
+          await page.screenshot({ path: archivoDespues, fullPage: true });
+
           const pagoDisabled = (await obtenerEstadoCheck('reconsPago')).disabled;
           if (debeMarcarPago && !pagoDisabled && !pagoFinal) {
             throw new Error('No se pudo marcar PAGÓ en el modal.');
@@ -532,7 +555,14 @@ test.describe('04-RECONSIDERAR CON SANCIONES', () => {
           // Captura de éxito (toast verde) (reutiliza `capturarToastExito`)
           console.log(`   ⏳ Esperando confirmación...`);
           await page.waitForTimeout(2000);
-          await capturarToastExito(page, '04-RECONSIDERAR-CON-SANCIONES', `EXITO_REG_${filaIdx + 1}`, numeroReconsideracion, '', 'DETALLE_SANCION');
+          await capturarToastExito(
+            page,
+            '04-RECONSIDERAR-CON-SANCIONES',
+            `14_EXITO_REG_${filaIdx + 1}`,
+            numeroReconsideracion,
+            '',
+            'DETALLE_SANCION'
+          );
           
           await page.waitForTimeout(2000);
           
