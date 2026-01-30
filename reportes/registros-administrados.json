@@ -317,5 +317,71 @@
     "screenshot": "./screenshots/01-AGREGAR_ADMINISTRADO_05_FORMULARIO_46121947554_CORPORACION_COMERCIAL_6787_SRL_2026-01-28T22-17-41.png",
     "screenshot_despues": "./screenshots/01-AGREGAR_ADMINISTRADO_06_EXITO_46121947554_CORPORACION_COMERCIAL_6787_SRL_2026-01-28T22-17-43.png",
     "estado_registro": "exitoso"
+  },
+  {
+    "id": 1,
+    "ruc": "55630851159",
+    "razonSocial": "EMPRESA COMERCIAL 9192 SAC",
+    "nombreComercial": "EMPRESA COMERCIAL 9192",
+    "estado": "Licenciada",
+    "timestamp": "2026-01-29T21:09:41.271Z",
+    "screenshot": "./screenshots/01-AGREGAR_ADMINISTRADO_05_FORMULARIO_55630851159_EMPRESA_COMERCIAL_9192_SAC_2026-01-29T21-09-39.png",
+    "screenshot_despues": "./screenshots/01-AGREGAR_ADMINISTRADO_06_EXITO_55630851159_EMPRESA_COMERCIAL_9192_SAC_2026-01-29T21-09-41.png",
+    "estado_registro": "exitoso"
+  },
+  {
+    "id": 1,
+    "ruc": "50705469551",
+    "razonSocial": "INDUSTRIA COMERCIAL 6952 SRL",
+    "nombreComercial": "INDUSTRIA COMERCIAL 6952",
+    "estado": "Licenciada",
+    "timestamp": "2026-01-30T17:52:39.196Z",
+    "screenshot": "./screenshots/01-AGREGAR_ADMINISTRADO_05_FORMULARIO_50705469551_INDUSTRIA_COMERCIAL_6952_SRL_2026-01-30T17-52-37.png",
+    "screenshot_despues": "./screenshots/01-AGREGAR_ADMINISTRADO_06_EXITO_50705469551_INDUSTRIA_COMERCIAL_6952_SRL_2026-01-30T17-52-39.png",
+    "estado_registro": "exitoso"
+  },
+  {
+    "id": 1,
+    "ruc": "21890841044",
+    "razonSocial": "UNIVERSIDAD COMERCIAL 7998 SAC",
+    "nombreComercial": "UNIVERSIDAD COMERCIAL 7998",
+    "estado": "Licenciada",
+    "timestamp": "2026-01-30T19:12:37.241Z",
+    "screenshot": "./screenshots/01-AGREGAR_ADMINISTRADO_05_FORMULARIO_21890841044_UNIVERSIDAD_COMERCIAL_7998_SAC_2026-01-30T19-12-35.png",
+    "screenshot_despues": "./screenshots/01-AGREGAR_ADMINISTRADO_06_EXITO_21890841044_UNIVERSIDAD_COMERCIAL_7998_SAC_2026-01-30T19-12-37.png",
+    "estado_registro": "exitoso"
+  },
+  {
+    "id": 1,
+    "ruc": "55868577353",
+    "razonSocial": "UNIVERSIDAD COMERCIAL 1050 EIRL",
+    "nombreComercial": "UNIVERSIDAD COMERCIAL 1050",
+    "estado": "Licenciada",
+    "timestamp": "2026-01-30T19:26:20.978Z",
+    "screenshot": "",
+    "screenshot_despues": "",
+    "estado_registro": "exitoso"
+  },
+  {
+    "id": 1,
+    "ruc": "04766618333",
+    "razonSocial": "EMPRESA COMERCIAL 6425 SAC",
+    "nombreComercial": "EMPRESA COMERCIAL 6425",
+    "estado": "Licenciada",
+    "timestamp": "2026-01-30T19:38:59.585Z",
+    "screenshot": "",
+    "screenshot_despues": "",
+    "estado_registro": "exitoso"
+  },
+  {
+    "id": 1,
+    "ruc": "06045291676",
+    "razonSocial": "CORPORACION COMERCIAL 4073 SAA",
+    "nombreComercial": "CORPORACION COMERCIAL 4073",
+    "estado": "Licenciada",
+    "timestamp": "2026-01-30T19:40:23.855Z",
+    "screenshot": "",
+    "screenshot_despues": "",
+    "estado_registro": "exitoso"
   }
 ]

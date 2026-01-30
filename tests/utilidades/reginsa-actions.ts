@@ -703,12 +703,14 @@ export async function seleccionarTipoMultaAleatorio(): Promise<'Soles' | 'IUT'> 
  * Obtiene screenshot con nombre del caso
  */
 export async function capturarPantalla(page: Page, nombreCaso: string, paso: string): Promise<string> {
+  if (process.env.SKIP_SCREENSHOTS === '1') {
+    console.log('⏩ Captura omitida por SKIP_SCREENSHOTS=1');
+    return '';
+  }
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
   const nombreArchivo = `./screenshots/${nombreCaso}_${paso}_${timestamp}.png`;
-  
   await page.screenshot({ path: nombreArchivo });
   console.log(`📸 Screenshot: ${nombreArchivo}`);
-  
   return nombreArchivo;
 }
 
@@ -762,12 +764,14 @@ export async function capturarPantallaMejorada(
   ruc: string,
   razonSocial: string
 ): Promise<string> {
+  if (process.env.SKIP_SCREENSHOTS === '1') {
+    console.log('⏩ Captura omitida por SKIP_SCREENSHOTS=1');
+    return '';
+  }
   const nombreArchivo = construirNombreScreenshot(caso, paso, ruc, razonSocial);
-  
   // Captura full page para ver todo el contenido
   await page.screenshot({ path: nombreArchivo, fullPage: true });
   console.log(`📸 Screenshot: ${nombreArchivo}`);
-  
   return nombreArchivo;
 }
 
@@ -782,6 +786,10 @@ export async function capturarFormularioLleno(
   modal?: string,
   paso?: string
 ): Promise<string> {
+  if (process.env.SKIP_SCREENSHOTS === '1') {
+    console.log('⏩ Captura omitida por SKIP_SCREENSHOTS=1');
+    return '';
+  }
   const nombreArchivo = construirNombreScreenshot(caso, paso ?? 'FORMULARIO', ref1, ref2, modal);
   await page.screenshot({ path: nombreArchivo, fullPage: true });
   console.log(`📸 Screenshot formulario lleno: ${nombreArchivo}`);
@@ -799,6 +807,10 @@ export async function capturarToastExito(
   ref2?: string,
   modal?: string
 ): Promise<string | null> {
+  if (process.env.SKIP_SCREENSHOTS === '1') {
+    console.log('⏩ Captura omitida por SKIP_SCREENSHOTS=1');
+    return null;
+  }
   const toast = page
     .locator('.p-toast-message-success, .p-toast-message')
     .filter({ hasText: /registro|registrad|guardad|Éxito|exito/i })
