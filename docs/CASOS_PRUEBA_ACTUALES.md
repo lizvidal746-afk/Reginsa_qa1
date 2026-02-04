@@ -17,6 +17,7 @@
 - **Objetivo**: Registrar sanción a un administrado
 - **Estado**: ✅ Funcional
  - **Flujo (anotado en código)**: [tests/casos-prueba/02-registrar-sancion.spec.ts](../tests/casos-prueba/02-registrar-sancion.spec.ts)
+ - **Detalle de sanciones**: 8 sanciones con combinaciones de multa/suspensión/cancelación (UIT forzado en casos 6, 7 y 8)
 
 ### Caso 03: Reconsiderar sin sanciones
 - **Archivo**: `tests/casos-prueba/03-reconsiderar-sin-sanciones.spec.ts`

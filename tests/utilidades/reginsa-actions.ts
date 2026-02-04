@@ -516,34 +516,13 @@ export async function abrirFormularioNuevoAdministrado(page: Page): Promise<void
  */
 export async function abrirFormularioRegistrarSancion(page: Page): Promise<void> {
   console.log('➕ Abriendo formulario registrar sanción...');
-  
-  try {
-    await page.waitForLoadState('networkidle');
-    await page.waitForTimeout(1000);
-    
-    // Esperar a que el botón esté visible
-    const boton = page.getByRole('button', { name: 'Registrar Sanción' });
-    await boton.waitFor({ state: 'visible', timeout: 10000 });
-    await page.waitForTimeout(500);  // Pequeña espera antes de click
-    await boton.click();
-    await page.waitForTimeout(2000);  // Espera después de click para que el modal abra
-    
-    console.log('✅ Formulario abierto correctamente');
-  } catch (error) {
-    console.warn('⚠️ Intento 1 falló, intentando alternativa...');
-    try {
-      await page.waitForTimeout(500);
-      const botonAlt = page.getByRole('button').filter({ hasText: /Registrar|Sanción/ }).first();
-      await botonAlt.waitFor({ state: 'visible', timeout: 10000 });
-      await page.waitForTimeout(500);
-      await botonAlt.click();
-      await page.waitForTimeout(2000);  // Espera para que el modal abra
-      console.log('✅ Formulario abierto (alternativa)');
-    } catch (error2) {
-      console.error('❌ No se pudo abrir el formulario:', error2 instanceof Error ? error2.message : String(error2));
-      throw error2;
-    }
-  }
+  // Solo usar la alternativa directamente
+  const botonAlt = page.getByRole('button').filter({ hasText: /Registrar|Sanción/ }).first();
+  await botonAlt.waitFor({ state: 'visible', timeout: 10000 });
+  await botonAlt.click();
+  // Espera inteligente: esperar a que el formulario/modal esté visible
+  await page.locator('form').waitFor({ state: 'visible', timeout: 10000 });
+  console.log('✅ Formulario abierto');
 }
 
 /**

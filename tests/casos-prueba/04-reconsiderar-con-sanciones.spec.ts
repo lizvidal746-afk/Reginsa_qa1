@@ -22,6 +22,10 @@ import {
  * 7. Guardar cabecera y validar éxito (reutiliza `capturarToastExito`)
  * 8. Ir a Detalle de sanciones
  * 9. Editar registros y marcar opciones según sanción
+ *
+ * Nota:
+ * - Solo se seleccionan registros con fecha de resolución válida (< hoy).
+ * - Capturas exitosas dependen del modo de ejecución (:fast omite).
  */
 
 test.describe('04-RECONSIDERAR CON SANCIONES', () => {
@@ -45,7 +49,7 @@ test.describe('04-RECONSIDERAR CON SANCIONES', () => {
       // PASO 2: BUSCAR REGISTRO CON DETALLE DE SANCIONES
       // ═══════════════════════════════════════════════════════════════════
       console.log('📋 PASO 2: Buscando registro con F. Modificación, N° Reconsideración y F. Reconsideración vacíos...');
-      await page.waitForTimeout(2000);
+      await page.locator('table').waitFor({ state: 'visible', timeout: 10000 });
       const filas = page.locator('tr');
       let registroEncontrado = false;
       let paginaActual = 1;
@@ -95,8 +99,9 @@ test.describe('04-RECONSIDERAR CON SANCIONES', () => {
               if (fecha) fechasDetectadas.push(fecha);
             }
             const fechaResolucion = fechasDetectadas[0] || null;
+            const fechaResolucionValida = Boolean(fechaResolucion && fechaResolucion < hoy);
 
-            if (!fModificacion && !nReconsid && !fReconsid) {
+            if (!fModificacion && !nReconsid && !fReconsid && fechaResolucionValida) {
               const administrado = idxAdmin >= 0
                 ? (await celdas.nth(idxAdmin).textContent())?.trim() || 'N/D'
                 : (await celdas.nth(0).textContent())?.trim() || 'N/D';
@@ -112,7 +117,7 @@ test.describe('04-RECONSIDERAR CON SANCIONES', () => {
           const btnNextPage = page.getByRole('button', { name: 'Next Page' });
           if (await btnNextPage.isEnabled().catch(() => false) && paginaActual < maxPaginas) {
             await btnNextPage.click();
-            await page.waitForTimeout(1500);
+            // Espera fija eliminada para máxima velocidad
             paginaActual++;
           } else {
             break;
@@ -132,7 +137,7 @@ test.describe('04-RECONSIDERAR CON SANCIONES', () => {
       const filaSeleccionada = filas.nth(numeroFilaEncontrada);
       const btnReconsiderar = filaSeleccionada.locator('button.p-button-warning');
       await btnReconsiderar.click();
-      await page.waitForTimeout(3000);
+      // Espera fija eliminada para máxima velocidad
       console.log('✅ RECONSIDERAR clickeado\n');
 
       // ═══════════════════════════════════════════════════════════════════
@@ -220,10 +225,10 @@ test.describe('04-RECONSIDERAR CON SANCIONES', () => {
       for (let i = 0; i < 3; i++) {
         const enabled = await btnGuardar.isEnabled().catch(() => false);
         if (enabled) break;
-        await page.waitForTimeout(800);
+        // Espera fija eliminada para máxima velocidad
       }
       await btnGuardar.click();
-      await page.waitForTimeout(5000);
+      // Espera fija eliminada para máxima velocidad
       await page
         .locator('.p-toast-message-success, .p-toast-message')
         .filter({ hasText: /registro|registrad|guardad|Éxito|exito/i })
@@ -259,7 +264,7 @@ test.describe('04-RECONSIDERAR CON SANCIONES', () => {
       await tabDetalle.waitFor({ state: 'visible', timeout: 10000 });
       await tabDetalle.click();
       await page.waitForLoadState('networkidle').catch(() => {});
-      await page.waitForTimeout(1500);
+      // Espera fija eliminada para máxima velocidad
       console.log('✅ Tab Detalle abierto\n');
 
       // ═══════════════════════════════════════════════════════════════════
@@ -303,7 +308,7 @@ test.describe('04-RECONSIDERAR CON SANCIONES', () => {
         const sancionTexto = idxSancion >= 0
           ? (await celdas.nth(idxSancion).innerText().catch(() => '')).trim()
           : (await fila.innerText().catch(() => '')).trim();
-        const tieneMulta = /Multa/i.test(sancionTexto);
+        const tieneMulta = /Multa|UIT|U\.I\.T\.|SOLES/i.test(sancionTexto);
         const tieneSuspension = /Suspensi[oó]n/i.test(sancionTexto);
         const tieneCancelacion = /Cancelaci[oó]n/i.test(sancionTexto);
 
@@ -326,11 +331,11 @@ test.describe('04-RECONSIDERAR CON SANCIONES', () => {
         try {
           await btnLapiz.waitFor({ state: 'visible', timeout: 8000 });
           await fila.scrollIntoViewIfNeeded();
-          await page.waitForTimeout(800);
+          // Espera fija eliminada para máxima velocidad
           
           console.log(`   🖱️  Abriendo modal...`);
           await btnLapiz.click();
-          await page.waitForTimeout(4000);
+          // Espera fija eliminada para máxima velocidad
           const dialog = page.locator('[role="dialog"]').first();
           await dialog.waitFor({ state: 'visible', timeout: 10000 }).catch(() => {});
           await dialog.locator('p-checkbox').first().waitFor({ state: 'visible', timeout: 10000 }).catch(() => {});
@@ -358,13 +363,13 @@ test.describe('04-RECONSIDERAR CON SANCIONES', () => {
           
           // Obtener checkboxes con selector ID (más confiable)
           console.log(`   🔍 Obteniendo referencias de checkboxes...`);
-          await page.waitForTimeout(1000);
+          // Espera fija eliminada para máxima velocidad
           const chkMulta = (await encontrarCheckboxPorLabel(/Multa/i)) ?? dialog.locator('input#reconsMulta');
           const chkSuspension = (await encontrarCheckboxPorLabel(/Suspensi[oó]n/i)) ?? dialog.locator('input#reconsSuspension');
           const chkCancelacion = (await encontrarCheckboxPorLabel(/Cancelaci[oó]n/i)) ?? dialog.locator('input#reconsCancelacion');
           
           console.log(`   🔍 Verificando sanciones...`);
-          await page.waitForTimeout(800);
+          // Espera fija eliminada para máxima velocidad
           
           // Verificar sanciones marcadas
           let multaMarcada = await chkMulta.isChecked().catch(() => false);
@@ -389,7 +394,7 @@ test.describe('04-RECONSIDERAR CON SANCIONES', () => {
           console.log(`   Marcando opciones...`);
           
           // REGLAS DE MARCADO (según sanción en la tabla)
-          const debeMarcarPago = tieneMulta;
+          const debeMarcarPago = tieneMulta || multaMarcada;
           const debeMarcarReconsidera = tieneMulta || tieneSuspension || tieneCancelacion;
 
           const obtenerEstadoCheck = async (id: string) => {
@@ -412,7 +417,7 @@ test.describe('04-RECONSIDERAR CON SANCIONES', () => {
 
               if (estado.checked) return true;
               if (estado.disabled) {
-                await page.waitForTimeout(700);
+                // Espera fija eliminada para máxima velocidad
                 continue;
               }
 
@@ -421,7 +426,7 @@ test.describe('04-RECONSIDERAR CON SANCIONES', () => {
               } else {
                 await estado.input.click({ force: true }).catch(() => {});
               }
-              await page.waitForTimeout(1000);
+              // Espera fija eliminada para máxima velocidad
 
               const estado2 = await obtenerEstadoCheck(id);
               if (estado2.checked) return true;
@@ -436,7 +441,7 @@ test.describe('04-RECONSIDERAR CON SANCIONES', () => {
                   input.dispatchEvent(new Event('change', { bubbles: true }));
                 }
               }, id);
-              await page.waitForTimeout(1000);
+              // Espera fija eliminada para máxima velocidad
             }
 
             const final = await obtenerEstadoCheck(id);
@@ -474,7 +479,7 @@ test.describe('04-RECONSIDERAR CON SANCIONES', () => {
                       if (input) input.click();
                     }
                   }, idRecurso);
-                  await page.waitForTimeout(2000);
+                  // Espera fija eliminada para máxima velocidad
                 }
                 
                 const recursoMarcado = await page.evaluate((id) => {
@@ -545,16 +550,16 @@ test.describe('04-RECONSIDERAR CON SANCIONES', () => {
           
           // Guardar
           console.log(`   💾 Guardando...`);
-          await page.waitForTimeout(2500);
+          // Espera fija eliminada para máxima velocidad
           const btnAceptar = dialog.getByRole('button', { name: 'Aceptar' });
           await btnAceptar.waitFor({ state: 'visible', timeout: 8000 });
-          await page.waitForTimeout(1500);
+          // Espera fija eliminada para máxima velocidad
           await btnAceptar.click();
           await dialog.waitFor({ state: 'hidden', timeout: 10000 }).catch(() => {});
           
           // Captura de éxito (toast verde) (reutiliza `capturarToastExito`)
           console.log(`   ⏳ Esperando confirmación...`);
-          await page.waitForTimeout(2000);
+          // Espera fija eliminada para máxima velocidad
           await capturarToastExito(
             page,
             '04-RECONSIDERAR-CON-SANCIONES',
@@ -564,7 +569,7 @@ test.describe('04-RECONSIDERAR CON SANCIONES', () => {
             'DETALLE_SANCION'
           );
           
-          await page.waitForTimeout(2000);
+          // Espera fija eliminada para máxima velocidad
           
           console.log(`✅ Registro ${filaIdx + 1} completado\n`);
           registrosEditados++;
@@ -575,7 +580,7 @@ test.describe('04-RECONSIDERAR CON SANCIONES', () => {
             const btnCancelar = page.getByRole('button', { name: 'Cancelar' });
             if (await btnCancelar.isVisible().catch(() => false)) {
               await btnCancelar.click();
-              await page.waitForTimeout(1500);
+              // Espera fija eliminada para máxima velocidad
             }
           } catch (e) {
             console.log(`⚠️ No se pudo cerrar modal`);

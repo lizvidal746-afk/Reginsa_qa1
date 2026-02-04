@@ -11,6 +11,12 @@ import {
   capturarToastExito
 } from '../utilidades/reginsa-actions';
 
+/**
+ * NOTA DE EJECUCIÓN
+ * - Capturas exitosas dependen del modo de ejecución (scripts con o sin :fast).
+ * - Capturas de error se guardan siempre en la carpeta errors/.
+ */
+
 // Ruta del archivo de reporte
 const reportPath = path.join(__dirname, '../../reportes/registros-administrados.json');
 
@@ -91,10 +97,12 @@ function actualizarReporte(registro: RegistroAdministrado): void {
  */
 async function llenarCampo(page: Page, nombre: string, valor: string): Promise<void> {
   const input = page.getByRole('textbox', { name: new RegExp(nombre) });
+  await input.waitFor({ state: 'visible', timeout: 5000 });
   await input.click();
   await input.clear();
   await input.fill(valor);
-  await page.waitForTimeout(300);
+  // Pequeña espera solo si es necesario para estabilidad visual
+  // Espera fija eliminada para máxima velocidad
 }
 
 /**
@@ -132,10 +140,13 @@ async function registrarAdministrado(page: Page, numeroRegistro: number): Promis
 
       // Seleccionar estado
       const combobox = page.getByRole('combobox', { name: 'Seleccione' });
+      await combobox.waitFor({ state: 'visible', timeout: 5000 });
       await combobox.click();
-      await page.waitForTimeout(300);
-      await page.getByRole('option', { name: 'Licenciada' }).click();
-      await page.waitForTimeout(300);
+      const optionLicenciada = page.getByRole('option', { name: 'Licenciada' });
+      await optionLicenciada.waitFor({ state: 'visible', timeout: 5000 });
+      await optionLicenciada.click();
+      // Espera mínima para estabilidad visual
+      // Espera fija eliminada para máxima velocidad
 
       // Captura formulario lleno ANTES de guardar (reutiliza `capturarFormularioLleno`)
       const screenshotAntes = await capturarFormularioLleno(
@@ -148,8 +159,11 @@ async function registrarAdministrado(page: Page, numeroRegistro: number): Promis
       );
 
       // Guardar
-      await page.getByRole('button', { name: 'Guardar' }).click();
-      await page.waitForTimeout(1500);
+      const btnGuardar = page.getByRole('button', { name: 'Guardar' });
+      await btnGuardar.waitFor({ state: 'visible', timeout: 5000 });
+      await btnGuardar.click();
+      // Espera a que aparezca el mensaje de éxito o timeout
+      await page.locator('text=/Guardado|Exitoso|éxito/i').first().waitFor({ state: 'visible', timeout: 5000 }).catch(() => {});
 
       // Validar éxito
       const mensajeExito = page.locator('text=/Guardado|Exitoso|éxito/i');
@@ -182,8 +196,10 @@ async function registrarAdministrado(page: Page, numeroRegistro: number): Promis
         return ruc;
       } else {
         console.warn(`⚠️ RUC duplicado o error. Limpiando formulario...`);
-        await page.getByRole('textbox', { name: 'R.U.C. *' }).clear();
-        await page.waitForTimeout(300);
+        const inputRuc = page.getByRole('textbox', { name: 'R.U.C. *' });
+        await inputRuc.waitFor({ state: 'visible', timeout: 5000 });
+        await inputRuc.clear();
+        // Espera fija eliminada para máxima velocidad
       }
     } catch (error) {
       console.error(`❌ Error en intento ${intento + 1}:`, error);

@@ -383,5 +383,104 @@
     "screenshot": "",
     "screenshot_despues": "",
     "estado_registro": "exitoso"
+  },
+  {
+    "id": 1,
+    "ruc": "19154458395",
+    "razonSocial": "INDUSTRIA COMERCIAL 3529 SAA",
+    "nombreComercial": "INDUSTRIA COMERCIAL 3529",
+    "estado": "Licenciada",
+    "timestamp": "2026-01-30T20:25:57.290Z",
+    "screenshot": "",
+    "screenshot_despues": "",
+    "estado_registro": "exitoso"
+  },
+  {
+    "id": 1,
+    "ruc": "34967957775",
+    "razonSocial": "CORPORACION COMERCIAL 9025 SAC",
+    "nombreComercial": "CORPORACION COMERCIAL 9025",
+    "estado": "Licenciada",
+    "timestamp": "2026-01-30T20:38:46.131Z",
+    "screenshot": "",
+    "screenshot_despues": "",
+    "estado_registro": "exitoso"
+  },
+  {
+    "id": 1,
+    "ruc": "62465812143",
+    "razonSocial": "CONSORCIO COMERCIAL 9453 EIRL",
+    "nombreComercial": "CONSORCIO COMERCIAL 9453",
+    "estado": "Licenciada",
+    "timestamp": "2026-01-30T20:48:46.475Z",
+    "screenshot": "./screenshots/01-AGREGAR_ADMINISTRADO_05_FORMULARIO_62465812143_CONSORCIO_COMERCIAL_9453_EIRL_2026-01-30T20-48-45.png",
+    "screenshot_despues": "./screenshots/01-AGREGAR_ADMINISTRADO_06_EXITO_62465812143_CONSORCIO_COMERCIAL_9453_EIRL_2026-01-30T20-48-46.png",
+    "estado_registro": "exitoso"
+  },
+  {
+    "id": 1,
+    "ruc": "57538567641",
+    "razonSocial": "INDUSTRIA COMERCIAL 2609 SAC",
+    "nombreComercial": "INDUSTRIA COMERCIAL 2609",
+    "estado": "Licenciada",
+    "timestamp": "2026-01-30T20:59:57.802Z",
+    "screenshot": "./screenshots/01-AGREGAR_ADMINISTRADO_05_FORMULARIO_57538567641_INDUSTRIA_COMERCIAL_2609_SAC_2026-01-30T20-59-57.png",
+    "screenshot_despues": "./screenshots/01-AGREGAR_ADMINISTRADO_06_EXITO_57538567641_INDUSTRIA_COMERCIAL_2609_SAC_2026-01-30T20-59-57.png",
+    "estado_registro": "exitoso"
+  },
+  {
+    "id": 1,
+    "ruc": "82108866230",
+    "razonSocial": "CORPORACION COMERCIAL 2990 EIRL",
+    "nombreComercial": "CORPORACION COMERCIAL 2990",
+    "estado": "Licenciada",
+    "timestamp": "2026-01-30T21:04:24.511Z",
+    "screenshot": "",
+    "screenshot_despues": "",
+    "estado_registro": "exitoso"
+  },
+  {
+    "id": 1,
+    "ruc": "86273392140",
+    "razonSocial": "UNIVERSIDAD COMERCIAL 9405 EIRL",
+    "nombreComercial": "UNIVERSIDAD COMERCIAL 9405",
+    "estado": "Licenciada",
+    "timestamp": "2026-01-30T22:20:34.078Z",
+    "screenshot": "",
+    "screenshot_despues": "",
+    "estado_registro": "exitoso"
+  },
+  {
+    "id": 1,
+    "ruc": "41369968210",
+    "razonSocial": "EMPRESA COMERCIAL 7381 SRL",
+    "nombreComercial": "EMPRESA COMERCIAL 7381",
+    "estado": "Licenciada",
+    "timestamp": "2026-01-30T22:25:53.631Z",
+    "screenshot": "",
+    "screenshot_despues": "",
+    "estado_registro": "exitoso"
+  },
+  {
+    "id": 1,
+    "ruc": "08312549185",
+    "razonSocial": "EMPRESA COMERCIAL 7604 SRL",
+    "nombreComercial": "EMPRESA COMERCIAL 7604",
+    "estado": "Licenciada",
+    "timestamp": "2026-02-02T16:37:25.833Z",
+    "screenshot": "./screenshots/01-AGREGAR_ADMINISTRADO_05_FORMULARIO_08312549185_EMPRESA_COMERCIAL_7604_SRL_2026-02-02T16-37-20.png",
+    "screenshot_despues": "./screenshots/01-AGREGAR_ADMINISTRADO_06_EXITO_08312549185_EMPRESA_COMERCIAL_7604_SRL_2026-02-02T16-37-23.png",
+    "estado_registro": "exitoso"
+  },
+  {
+    "id": 1,
+    "ruc": "07557829001",
+    "razonSocial": "UNIVERSIDAD COMERCIAL 6647 SAC",
+    "nombreComercial": "UNIVERSIDAD COMERCIAL 6647",
+    "estado": "Licenciada",
+    "timestamp": "2026-02-02T19:28:28.441Z",
+    "screenshot": "./screenshots/01-AGREGAR_ADMINISTRADO_05_FORMULARIO_07557829001_UNIVERSIDAD_COMERCIAL_6647_SAC_2026-02-02T19-28-27.png",
+    "screenshot_despues": "./screenshots/01-AGREGAR_ADMINISTRADO_06_EXITO_07557829001_UNIVERSIDAD_COMERCIAL_6647_SAC_2026-02-02T19-28-28.png",
+    "estado_registro": "exitoso"
   }
 ]

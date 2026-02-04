@@ -1,0 +1,24 @@
+{
+  "runs": [
+    {
+      "nombre": "casos-1-4-chrome-firefox",
+      "tests": [
+        "tests/casos-prueba/01-agregar-administrado.spec.ts",
+        "tests/casos-prueba/02-registrar-sancion.spec.ts",
+        "tests/casos-prueba/04-reconsiderar-con-sanciones.spec.ts"
+      ],
+      "repeticiones": 10,
+      "proyectos": ["chromium", "firefox"],
+      "headed": false,
+      "capturas": true
+    },
+    {
+      "nombre": "caso-02-solo-chrome",
+      "tests": ["tests/casos-prueba/02-registrar-sancion.spec.ts"],
+      "repeticiones": 20,
+      "proyectos": ["chromium"],
+      "headed": false,
+      "capturas": false
+    }
+  ]
+}

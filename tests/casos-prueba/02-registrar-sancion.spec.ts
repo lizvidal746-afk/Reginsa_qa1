@@ -20,16 +20,24 @@ import {
  * 5. Subir PDF
  * 6. Agregar 2-3 medidas correctivas
  * 7. Navegar a "Detalle de sanciones"
- * 8. Agregar 5 SANCIONES para el mismo administrado:
+ * 8. Agregar 8 SANCIONES para el mismo administrado:
+ *    - Seleccionar RIS aplicable y Tipo de Infracción
  *    - Sanción 1: MULTA (SOLES o UIT aleatorio)
  *    - Sanción 2: SUSPENSIÓN (Año/Mes/Día aleatorio)
  *    - Sanción 3: CANCELACIÓN (solo marcar)
  *    - Sanción 4: MULTA + SUSPENSIÓN (ambas)
  *    - Sanción 5: MULTA + CANCELACIÓN (ambas)
+ *    - Sanción 6: MULTA (UIT 1-10) + SUSPENSIÓN (ambas)
+ *    - Sanción 7: MULTA (UIT 1-10)
+ *    - Sanción 8: MULTA (UIT 1-10) + CANCELACIÓN (ambas)
  * 9. Guardar formulario final
+ *
+ * Capturas:
+ * - Exitosas dependen del modo de ejecución (:fast omite).
+ * - Errores se guardan siempre en errors/.
  */
 
-test('02-REGISTRAR SANCIÓN: 5 sanciones para 1 administrado', async ({ page }) => {
+test('02-REGISTRAR SANCIÓN: 8 sanciones para 1 administrado', async ({ page }) => {
   test.setTimeout(300000); // 5 minutos de timeout
 
   console.log('\n================================================================================');
@@ -181,7 +189,7 @@ test('02-REGISTRAR SANCIÓN: 5 sanciones para 1 administrado', async ({ page }) 
     console.log(`  ✓ Medida ${i} agregada`);
   }
 
-  console.log('  ✅ Medidas ingresadas (guardado final al terminar las 5 sanciones)\n');
+  console.log('  ✅ Medidas ingresadas (guardado final al terminar las 8 sanciones)\n');
 
   // ═══════════════════════════════════════════════════════════════════
   // PASO 7: IR A PESTAÑA "DETALLE DE SANCIONES"
@@ -197,10 +205,10 @@ test('02-REGISTRAR SANCIÓN: 5 sanciones para 1 administrado', async ({ page }) 
   console.log('  ✅ Tab seleccionado\n');
 
   // ═══════════════════════════════════════════════════════════════════
-  // PASO 8: AGREGAR 5 SANCIONES
+  // PASO 8: AGREGAR 8 SANCIONES
   // ═══════════════════════════════════════════════════════════════════
   console.log('═'.repeat(90));
-  console.log('⚖️  PASO 8: AGREGANDO 5 SANCIONES');
+  console.log('⚖️  PASO 8: AGREGANDO 8 SANCIONES');
   console.log('═'.repeat(90));
 
   const sanciones = [
@@ -208,18 +216,21 @@ test('02-REGISTRAR SANCIÓN: 5 sanciones para 1 administrado', async ({ page }) 
     { numero: 2, nombre: 'SUSPENSIÓN', multa: false, suspension: true, cancelacion: false },
     { numero: 3, nombre: 'CANCELACIÓN', multa: false, suspension: false, cancelacion: true },
     { numero: 4, nombre: 'MULTA + SUSPENSIÓN', multa: true, suspension: true, cancelacion: false },
-    { numero: 5, nombre: 'MULTA + CANCELACIÓN', multa: true, suspension: false, cancelacion: true }
+    { numero: 5, nombre: 'MULTA + CANCELACIÓN', multa: true, suspension: false, cancelacion: true },
+    { numero: 6, nombre: 'MULTA (UIT) + SUSPENSIÓN', multa: true, suspension: true, cancelacion: false, forceUIT: true },
+    { numero: 7, nombre: 'MULTA (UIT)', multa: true, suspension: false, cancelacion: false, forceUIT: true },
+    { numero: 8, nombre: 'MULTA (UIT) + CANCELACIÓN', multa: true, suspension: false, cancelacion: true, forceUIT: true }
   ];
 
   let exitosas = 0;
-  let multaUsaUITCaso1: boolean | null = null;
+  // En este flujo: casos 1, 4 y 5 son SOLES; casos 6, 7 y 8 son UIT.
 
   const capturarToastCaso = async (etiqueta: string) => {
     await capturarToastExito(page, '02-REGISTRAR_SANCION', etiqueta, admin, '', 'DETALLE_SANCION');
   };
 
   for (const sancion of sanciones) {
-    console.log(`\n  ┌─ SANCIÓN ${sancion.numero}/5: ${sancion.nombre}`);
+    console.log(`\n  ┌─ SANCIÓN ${sancion.numero}/${sanciones.length}: ${sancion.nombre}`);
 
     try {
       // PASO 8A: ABRIR MODAL
@@ -239,8 +250,23 @@ test('02-REGISTRAR SANCIÓN: 5 sanciones para 1 administrado', async ({ page }) 
 
       console.log(`  │  ✓ Modal abierto`);
 
-      const seleccionarAleatorio = async (comboIndex: number, label: string) => {
-        const combobox = dialog.locator('[role="combobox"]').nth(comboIndex);
+      const seleccionarAleatorioPorLabel = async (
+        labelRegex: RegExp,
+        label: string,
+        fallbackIndex: number
+      ) => {
+        let combobox = dialog.getByRole('combobox', { name: labelRegex }).first();
+
+        if (!(await combobox.isVisible({ timeout: 1500 }).catch(() => false))) {
+          const labelLocator = dialog.locator('label', { hasText: labelRegex }).first();
+          if (await labelLocator.isVisible({ timeout: 1500 }).catch(() => false)) {
+            const field = labelLocator.locator('..');
+            combobox = field.locator('p-dropdown, .p-dropdown, [role="combobox"]').first();
+          } else {
+            combobox = dialog.locator('[role="combobox"]').nth(fallbackIndex);
+          }
+        }
+
         const visible = await combobox.isVisible({ timeout: 3000 }).catch(() => false);
         if (!visible) {
           console.log(`  │  ⚠️  ${label} no visible`);
@@ -248,16 +274,28 @@ test('02-REGISTRAR SANCIÓN: 5 sanciones para 1 administrado', async ({ page }) 
         }
 
         for (let intento = 0; intento < 3; intento++) {
-          await combobox.click({ force: true });
+          const trigger = combobox.locator('.p-dropdown-trigger, [role="button"], [role="combobox"]').first();
+          if (await trigger.isVisible({ timeout: 1000 }).catch(() => false)) {
+            await trigger.click({ force: true });
+          } else {
+            await combobox.click({ force: true });
+          }
           await page.waitForTimeout(800);
 
-          const panel = page.locator('.p-dropdown-panel').first();
+          const panel = page.locator('.p-dropdown-panel:visible, [role="listbox"]:visible').first();
           await panel.waitFor({ state: 'visible', timeout: 5000 }).catch(() => {});
-          const options = panel.locator('.p-dropdown-item');
+          const options = panel.locator('.p-dropdown-item, [role="option"]');
           const count = await options.count().catch(() => 0);
 
           if (count > 0) {
-            const index = Math.floor(Math.random() * count);
+            let index = Math.floor(Math.random() * count);
+            for (let i = 0; i < count; i++) {
+              const texto = (await options.nth(i).textContent()) || '';
+              if (!/seleccione/i.test(texto)) {
+                index = i;
+                break;
+              }
+            }
             await options.nth(index).click();
             await page.waitForTimeout(800);
             console.log(`  │  ✓ ${label} seleccionado`);
@@ -273,14 +311,14 @@ test('02-REGISTRAR SANCIÓN: 5 sanciones para 1 administrado', async ({ page }) 
       };
 
       // PASO 8B: RIS (aleatorio)
-      await seleccionarAleatorio(0, 'RIS');
+      await seleccionarAleatorioPorLabel(/RIS/i, 'RIS', 0);
 
-      // PASO 8C: TIPO INFRACTOR (aleatorio)
+      // PASO 8C: TIPO INFRACCIÓN (aleatorio)
       await page.waitForTimeout(800);
-      await seleccionarAleatorio(1, 'Tipo Infractor');
+      await seleccionarAleatorioPorLabel(/Tipo.*Infrac|Tipo.*Infractor/i, 'Tipo Infracción', 1);
 
       // PASO 8D: HECHO INFRACTOR
-      const hechoInput = page.getByPlaceholder('Describe el hecho infractor');
+      const hechoInput = dialog.getByPlaceholder('Describe el hecho infractor');
       await hechoInput.click();
       await hechoInput.fill('hecho infractor');
       await page.waitForTimeout(1000);
@@ -324,32 +362,31 @@ test('02-REGISTRAR SANCIÓN: 5 sanciones para 1 administrado', async ({ page }) 
 
       // PASO 8F: MULTA - MONTO
       if (sancion.multa) {
-        let usarUIT = Math.random() > 0.5;
-
-        if (sancion.numero === 1) {
-          multaUsaUITCaso1 = usarUIT;
-        } else if (sancion.numero === 4 && multaUsaUITCaso1 !== null) {
-          usarUIT = !multaUsaUITCaso1;
-        }
-
+        const forceUIT = (sancion as { forceUIT?: boolean }).forceUIT === true;
+        const usarUIT = forceUIT ? true : false;
         const cantidad = usarUIT
-          ? (Math.floor(Math.random() * 5) + 1).toString()
-          : (Math.floor(Math.random() * 1600) + 1).toString();
+          ? (Math.floor(Math.random() * 10) + 1).toString()
+          : (Math.floor(Math.random() * 200000) + 1).toString();
         const tipoMoneda = usarUIT ? 'UIT' : 'SOLES';
 
-        const radioButtons = page.locator('[role="radio"]');
-        const numRadios = await radioButtons.count().catch(() => 0);
-        
-        if (numRadios >= 2) {
-          const indexRadio = usarUIT ? 0 : 1;
-          if (indexRadio < numRadios) {
-            const radio = radioButtons.nth(indexRadio);
-            await radio.click();
-            await page.waitForTimeout(800);
-          }
+        const radioId = usarUIT ? 'uit' : 'soles';
+        const radioInput = dialog.locator(`#${radioId}`);
+        const radioBoxById = dialog.locator(`p-radiobutton[inputid="${radioId}"] .p-radiobutton-box`).first();
+
+        if (await radioBoxById.isVisible({ timeout: 1000 }).catch(() => false)) {
+          await radioBoxById.click({ force: true });
+        } else if (await radioInput.isVisible({ timeout: 1000 }).catch(() => false)) {
+          await radioInput.click({ force: true });
+        }
+        await page.waitForTimeout(800);
+
+        if (forceUIT) {
+          console.log('  │    ✓ UIT forzado seleccionado');
         }
 
-        const inputMoneda = page.getByRole('textbox', { name: '0.00' }).first();
+        const inputMoneda = usarUIT
+          ? dialog.locator('input[name="valorUIT"]').first()
+          : dialog.locator('input[name="valorSoles"], input[placeholder="0.00"]').first();
         if (await inputMoneda.isVisible({ timeout: 3000 }).catch(() => false)) {
           await inputMoneda.click();
           await inputMoneda.fill(cantidad);
@@ -416,10 +453,10 @@ test('02-REGISTRAR SANCIÓN: 5 sanciones para 1 administrado', async ({ page }) 
       const btnGuardarDetalle = page.getByRole('button', { name: 'Guardar detalle' });
       await btnGuardarDetalle.click();
       await page.waitForTimeout(2500);
-      console.log(`  │  ✅ GUARDADA`);
       exitosas++;
+      console.log(`  │  ✅ GUARDADA (Detalle agregado ${exitosas}/${sanciones.length})`);
 
-      if (sancion.numero === 5) {
+      if (sancion.numero === 5 || sancion.numero === sanciones.length) {
         await capturarToastCaso(`08_DETALLE_${sancion.numero}_EXITO`);
       }
 
@@ -435,7 +472,7 @@ test('02-REGISTRAR SANCIÓN: 5 sanciones para 1 administrado', async ({ page }) 
     console.log(`  └───────────────────────────────────────────────────────────────────────────────────────────`);
   }
 
-  console.log(`\n  ✅ SANCIONES COMPLETADAS: ${exitosas}/5\n`);
+  console.log(`\n  ✅ SANCIONES COMPLETADAS: ${exitosas}/${sanciones.length}\n`);
 
   // ═══════════════════════════════════════════════════════════════════
   // PASO 9: GUARDAR FORMULARIO FINAL
@@ -464,7 +501,7 @@ test('02-REGISTRAR SANCIÓN: 5 sanciones para 1 administrado', async ({ page }) 
     } catch (e) {}
   }
 
-  console.log(`\n  ✅ TEST COMPLETADO - Sanciones: ${exitosas}/5\n`);
+  console.log(`\n  ✅ TEST COMPLETADO - Sanciones: ${exitosas}/${sanciones.length}\n`);
 
   if (exitosas >= 3) {
     console.log('  ✅ EXITOSO: Al menos 3 sanciones registradas');
@@ -472,4 +509,3 @@ test('02-REGISTRAR SANCIÓN: 5 sanciones para 1 administrado', async ({ page }) 
     throw new Error(`Solo ${exitosas} sanciones registradas (se requieren al menos 3)`);
   }
 });
-

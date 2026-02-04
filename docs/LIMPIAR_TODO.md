@@ -51,7 +51,7 @@ echo ✅ Caso 02 limpiado
 
 ### 🔴 OPCIÓN A: PowerShell (1 línea)
 ```powershell
-cd "d:\SUNEDU\SELENIUM\playwrigth"; Remove-Item -Path allure-results, allure-report, playwright-report, test-results, screenshots, registros-administrados.json, reporte-administrados.html -Recurse -Force -ErrorAction SilentlyContinue; Write-Host "✅ Todo limpiado"
+cd "d:\SUNEDU\SELENIUM\playwrigth"; Remove-Item -Path allure-results, allure-report, playwright-report, test-results, screenshots, errors, registros-administrados.json, reporte-administrados.html -Recurse -Force -ErrorAction SilentlyContinue; Write-Host "✅ Todo limpiado"
 ```
 
 ### 🔴 OPCIÓN B: PowerShell (paso a paso)
@@ -62,6 +62,7 @@ Remove-Item -Path allure-report -Recurse -Force -ErrorAction SilentlyContinue
 Remove-Item -Path playwright-report -Recurse -Force -ErrorAction SilentlyContinue
 Remove-Item -Path test-results -Recurse -Force -ErrorAction SilentlyContinue
 Remove-Item -Path screenshots -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item -Path errors -Recurse -Force -ErrorAction SilentlyContinue
 Remove-Item -Path registros-administrados.json -Force -ErrorAction SilentlyContinue
 Remove-Item -Path reporte-administrados.html -Force -ErrorAction SilentlyContinue
 Write-Host "✅ Todo limpiado"
@@ -75,6 +76,7 @@ rmdir /s /q allure-report 2>nul
 rmdir /s /q playwright-report 2>nul
 rmdir /s /q test-results 2>nul
 rmdir /s /q screenshots 2>nul
+rmdir /s /q errors 2>nul
 del /q registros-administrados.json 2>nul
 del /q reporte-administrados.html 2>nul
 echo ✅ Todo limpiado
@@ -88,7 +90,7 @@ limpiar-todo.bat
 ### 🔴 OPCIÓN E: Bash
 ```bash
 cd "d:/SUNEDU/SELENIUM/playwrigth"
-rm -rf allure-results allure-report playwright-report test-results screenshots registros-administrados.json reporte-administrados.html
+rm -rf allure-results allure-report playwright-report test-results screenshots errors registros-administrados.json reporte-administrados.html
 echo "✅ Todo limpiado"
 ```
 
@@ -103,6 +105,7 @@ echo "✅ Todo limpiado"
 | `playwright-report/` | Reporte de Playwright (todos los casos) |
 | `test-results/` | Resultados tÃ©cnicos |
 | `screenshots/` | TODAS las screenshots |
+| `errors/` | Screenshots de errores |
 | `registros-administrados.json` | Datos de administrados registrados |
 | `reporte-administrados.html` | Reporte HTML |
 
@@ -114,7 +117,7 @@ echo "✅ Todo limpiado"
 ```powershell
 # Terminal 1 - Limpiar y ejecutar
 cd "d:\SUNEDU\SELENIUM\playwrigth"
-Remove-Item -Path allure-results, allure-report, playwright-report, test-results, screenshots, registros-administrados.json, reporte-administrados.html -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item -Path allure-results, allure-report, playwright-report, test-results, screenshots, errors, registros-administrados.json, reporte-administrados.html -Recurse -Force -ErrorAction SilentlyContinue
 npm run test:all
 
 # Terminal 2 - Ver Allure (después que termine)

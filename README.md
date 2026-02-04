@@ -18,6 +18,18 @@
 npm run test:all
 ```
 
+## ▶️ Modos de ejecución y capturas
+- Headless con capturas: `npm run test:02`
+- Headed con capturas: `npm run test:02 -- --headed`
+- Headless sin capturas: `npm run test:02:fast`
+- Headed sin capturas: `npm run test:02:fast -- --headed`
+
+Las capturas de error se guardan siempre en `errors/`. Las capturas exitosas dependen del modo de ejecución.
+
+
+## 🎲 Variedad en datos de prueba
+En los casos que agregan varios registros de detalle (por ejemplo, sanciones), los dropdowns seleccionan aleatoriamente entre las primeras 5 opciones, evitando repetir la misma opción en la misma ejecución. Esto garantiza variedad y robustez en los datos generados por los tests.
+
 ## ✅ Extensiones requeridas (VS Code)
 - Playwright Test for VS Code (`ms-playwright.playwright`)
 - ESLint (`dbaeumer.vscode-eslint`)

@@ -9,6 +9,9 @@
 ## 🧭 Índice por temas
 ### Ejecución
 - [GUIA_OPERATIVA.md](GUIA_OPERATIVA.md) (ejecutar, limpiar, reportes, UI mode)
+- CI con sharding: [../.github/workflows/playwright-ci.yml](../.github/workflows/playwright-ci.yml)
+- Plantilla paso a paso: [PLANTILLA_PASO_A_PASO.md](PLANTILLA_PASO_A_PASO.md)
+- Docker Playwright: [GUIA_DOCKER_PLAYWRIGHT.md](GUIA_DOCKER_PLAYWRIGHT.md)
 
 ### Casos de prueba
 - Catálogo y estado: [CASOS_PRUEBA_ACTUALES.md](CASOS_PRUEBA_ACTUALES.md)
