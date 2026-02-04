@@ -47,12 +47,14 @@ export async function flujoInicialeInfractionSancion(
       // No siempre aparece
     }
     
-    await page.waitForTimeout(1000);
+    await page.waitForTimeout(1500);
 
     // PASO 3: Navegar a Infractor y Sanción
     console.log('   3️⃣ Navegando a Infractor y Sanción...');
-    await page.getByRole('link', { name: /Infractor y Sanción/i }).click();
-    await page.waitForTimeout(1000);
+    const linkInfractor = page.getByRole('link', { name: /Infractor y Sanción/i });
+    await linkInfractor.waitFor({ state: 'visible', timeout: 15000 });
+    await linkInfractor.click({ timeout: 15000 });
+    await page.waitForTimeout(1500);
 
     console.log('✅ Flujo inicial completado\n');
     return true;
@@ -74,7 +76,8 @@ export async function abrirFormularioAgregarAdministrado(page: Page): Promise<bo
     
     // Buscar botón "Agregar" o similar
     const btnAgregar = page.getByRole('button').filter({ hasText: /Agregar|Nuevo/ }).first();
-    await btnAgregar.click({ timeout: 5000 });
+    await btnAgregar.waitFor({ state: 'visible', timeout: 15000 });
+    await btnAgregar.click({ timeout: 15000 });
     await page.waitForTimeout(500);
 
     console.log('   ✅ Formulario abierto\n');
@@ -97,8 +100,9 @@ export async function abrirFormularioRegistrarSancion(page: Page): Promise<boole
     
     // Buscar botón "Registrar Sancionar" o similar
     const btnRegistrar = page.getByRole('button', { name: /Registrar Sanc|Registrar Sancionar/i });
-    await btnRegistrar.click({ timeout: 5000 });
-    await page.waitForTimeout(1000);
+    await btnRegistrar.waitFor({ state: 'visible', timeout: 15000 });
+    await btnRegistrar.click({ timeout: 15000 });
+    await page.waitForTimeout(1500);
 
     console.log('   ✅ Formulario abierto\n');
     return true;

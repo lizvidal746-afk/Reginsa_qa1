@@ -1,7 +1,4 @@
-﻿# 📊 RESUMEN: OPTIMIZACIÓN, LIMPIEZA Y GRID (LEGACY)
-
-Este documento fue movido a docs/legacy/selenium-grid/RESUMEN_OPTIMIZACION_GRID.md.
-No se usa Selenium Grid en este proyecto.
+# 📊 RESUMEN: OPTIMIZACIÓN, LIMPIEZA Y GRID
 
 ## ✨ LO QUE SE AGREGÓ
 

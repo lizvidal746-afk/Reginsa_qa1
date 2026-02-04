@@ -29,8 +29,8 @@
 - Allure listo: [ALLURE_LISTO.md](ALLURE_LISTO.md)
 - Allure no aparece: [ALLURE_NO_APARECE_SOLUCION.md](ALLURE_NO_APARECE_SOLUCION.md)
 
-### Selenium Grid
-- Resumen de optimización y grid: [selenium-grid/RESUMEN_OPTIMIZACION_GRID.md](selenium-grid/RESUMEN_OPTIMIZACION_GRID.md)
+### Legacy
+- Selenium Grid (legacy): [legacy/selenium-grid/RESUMEN_OPTIMIZACION_GRID.md](legacy/selenium-grid/RESUMEN_OPTIMIZACION_GRID.md)
 
 ### Limpieza
 - Limpieza completa: [LIMPIAR_TODO.md](LIMPIAR_TODO.md)

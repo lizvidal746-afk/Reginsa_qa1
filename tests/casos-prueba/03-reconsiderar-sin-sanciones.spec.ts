@@ -10,6 +10,14 @@ import {
 } from '../utilidades/reginsa-actions';
 
 /**
+ * EJECUCIÓN (rápido)
+ * - Headless por defecto. Para ver navegador: `--headed`.
+ * - Con capturas: scripts normales `npm run test:*`.
+ * - Sin capturas: scripts `:fast`.
+ * - Paralelismo (suite completa): `npm run test:all:w2` / `test:all:w4`.
+ */
+
+/**
  * CASO 03: RECONSIDERAR SIN SANCIONES
  *
  * Flujo:

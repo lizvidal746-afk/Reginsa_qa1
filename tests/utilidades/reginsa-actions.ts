@@ -17,67 +17,77 @@ const CREDENCIALES = {
  * Realiza login + navegación en una sola llamada
  * Reutilizable en todos los tests
  */
-export async function iniciarSesionYNavegar(page: Page, modulo: 'infractor' | 'sancion' = 'infractor'): Promise<void> {
+export async function iniciarSesionYNavegar(
+  page: Page,
+  modulo: 'infractor' | 'administrado' | 'sancion' = 'infractor'
+): Promise<void> {
   console.log('🔐 INICIALIZANDO SESIÓN Y NAVEGACIÓN...');
   
   try {
     // Navegar a home
     await page.goto(CREDENCIALES.url);
-    await page.waitForLoadState('networkidle');
-    
-    // Click en "Acceder Ahora"
-    await page.getByRole('button', { name: 'Acceder Ahora' }).click();
-    await page.waitForTimeout(800);
 
-    // Ingresar usuario
-    const inputUsuario = page.getByRole('textbox', { name: 'Usuario' });
-    await inputUsuario.waitFor({ state: 'visible' });
-    await inputUsuario.fill(CREDENCIALES.usuario);
-    await page.waitForTimeout(300);
+    // Si ya hay sesión, el botón "Acceder Ahora" no aparece
+    const btnAcceder = page.getByRole('button', { name: 'Acceder Ahora' });
+    const requiereLogin = await btnAcceder.isVisible().catch(() => false);
 
-    // Ingresar contraseña
-    const inputContraseña = page.getByRole('textbox', { name: 'Contraseña' });
-    await inputContraseña.fill(CREDENCIALES.contraseña);
-    await page.waitForTimeout(300);
+    if (requiereLogin) {
+      await btnAcceder.click();
+      await page.waitForTimeout(800);
 
-    // Iniciar sesión
-    await page.getByRole('button', { name: 'Iniciar sesión' }).click();
-    await page.waitForLoadState('networkidle');
-    await page.waitForTimeout(1500);
+      // Ingresar usuario
+      const inputUsuario = page.getByRole('textbox', { name: 'Usuario' });
+      await inputUsuario.waitFor({ state: 'visible' });
+      await inputUsuario.fill(CREDENCIALES.usuario);
+      await page.waitForTimeout(300);
 
-    console.log('✅ Sesión iniciada');
+      // Ingresar contraseña
+      const inputContraseña = page.getByRole('textbox', { name: 'Contraseña' });
+      await inputContraseña.fill(CREDENCIALES.contraseña);
+      await page.waitForTimeout(300);
+
+      // Iniciar sesión
+      await page.getByRole('button', { name: 'Iniciar sesión' }).click();
+      await page.waitForTimeout(1500);
+
+      console.log('✅ Sesión iniciada');
+    } else {
+      console.log('✅ Sesión ya activa (login omitido)');
+    }
+
+    const navegar = async (regex: RegExp, etiqueta: string): Promise<void> => {
+      // Esperar a que el menú tenga links cargados
+      await page.getByRole('link').first().waitFor({ state: 'visible', timeout: 30000 });
+
+      const link = page.getByRole('link', { name: regex });
+      if (await link.isVisible().catch(() => false)) {
+        await link.click({ timeout: 30000 });
+        return;
+      }
+
+      const linkAlt = page.locator(`a:has-text("${etiqueta}")`).first();
+      if (await linkAlt.isVisible().catch(() => false)) {
+        await linkAlt.click({ timeout: 30000 });
+        return;
+      }
+
+      throw new Error(`No se encontró el módulo ${etiqueta}.`);
+    };
 
     // Navegar al módulo solicitado - Con reintentos y alternativas
-    try {
-      // Intento 1: Selector exacto
-      const linkInfractor = page.getByRole('link', { name: /Infractor y Sanción/ });
-      await linkInfractor.waitFor({ state: 'visible', timeout: 5000 });
-      await linkInfractor.click();
-    } catch {
-      console.log('⚠️ No encontrado con selector exacto, intentando alternativa...');
-      try {
-        // Intento 2: Selector parcial
-        const linkAlt = page.locator('a:has-text("Infractor")');
-        await linkAlt.first().click();
-      } catch {
-        console.log('⚠️ Segundo intento falló, intentando tercera alternativa...');
-        // Intento 3: Buscar todos los links
-        const links = await page.getByRole('link').all();
-        for (const link of links) {
-          const text = await link.textContent();
-          if (text?.includes('Infractor')) {
-            await link.click();
-            break;
-          }
-        }
-      }
-    }
+    const regexModulo = modulo === 'administrado'
+      ? /Administrado|Administrados/i
+      : /Infractor y Sanción/i;
+    const etiqueta = modulo === 'administrado' ? 'Administrado' : 'Infractor';
+
+    await navegar(regexModulo, etiqueta);
+
+    console.log(modulo === 'administrado'
+      ? '✅ Módulo Administrado cargado'
+      : '✅ Módulo Infractor y Sanción cargado');
     
-    await page.waitForLoadState('networkidle');
     await page.waitForTimeout(1000);
 
-    console.log('✅ Módulo Infractor y Sanción cargado');
-    
   } catch (error) {
     console.error('❌ Error en inicialización:', error);
     throw error;
@@ -503,10 +513,31 @@ export async function abrirFormularioNuevoAdministrado(page: Page): Promise<void
   console.log('➕ Abriendo formulario nuevo administrado...');
   
   await page.waitForLoadState('networkidle');
-  const boton = await page.getByRole('button').nth(3);
-  await boton.waitFor({ state: 'visible', timeout: 10000 });
-  await boton.click();
-  await page.waitForTimeout(1000);
+  const candidatos = [
+    page.getByRole('button', { name: /Nuevo administrado|Nuevo/i }).first(),
+    page.getByRole('button', { name: /Agregar|Registrar|Administrado/i }).first(),
+    page.locator('button:has-text("Nuevo")').first(),
+    page.locator('button:has-text("Agregar")').first()
+  ];
+
+  let abierto = false;
+  for (const boton of candidatos) {
+    if (await boton.isVisible().catch(() => false)) {
+      await boton.scrollIntoViewIfNeeded().catch(() => {});
+      await boton.click();
+      abierto = true;
+      break;
+    }
+  }
+
+  if (!abierto) {
+    const botonFallback = page.getByRole('button').nth(3);
+    await botonFallback.waitFor({ state: 'visible', timeout: 10000 });
+    await botonFallback.click();
+  }
+
+  await page.locator('form').first().waitFor({ state: 'visible', timeout: 10000 }).catch(() => {});
+  await page.waitForTimeout(500);
 
   console.log('✅ Formulario abierto');
 }
@@ -516,13 +547,115 @@ export async function abrirFormularioNuevoAdministrado(page: Page): Promise<void
  */
 export async function abrirFormularioRegistrarSancion(page: Page): Promise<void> {
   console.log('➕ Abriendo formulario registrar sanción...');
-  // Solo usar la alternativa directamente
-  const botonAlt = page.getByRole('button').filter({ hasText: /Registrar|Sanción/ }).first();
-  await botonAlt.waitFor({ state: 'visible', timeout: 10000 });
-  await botonAlt.click();
+  await page.waitForLoadState('networkidle');
+
+  const candidatos = [
+    page.getByRole('button').filter({ hasText: /Registrar\s*Sanci[oó]n|Registrar|Sanci[oó]n/i }).first(),
+    page.getByRole('button', { name: /Registrar\s*Sanci[oó]n|Registrar|Sanci[oó]n/i }).first(),
+    page.locator('button:has-text("Registrar")').first(),
+    page.locator('button:has-text("Sanción")').first(),
+    page.locator('button:has-text("Sancion")').first()
+  ];
+
+  let abierto = false;
+  for (let intento = 1; intento <= 3 && !abierto; intento++) {
+    for (const boton of candidatos) {
+      if (await boton.isVisible().catch(() => false)) {
+        await boton.scrollIntoViewIfNeeded().catch(() => {});
+        await boton.click({ timeout: 45000 }).catch(() => {});
+        abierto = true;
+        break;
+      }
+    }
+
+    if (!abierto) {
+      console.log(`⚠️ Botón no visible (intento ${intento}/3). Esperando y reintentando...`);
+      await page.waitForTimeout(2000);
+      await page.waitForLoadState('networkidle');
+    }
+  }
+
+  if (!abierto) {
+    const botonAlt = page.getByRole('button').filter({ hasText: /Registrar|Sanci[oó]n/i }).first();
+    await botonAlt.waitFor({ state: 'visible', timeout: 45000 });
+    await botonAlt.click({ timeout: 45000 });
+  }
+
   // Espera inteligente: esperar a que el formulario/modal esté visible
-  await page.locator('form').waitFor({ state: 'visible', timeout: 10000 });
+  await page.locator('form').first().waitFor({ state: 'visible', timeout: 45000 });
   console.log('✅ Formulario abierto');
+}
+
+// ===============================
+// EXPORTAR ADMINISTRADOS
+// ===============================
+
+export interface AdministradoListado {
+  ruc: string;
+  razonSocial: string;
+  nombreComercial?: string;
+  estado?: string;
+}
+
+export async function extraerAdministradosDesdeTabla(
+  page: Page,
+  maxPaginas: number = 5
+): Promise<AdministradoListado[]> {
+  const resultados: AdministradoListado[] = [];
+
+  const tabla = page.locator('table').first();
+  await tabla.waitFor({ state: 'visible', timeout: 10000 });
+
+  const obtenerIndiceColumna = async (regex: RegExp): Promise<number> => {
+    const headers = tabla.locator('thead tr th');
+    const total = await headers.count();
+    for (let i = 0; i < total; i++) {
+      const texto = (await headers.nth(i).textContent())?.trim() || '';
+      if (regex.test(texto)) return i;
+    }
+    return -1;
+  };
+
+  const idxRuc = await obtenerIndiceColumna(/R\.?U\.?C|RUC/i);
+  const idxRazon = await obtenerIndiceColumna(/Raz[oó]n\s+Social/i);
+  const idxNombre = await obtenerIndiceColumna(/Nombre\s+Comercial/i);
+  const idxEstado = await obtenerIndiceColumna(/Estado/i);
+
+  let pagina = 1;
+  while (pagina <= maxPaginas) {
+    const filas = tabla.locator('tbody tr');
+    const totalFilas = await filas.count();
+    if (totalFilas === 0) break;
+
+    for (let i = 0; i < totalFilas; i++) {
+      const celdas = filas.nth(i).locator('td');
+      const totalCeldas = await celdas.count();
+      if (totalCeldas === 0) continue;
+
+      const ruc = idxRuc >= 0 ? (await celdas.nth(idxRuc).textContent())?.trim() || '' : '';
+      const razon = idxRazon >= 0 ? (await celdas.nth(idxRazon).textContent())?.trim() || '' : '';
+      const nombre = idxNombre >= 0 ? (await celdas.nth(idxNombre).textContent())?.trim() || '' : '';
+      const estado = idxEstado >= 0 ? (await celdas.nth(idxEstado).textContent())?.trim() || '' : '';
+
+      if (ruc || razon) {
+        resultados.push({
+          ruc,
+          razonSocial: razon,
+          nombreComercial: nombre || undefined,
+          estado: estado || undefined
+        });
+      }
+    }
+
+    const btnNext = page.getByRole('button', { name: /Next Page|Siguiente|>/i });
+    const puedeAvanzar = await btnNext.isEnabled().catch(() => false);
+    if (!puedeAvanzar) break;
+    await btnNext.click();
+    await page.waitForTimeout(800);
+    pagina++;
+  }
+
+  return resultados;
 }
 
 /**

@@ -17,6 +17,15 @@
    npm run reports:open
    ```
 
+### Resumen de ejecuciones (Chromium por defecto)
+- `npm run test:01` / `test:02` / `test:03` / `test:04` — Casos individuales
+- `npm run test:all` — Suite completa
+- `npm run test:all:w2` / `test:all:w4` — Suite completa con **workers** (paralelismo en una PC)
+- `npm run test:all:shard-1of2` ... `test:all:shard-2of2` — **Shards** (partes separadas)
+- `npm run test:all:cf` — Suite completa en Chromium + Firefox
+
+> **Workers** = paralelismo dentro de la misma PC. **Shards** = dividir la suite en partes y ejecutarlas por separado.
+
 ---
 
 ## ✅ Opción B: Clonado (Git)
@@ -40,6 +49,15 @@
    ```powershell
    npm run reports:open
    ```
+
+### Resumen de ejecuciones (Chromium por defecto)
+- `npm run test:01` / `test:02` / `test:03` / `test:04` — Casos individuales
+- `npm run test:all` — Suite completa
+- `npm run test:all:w2` / `test:all:w4` — Suite completa con **workers** (paralelismo en una PC)
+- `npm run test:all:shard-1of2` ... `test:all:shard-2of2` — **Shards** (partes separadas)
+- `npm run test:all:cf` — Suite completa en Chromium + Firefox
+
+> **Workers** = paralelismo dentro de la misma PC. **Shards** = dividir la suite en partes y ejecutarlas por separado.
 
 ---
 

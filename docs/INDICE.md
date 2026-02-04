@@ -9,6 +9,7 @@
 ## 🧭 Índice por temas
 ### Ejecución
 - [GUIA_OPERATIVA.md](GUIA_OPERATIVA.md) (ejecutar, limpiar, reportes, UI mode)
+- Guía de ejecución detallada: [README_EJECUCION.md](README_EJECUCION.md)
 - CI con sharding: [../.github/workflows/playwright-ci.yml](../.github/workflows/playwright-ci.yml)
 - Plantilla paso a paso: [PLANTILLA_PASO_A_PASO.md](PLANTILLA_PASO_A_PASO.md)
 - Docker Playwright: [GUIA_DOCKER_PLAYWRIGHT.md](GUIA_DOCKER_PLAYWRIGHT.md)
@@ -20,6 +21,7 @@
   - [../tests/casos-prueba/02-registrar-sancion.spec.ts](../tests/casos-prueba/02-registrar-sancion.spec.ts)
   - [../tests/casos-prueba/03-reconsiderar-sin-sanciones.spec.ts](../tests/casos-prueba/03-reconsiderar-sin-sanciones.spec.ts)
   - [../tests/casos-prueba/04-reconsiderar-con-sanciones.spec.ts](../tests/casos-prueba/04-reconsiderar-con-sanciones.spec.ts)
+  - [../tests/casos-prueba/05-exportar-administrados.spec.ts](../tests/casos-prueba/05-exportar-administrados.spec.ts)
 
 ### Utilidades y arquitectura
 - Acciones reutilizables: [../tests/utilidades/reginsa-actions.ts](../tests/utilidades/reginsa-actions.ts)
@@ -34,8 +36,9 @@
 - Allure listo: [ALLURE_LISTO.md](ALLURE_LISTO.md)
 - Allure no aparece: [ALLURE_NO_APARECE_SOLUCION.md](ALLURE_NO_APARECE_SOLUCION.md)
 
-### Selenium Grid
-- Resumen de optimización y grid: [selenium-grid/RESUMEN_OPTIMIZACION_GRID.md](selenium-grid/RESUMEN_OPTIMIZACION_GRID.md)
+### Legacy
+- Selenium Grid (legacy): [legacy/selenium-grid/RESUMEN_OPTIMIZACION_GRID.md](legacy/selenium-grid/RESUMEN_OPTIMIZACION_GRID.md)
+- Criterio legacy: [legacy/README.md](legacy/README.md)
 
 ### Limpieza
 - Limpieza completa: [LIMPIAR_TODO.md](LIMPIAR_TODO.md)

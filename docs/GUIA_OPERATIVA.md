@@ -1,26 +1,84 @@
 ﻿# 🧭 Guía Operativa (Ejecución, Limpieza y Reportes)
 
 ## ✅ Ejecución rápida
+> **Headless por defecto**: los scripts ejecutan sin ventana visible. Para ver navegador, agrega `--headed`.
+> **Capturas por defecto**: los scripts normales generan capturas; los `:fast` las omiten.
+
 ### OpciÃ³n recomendada (PowerShell)
 ```powershell
-npm run test:all
+npm run test:all   # Suite completa (Chromium, 1 worker)
 ```
 
 ### Casos individuales
 ```powershell
-npm run test:01
-npm run test:02
-npm run test:03
-npm run test:04
+npm run test:01   # Caso 01 (Chromium, 1 worker)
+npm run test:02   # Caso 02 (Chromium, 1 worker)
+npm run test:03   # Caso 03 (Chromium, 1 worker)
+npm run test:04   # Caso 04 (Chromium, 1 worker)
+npm run test:05   # Caso 05 (Listar administrados, utilidad opcional)
+```
+
+> Para ejecutar el Caso 05 debes activar `RUN_ADMIN_CHECK=1`.
+
+### Subconjuntos listos
+```powershell
+npm run test:123       # Casos 01 + 02 + 03 (Chromium)
+npm run test:124       # Casos 01 + 02 + 04 (Chromium)
+npm run test:134       # Casos 01 + 03 + 04 (Chromium)
+npm run test:123:fast  # Igual sin capturas
+npm run test:124:fast  # Igual sin capturas
+npm run test:134:fast  # Igual sin capturas
 ```
 
 ### Casos rápidos sin capturas
 ```powershell
-npm run test:01:fast
-npm run test:02:fast
-npm run test:03:fast
-npm run test:04:fast
-npm run test:all:fast
+npm run test:01:fast   # Caso 01 sin capturas
+npm run test:02:fast   # Caso 02 sin capturas
+npm run test:03:fast   # Caso 03 sin capturas
+npm run test:04:fast   # Caso 04 sin capturas
+npm run test:all:fast  # Suite completa sin capturas
+```
+
+### Paralelismo con workers (mismo equipo)
+> **Workers** = paralelismo dentro de la misma PC (división automática por tests).
+```powershell
+npm run test:all:w2   # Suite completa con 2 workers (Chromium)
+npm run test:all:w4   # Suite completa con 4 workers (Chromium)
+```
+
+> `test:all:w2` ejecuta **todos los casos** en paralelo (Chromium).
+
+### Shards (dividir la suite en partes)
+> **Shards** = dividir la suite y ejecutar cada parte por separado.
+```powershell
+npm run test:all:shard-1of2   # Parte 1/2 (Chromium)
+npm run test:all:shard-2of2   # Parte 2/2 (Chromium)
+npm run test:all:shard-1of2:fast  # Parte 1/2 sin capturas
+npm run test:all:shard-2of2:fast  # Parte 2/2 sin capturas
+npm run test:all:shard-1of4   # Parte 1/4 (Chromium)
+npm run test:all:shard-2of4   # Parte 2/4 (Chromium)
+npm run test:all:shard-3of4   # Parte 3/4 (Chromium)
+npm run test:all:shard-4of4   # Parte 4/4 (Chromium)
+npm run test:all:shard-1of4:fast  # Parte 1/4 sin capturas
+npm run test:all:shard-2of4:fast  # Parte 2/4 sin capturas
+npm run test:all:shard-3of4:fast  # Parte 3/4 sin capturas
+npm run test:all:shard-4of4:fast  # Parte 4/4 sin capturas
+```
+
+### Multinavegador (Chromium + Firefox)
+```powershell
+npm run test:all:cf       # Suite completa en Chromium y Firefox
+npm run test:all:cf:fast  # Igual que arriba, sin capturas
+npm run test:all:cf:w2     # Chromium + Firefox con 2 workers
+npm run test:all:cf:w4     # Chromium + Firefox con 4 workers
+npm run test:all:cf:w2:fast  # Chromium + Firefox, 2 workers, sin capturas
+npm run test:all:cf:w4:fast  # Chromium + Firefox, 4 workers, sin capturas
+```
+
+### Workers + Shards (combinación)
+> Se combinan agregando `--workers=N` a un shard.
+```powershell
+npm run test:all:shard-1of2 -- --workers=2
 ```
 
 ### Ver ejecuciÃ³n en vivo (UI Mode)

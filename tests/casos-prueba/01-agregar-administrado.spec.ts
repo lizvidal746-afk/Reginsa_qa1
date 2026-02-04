@@ -12,6 +12,14 @@ import {
 } from '../utilidades/reginsa-actions';
 
 /**
+ * EJECUCIÓN (rápido)
+ * - Headless por defecto. Para ver navegador: `--headed`.
+ * - Con capturas: scripts normales `npm run test:*`.
+ * - Sin capturas: scripts `:fast`.
+ * - Paralelismo (suite completa): `npm run test:all:w2` / `test:all:w4`.
+ */
+
+/**
  * NOTA DE EJECUCIÓN
  * - Capturas exitosas dependen del modo de ejecución (scripts con o sin :fast).
  * - Capturas de error se guardan siempre en la carpeta errors/.
@@ -19,6 +27,7 @@ import {
 
 // Ruta del archivo de reporte
 const reportPath = path.join(__dirname, '../../reportes/registros-administrados.json');
+const administradosSistemaPath = path.join(__dirname, '../../reportes/administrados-registrados.json');
 
 // ===============================
 // INTERFACES Y TIPOS
@@ -48,6 +57,15 @@ function leerRegistrosExistentes(): RegistroAdministrado[] {
   }
   const contenido = fs.readFileSync(reportPath, 'utf-8');
   return JSON.parse(contenido) as RegistroAdministrado[];
+}
+
+function leerAdministradosSistema(): Array<{ ruc?: string; razonSocial?: string }> {
+  if (!fs.existsSync(administradosSistemaPath)) {
+    return [];
+  }
+  const contenido = fs.readFileSync(administradosSistemaPath, 'utf-8');
+  const data = JSON.parse(contenido) as { registros?: Array<{ ruc?: string; razonSocial?: string }> };
+  return Array.isArray(data?.registros) ? data.registros : [];
 }
 
 function normalizarTexto(texto: string): string {
@@ -115,6 +133,11 @@ async function registrarAdministrado(page: Page, numeroRegistro: number): Promis
   const registrosExistentes = leerRegistrosExistentes();
   const rucsRegistrados = new Set(registrosExistentes.map(r => normalizarTexto(r.ruc)));
   const razonesRegistradas = new Set(registrosExistentes.map(r => normalizarTexto(r.razonSocial)));
+  const administradosSistema = leerAdministradosSistema();
+  administradosSistema.forEach((item) => {
+    if (item.ruc) rucsRegistrados.add(normalizarTexto(item.ruc));
+    if (item.razonSocial) razonesRegistradas.add(normalizarTexto(item.razonSocial));
+  });
 
   for (let intento = 0; intento < maxReintentos; intento++) {
     // Generar RUC único (reutiliza `generarRUC`)

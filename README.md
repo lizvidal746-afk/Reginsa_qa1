@@ -3,6 +3,7 @@
 ## ✅ Punto de entrada oficial
 - Documentación maestra: [docs/INDICE.md](docs/INDICE.md)
 - Guía operativa: [docs/GUIA_OPERATIVA.md](docs/GUIA_OPERATIVA.md)
+- Guía de ejecución detallada: [docs/README_EJECUCION.md](docs/README_EJECUCION.md)
 - Glosario + plantilla profesional: [docs/GLOSARIO_PLANTILLA.md](docs/GLOSARIO_PLANTILLA.md)
 - Reutilización y puntos modificables: [docs/REUTILIZACION.md](docs/REUTILIZACION.md)
 - Árbol del proyecto: [docs/ARBOL_PROYECTO.md](docs/ARBOL_PROYECTO.md)
@@ -12,6 +13,7 @@
 - [tests/casos-prueba/02-registrar-sancion.spec.ts](tests/casos-prueba/02-registrar-sancion.spec.ts)
 - [tests/casos-prueba/03-reconsiderar-sin-sanciones.spec.ts](tests/casos-prueba/03-reconsiderar-sin-sanciones.spec.ts)
 - [tests/casos-prueba/04-reconsiderar-con-sanciones.spec.ts](tests/casos-prueba/04-reconsiderar-con-sanciones.spec.ts)
+- [tests/casos-prueba/05-exportar-administrados.spec.ts](tests/casos-prueba/05-exportar-administrados.spec.ts) (utilidad opcional)
 
 ## 🚀 Ejecución rápida
 ```powershell
