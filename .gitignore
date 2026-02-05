@@ -23,4 +23,16 @@ videos/
 !docs/legacy/**
 !scripts/
 !scripts/**
+!scripts/limpieza/
+!scripts/limpieza/**
+!reports/
+!reports/**
+!docs/scripts/
+!docs/scripts/**
+!docs/scripts/reportes/
+!docs/scripts/reportes/**
+!docs/scripts/utilidades/
+!docs/scripts/utilidades/**
+!docs/scripts/limpieza/
+!docs/scripts/limpieza/**
 
