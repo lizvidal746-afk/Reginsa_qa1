@@ -36,7 +36,7 @@ import {
  */
 
 test.describe('03-RECONSIDERAR SIN SANCIONES', () => {
-  test('Reconsiderar sanción con campos vacíos - búsqueda dinámica', async ({ page }) => {
+  test('Reconsiderar sanción con campos vacíos - búsqueda dinámica', async ({ page }, testInfo) => {
     test.setTimeout(300000); // 5 minutos - evitar timeout en flujo completo
     const nombreCaso = '03-reconsiderar-sin-sanciones';
 
@@ -49,7 +49,7 @@ test.describe('03-RECONSIDERAR SIN SANCIONES', () => {
       // Reutiliza `iniciarSesionYNavegar`
       // ═══════════════════════════════════════════════════════════════════
       console.log('🔐 PASO 1: Inicializando sesión...');
-      await iniciarSesionYNavegar(page, 'infractor');
+      await iniciarSesionYNavegar(page, 'infractor', testInfo.workerIndex);
       console.log('✅ Sesión iniciada\n');
 
       // ═══════════════════════════════════════════════════════════════════

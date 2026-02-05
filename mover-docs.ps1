@@ -1,5 +1,5 @@
 ﻿# Wrapper de utilidades/soporte.
-# Script real: docs\scripts\utilidades\mover-docs.ps1
+# Script real: scripts\utilidades\mover-docs.ps1
 $ErrorActionPreference = 'Stop'
-& "$PSScriptRoot\docs\scripts\utilidades\mover-docs.ps1"
+& "$PSScriptRoot\scripts\utilidades\mover-docs.ps1"
 

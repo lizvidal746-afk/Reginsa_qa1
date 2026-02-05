@@ -1,4 +1,7 @@
-﻿# âš¡ EjecuciÃ³n AutomÃ¡tica de Tests + Reportes
+﻿> ⚠️ **Movido a docs/REPORTES_AUTOMATICOS.md**
+> Esta copia queda solo como histórico. No editar aquí.
+
+# âš¡ EjecuciÃ³n AutomÃ¡tica de Tests + Reportes
 
 ## ðŸŽ¯ MÃ©todos de EjecuciÃ³n
 

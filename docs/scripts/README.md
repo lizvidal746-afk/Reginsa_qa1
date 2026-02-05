@@ -1,13 +1,10 @@
-# 🧩 Scripts organizados
+# 🧩 Scripts organizados (movidos)
 
-Esta carpeta contiene los scripts `.bat`, `.ps1` y `.sh` organizados por:
+Los scripts `.bat`, `.ps1` y `.sh` se movieron a la carpeta [scripts/](../scripts/).
 
-- **caso-01**: ejecución específica del Caso 01
-- **caso-02**: ejecución/limpieza específica del Caso 02
-- **caso-04**: validación/limpieza del Caso 04
-- **ejecucion**: ejecución general de tests
-- **limpieza**: limpieza de reportes y datos
-- **reportes**: apertura de reportes
-- **utilidades**: helpers y scripts varios
+Usa:
 
-> Se puede mantener compatibilidad dejando wrappers en la raíz con el mismo nombre.
+- Carpeta [scripts/](../scripts/) para ejecutar directamente.
+- Wrappers en la raíz para compatibilidad.
+
+Esta carpeta queda solo como referencia histórica y debe considerarse obsoleta.

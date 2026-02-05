@@ -8,8 +8,29 @@ import { Page, expect } from '@playwright/test';
 // Credenciales
 const CREDENCIALES = {
   url: 'https://reginsaqa.sunedu.gob.pe/#/home',
-  usuario: 'lizvidal',
-  contraseña: 'QA1234510qa'
+  usuarios: [
+    { usuario: 'lizvidal', contraseña: 'QA1234510qa' },
+    { usuario: 'anahuaman', contraseña: 'QA1234512qa' },
+    { usuario: 'lgvidalm', contraseña: 'QA12345qa' },
+    { usuario: 'lgvidal', contraseña: 'QA12345qa' }
+  ]
+};
+
+const usuarioEnv = process.env.REGINSA_USER;
+const contraseñaEnv = process.env.REGINSA_PASS;
+
+const seleccionarCredencial = (workerIndex?: number): { usuario: string; contraseña: string } => {
+  if (usuarioEnv && contraseñaEnv) {
+    return { usuario: usuarioEnv, contraseña: contraseñaEnv };
+  }
+  const usuarios = CREDENCIALES.usuarios;
+  if (usuarios.length === 0) {
+    return { usuario: '', contraseña: '' };
+  }
+  if (typeof workerIndex === 'number') {
+    return usuarios[workerIndex % usuarios.length];
+  }
+  return usuarios[0];
 };
 
 /**
@@ -19,13 +40,27 @@ const CREDENCIALES = {
  */
 export async function iniciarSesionYNavegar(
   page: Page,
-  modulo: 'infractor' | 'administrado' | 'sancion' = 'infractor'
+  modulo: 'infractor' | 'administrado' | 'sancion' = 'infractor',
+  workerIndex?: number
 ): Promise<void> {
   console.log('🔐 INICIALIZANDO SESIÓN Y NAVEGACIÓN...');
+  const credencialActiva = seleccionarCredencial(workerIndex);
   
   try {
     // Navegar a home
     await page.goto(CREDENCIALES.url);
+    await page.waitForLoadState('domcontentloaded');
+
+    if (typeof workerIndex === 'number' || process.env.REGINSA_FORCE_LOGIN === '1') {
+      await page.evaluate(() => {
+        localStorage.clear();
+        sessionStorage.clear();
+      }).catch(() => {});
+      await page.context().clearCookies().catch(() => {});
+      await page.reload();
+      await page.waitForLoadState('domcontentloaded');
+    }
+    await page.waitForLoadState('domcontentloaded');
 
     // Si ya hay sesión, el botón "Acceder Ahora" no aparece
     const btnAcceder = page.getByRole('button', { name: 'Acceder Ahora' });
@@ -38,16 +73,17 @@ export async function iniciarSesionYNavegar(
       // Ingresar usuario
       const inputUsuario = page.getByRole('textbox', { name: 'Usuario' });
       await inputUsuario.waitFor({ state: 'visible' });
-      await inputUsuario.fill(CREDENCIALES.usuario);
+      await inputUsuario.fill(credencialActiva.usuario);
       await page.waitForTimeout(300);
 
       // Ingresar contraseña
       const inputContraseña = page.getByRole('textbox', { name: 'Contraseña' });
-      await inputContraseña.fill(CREDENCIALES.contraseña);
+      await inputContraseña.fill(credencialActiva.contraseña);
       await page.waitForTimeout(300);
 
       // Iniciar sesión
       await page.getByRole('button', { name: 'Iniciar sesión' }).click();
+      await page.waitForLoadState('networkidle').catch(() => {});
       await page.waitForTimeout(1500);
 
       console.log('✅ Sesión iniciada');
@@ -57,7 +93,18 @@ export async function iniciarSesionYNavegar(
 
     const navegar = async (regex: RegExp, etiqueta: string): Promise<void> => {
       // Esperar a que el menú tenga links cargados
-      await page.getByRole('link').first().waitFor({ state: 'visible', timeout: 30000 });
+      await page.waitForLoadState('domcontentloaded');
+      await page.waitForLoadState('networkidle').catch(() => {});
+      await page.waitForTimeout(1000);
+
+      const primerItem = page.locator('a, [role="link"], [role="menuitem"]').first();
+      if (!(await primerItem.isVisible().catch(() => false))) {
+        await page.reload();
+        await page.waitForLoadState('domcontentloaded');
+        await page.waitForLoadState('networkidle').catch(() => {});
+      }
+
+      await primerItem.waitFor({ state: 'visible', timeout: 60000 });
 
       const link = page.getByRole('link', { name: regex });
       if (await link.isVisible().catch(() => false)) {
@@ -511,32 +558,71 @@ export async function completarCabeceraReconsideracion(
  */
 export async function abrirFormularioNuevoAdministrado(page: Page): Promise<void> {
   console.log('➕ Abriendo formulario nuevo administrado...');
+  const dialogAbierto = page.getByRole('dialog').filter({ hasText: /Agregar\s*Administrado/i }).first();
+  if (await dialogAbierto.isVisible().catch(() => false)) {
+    console.log('✅ Formulario ya abierto');
+    return;
+  }
   
   await page.waitForLoadState('networkidle');
+  const overlay = page.locator('.p-dialog-mask, .p-component-overlay');
+  if (await overlay.isVisible().catch(() => false)) {
+    await overlay.first().waitFor({ state: 'hidden', timeout: 10000 }).catch(async () => {
+      await page.keyboard.press('Escape').catch(() => {});
+      await overlay.first().waitFor({ state: 'hidden', timeout: 5000 }).catch(() => {});
+    });
+  }
   const candidatos = [
+    page.locator('div.flex.align-items-end button.btn-royal-blue.p-button-icon-only:has(span.pi.pi-user-plus)').first(),
+    page.locator('div.flex.align-items-end span.pi.pi-user-plus').first().locator('xpath=ancestor::button[1]'),
+    page.getByRole('button', { name: /Agregar\s*Administrado|Nuevo\s*Administrado|Administrado/i }).first(),
     page.getByRole('button', { name: /Nuevo administrado|Nuevo/i }).first(),
     page.getByRole('button', { name: /Agregar|Registrar|Administrado/i }).first(),
     page.locator('button:has-text("Nuevo")').first(),
-    page.locator('button:has-text("Agregar")').first()
+    page.locator('button:has-text("Agregar")').first(),
+    page.locator('button:has(span.pi.pi-user-plus)').first(),
+    page.locator('span.pi.pi-user-plus').first().locator('xpath=ancestor::button[1]'),
+    page.locator('button.ant-btn-primary.ant-btn-icon-only').first(),
+    page.locator('button.ant-btn-primary').first()
   ];
 
   let abierto = false;
   for (const boton of candidatos) {
     if (await boton.isVisible().catch(() => false)) {
       await boton.scrollIntoViewIfNeeded().catch(() => {});
-      await boton.click();
+      await boton.click({ force: true }).catch(() => {});
       abierto = true;
       break;
     }
   }
 
   if (!abierto) {
-    const botonFallback = page.getByRole('button').nth(3);
+    const botonFallback = page.locator('button.ant-btn-primary').first();
     await botonFallback.waitFor({ state: 'visible', timeout: 10000 });
-    await botonFallback.click();
+    await botonFallback.click({ force: true }).catch(() => {});
   }
 
-  await page.locator('form').first().waitFor({ state: 'visible', timeout: 10000 }).catch(() => {});
+  const modal = page.getByRole('dialog').filter({ hasText: /Agregar\s*Administrado/i }).first();
+  const modalAlt = page.locator('.ant-modal').filter({ hasText: /Agregar\s*Administrado/i }).first();
+  const modalUsado = (await modal.isVisible().catch(() => false)) ? modal : modalAlt;
+  await modalUsado.waitFor({ state: 'visible', timeout: 20000 }).catch(() => {});
+
+  const scope = (await modalUsado.isVisible().catch(() => false)) ? modalUsado : page;
+  const formulario = scope.locator('form').first();
+  await formulario.waitFor({ state: 'visible', timeout: 20000 }).catch(() => {});
+
+  const rucInput = scope.getByLabel(/R\.\?U\.\?C/i).first();
+  const rucInputFallback = scope.locator(
+    'input[formcontrolname*="ruc" i], input[name*="ruc" i], input[placeholder*="ruc" i], input[aria-label*="ruc" i]'
+  ).first();
+
+  if (await rucInput.isVisible().catch(() => false)) {
+    await rucInput.scrollIntoViewIfNeeded().catch(() => {});
+    await rucInput.waitFor({ state: 'visible', timeout: 20000 }).catch(() => {});
+  } else if (await rucInputFallback.isVisible().catch(() => false)) {
+    await rucInputFallback.scrollIntoViewIfNeeded().catch(() => {});
+    await rucInputFallback.waitFor({ state: 'visible', timeout: 20000 }).catch(() => {});
+  }
   await page.waitForTimeout(500);
 
   console.log('✅ Formulario abierto');

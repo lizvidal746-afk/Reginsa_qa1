@@ -1,6 +1,6 @@
 ﻿$ErrorActionPreference = "Stop"
 $root = "D:\SUNEDU\SELENIUM\playwrigth"
-$docsScripts = Join-Path $root "docs\scripts"
+$docsScripts = Join-Path $root "scripts"
 
 function Get-Descripcion($subdir, $name) {
   switch ($subdir) {
@@ -17,7 +17,7 @@ function Get-Descripcion($subdir, $name) {
 
 Get-ChildItem -Path $docsScripts -Recurse -File | Where-Object { $_.Extension -in ".bat", ".ps1", ".sh" } | ForEach-Object {
   $subdir = $_.Directory.Name
-  $relativeTarget = "docs\scripts\$subdir\$($_.Name)"
+  $relativeTarget = "scripts\$subdir\$($_.Name)"
   $wrapperPath = Join-Path $root $_.Name
   $descripcion = Get-Descripcion $subdir $_.Name
 

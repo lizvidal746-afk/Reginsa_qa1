@@ -1,3 +1,10 @@
+# Legacy
+
+Esta carpeta contiene documentación histórica y borradores
+que ya fueron utilizados para construir los documentos
+oficiales del proyecto.
+
+⚠️ No agregar documentación activa ni final aquí.
 # 📦 Legacy
 
 Esta carpeta contiene documentación **histórica, duplicada o no vigente**.

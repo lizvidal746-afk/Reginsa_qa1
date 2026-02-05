@@ -44,6 +44,9 @@ npm run test:all
 
 Ejemplo con repeticiones:
 - `npm run test:01:w4 -- --repeat-each=10` — Caso 01 con 4 workers y 10 repeticiones
+- `npm run test:02:w4 -- --repeat-each=10` — Caso 02 con 4 workers y 10 repeticiones
+- `npm run test:03:w4 -- --repeat-each=10` — Caso 03 con 4 workers y 10 repeticiones
+- `npm run test:04:w4 -- --repeat-each=10` — Caso 04 con 4 workers y 10 repeticiones
 
 #### Subconjuntos listos (sin paralelismo)
 - `npm run test:123` — Casos 01 + 02 + 03 (Chromium)
@@ -57,6 +60,11 @@ Ejemplo con repeticiones:
 - `npm run test:123:w2` / `npm run test:123:w4`
 - `npm run test:124:w2` / `npm run test:124:w4`
 - `npm run test:134:w2` / `npm run test:134:w4`
+
+#### Subconjuntos solicitados (workers específicos)
+- `npm run test:124 -- --workers=3` — Casos 01 + 02 + 04 con 3 workers
+- `npm run test:123 -- --workers=3` — Casos 01 + 02 + 03 con 3 workers
+- `npm run test:all:w4` — Casos 01 + 02 + 03 + 04 con 4 workers
 
 #### Todos los casos (sin paralelismo)
 - `npm run test:all` — Suite completa (Chromium, 1 worker, headless por defecto)

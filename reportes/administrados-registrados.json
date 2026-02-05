@@ -1,0 +1,544 @@
+{
+  "registros": [
+    {
+      "ruc": "07557829001",
+      "razonSocial": "UNIVERSIDAD COMERCIAL 6647 SAC",
+      "nombreComercial": "UNIVERSIDAD COMERCIAL 6647",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "08312549185",
+      "razonSocial": "EMPRESA COMERCIAL 7604 SRL",
+      "nombreComercial": "EMPRESA COMERCIAL 7604",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "41369968210",
+      "razonSocial": "EMPRESA COMERCIAL 7381 SRL",
+      "nombreComercial": "EMPRESA COMERCIAL 7381",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "86273392140",
+      "razonSocial": "UNIVERSIDAD COMERCIAL 9405 EIRL",
+      "nombreComercial": "UNIVERSIDAD COMERCIAL 9405",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "82108866230",
+      "razonSocial": "CORPORACION COMERCIAL 2990 EIRL",
+      "nombreComercial": "CORPORACION COMERCIAL 2990",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "57538567641",
+      "razonSocial": "INDUSTRIA COMERCIAL 2609 SAC",
+      "nombreComercial": "INDUSTRIA COMERCIAL 2609",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "62465812143",
+      "razonSocial": "CONSORCIO COMERCIAL 9453 EIRL",
+      "nombreComercial": "CONSORCIO COMERCIAL 9453",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "34967957775",
+      "razonSocial": "CORPORACION COMERCIAL 9025 SAC",
+      "nombreComercial": "CORPORACION COMERCIAL 9025",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "19154458395",
+      "razonSocial": "INDUSTRIA COMERCIAL 3529 SAA",
+      "nombreComercial": "INDUSTRIA COMERCIAL 3529",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "06045291676",
+      "razonSocial": "CORPORACION COMERCIAL 4073 SAA",
+      "nombreComercial": "CORPORACION COMERCIAL 4073",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "04766618333",
+      "razonSocial": "EMPRESA COMERCIAL 6425 SAC",
+      "nombreComercial": "EMPRESA COMERCIAL 6425",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "55868577353",
+      "razonSocial": "UNIVERSIDAD COMERCIAL 1050 EIRL",
+      "nombreComercial": "UNIVERSIDAD COMERCIAL 1050",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "45987454464",
+      "razonSocial": "Industria del Acero Cromado S.A.C.",
+      "nombreComercial": "industria del Acero Cromado",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "21890841044",
+      "razonSocial": "UNIVERSIDAD COMERCIAL 7998 SAC",
+      "nombreComercial": "UNIVERSIDAD COMERCIAL 7998",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "50705469551",
+      "razonSocial": "INDUSTRIA COMERCIAL 6952 SRL",
+      "nombreComercial": "INDUSTRIA COMERCIAL 6952",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "55630851159",
+      "razonSocial": "EMPRESA COMERCIAL 9192 SAC",
+      "nombreComercial": "EMPRESA COMERCIAL 9192",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "45974156456",
+      "razonSocial": "Naciones Unidas Unidas SAc",
+      "nombreComercial": "Naciones Unidas Unidas",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "46121947554",
+      "razonSocial": "CORPORACION COMERCIAL 6787 SRL",
+      "nombreComercial": "CORPORACION COMERCIAL 6787",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "32511665695",
+      "razonSocial": "CORPORACION COMERCIAL 3379 EIRL",
+      "nombreComercial": "CORPORACION COMERCIAL 3379",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "48771477948",
+      "razonSocial": "CORPORACION COMERCIAL 2111 SAC",
+      "nombreComercial": "CORPORACION COMERCIAL 2111",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "08726767603",
+      "razonSocial": "UNIVERSIDAD COMERCIAL 9466 SRL",
+      "nombreComercial": "UNIVERSIDAD COMERCIAL 9466",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "08510066127",
+      "razonSocial": "CONSORCIO COMERCIAL 5230 EIRL",
+      "nombreComercial": "CONSORCIO COMERCIAL 5230",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "55404619907",
+      "razonSocial": "CONSORCIO COMERCIAL 2358 SRL",
+      "nombreComercial": "CONSORCIO COMERCIAL 2358",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "10224127436",
+      "razonSocial": "INDUSTRIA COMERCIAL 5335 SRL",
+      "nombreComercial": "INDUSTRIA COMERCIAL 5335",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "85982993688",
+      "razonSocial": "CORPORACION COMERCIAL 2946 EIRL",
+      "nombreComercial": "CORPORACION COMERCIAL 2946",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "65536097148",
+      "razonSocial": "EMPRESA COMERCIAL 9993 SAC",
+      "nombreComercial": "EMPRESA COMERCIAL 9993",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "24473368018",
+      "razonSocial": "CONSORCIO COMERCIAL 5222 SAA",
+      "nombreComercial": "CONSORCIO COMERCIAL 5222",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "18602191665",
+      "razonSocial": "CONSORCIO COMERCIAL 3285 SRL",
+      "nombreComercial": "CONSORCIO COMERCIAL 3285",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "20172557738",
+      "razonSocial": "BAZAR OTI5 SAC",
+      "nombreComercial": "BAZAR OTI5 DE REGALOS",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "88285752801",
+      "razonSocial": "CORPORACION COMERCIAL 5309 SAA",
+      "nombreComercial": "CORPORACION COMERCIAL 5309",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "56007261927",
+      "razonSocial": "CORPORACION COMERCIAL 5452 SRL",
+      "nombreComercial": "CORPORACION COMERCIAL 5452",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "49272791725",
+      "razonSocial": "INDUSTRIA COMERCIAL 1497 SAC",
+      "nombreComercial": "INDUSTRIA COMERCIAL 1497",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "13685517570",
+      "razonSocial": "UNIVERSIDAD COMERCIAL 6173 SAA",
+      "nombreComercial": "UNIVERSIDAD COMERCIAL 6173",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "77337425710",
+      "razonSocial": "INDUSTRIA COMERCIAL 5452 SAA",
+      "nombreComercial": "INDUSTRIA COMERCIAL 5452",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "20172557628",
+      "razonSocial": "Universidad Nacional de Trujillo",
+      "nombreComercial": "UNT",
+      "estado": "No licenciada"
+    },
+    {
+      "ruc": "12345678902",
+      "razonSocial": "BAZAR OTI6-LOREM IPSUM IS SIMPLY DUMMY TEXT OF THE PRINTING AND TYPESETTING INDUSTRY. LOREM IPSUM HA",
+      "nombreComercial": "BAZAR OTI6 COMERCIAL-LOREM IPSUM IS SIMPLY DUMMY TEXT OF THE PRINTING AND TYPESETTING INDUSTRY. LORE",
+      "estado": "No licenciada"
+    },
+    {
+      "ruc": "12345678901",
+      "razonSocial": "Bazar OTI5",
+      "nombreComercial": "Bazar OTI5",
+      "estado": "No licenciada"
+    },
+    {
+      "ruc": "20145810248",
+      "razonSocial": "EMPRESA COMERCIAL 2622 EIRL",
+      "nombreComercial": "EMPRESA COMERCIAL 2622",
+      "estado": "No licenciada"
+    },
+    {
+      "ruc": "52564485595",
+      "razonSocial": "EMPRESA COMERCIAL 4131 SRL",
+      "nombreComercial": "EMPRESA COMERCIAL 4131",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "13123131131",
+      "razonSocial": "PROBANDO 45546",
+      "nombreComercial": "PROBANDO 45546",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "11111111111",
+      "razonSocial": "PROBANDO 4554",
+      "nombreComercial": "PROBANDO 22",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "40404040405",
+      "razonSocial": "Exportaciones 3 prueba",
+      "nombreComercial": "Exportaciones 3 prueba",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "40404040406",
+      "razonSocial": "EXPORTACIONES 2 PRUEBA",
+      "nombreComercial": "EXPORTACIONES 2 PRUEBA",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "40404040407",
+      "razonSocial": "Exportaciones 1 prueba",
+      "nombreComercial": "Exportaciones 1 prueba",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "12365478944",
+      "razonSocial": "EMPRESA DE TECNOLOGÍAS RENOVABLES SAC",
+      "nombreComercial": "EMPRESA DE TECNOLOGÍAS RENOVABLES SAC",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "40404040408",
+      "razonSocial": "Celebraciones Fiestas Navideñas sac",
+      "nombreComercial": "Universidad del Verano sac",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "40404040409",
+      "razonSocial": "Exportaciones del Sur S.A. PRUEBAS",
+      "nombreComercial": "Exportaciones del Sur S.A.",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "26680847922",
+      "razonSocial": "EMPRESA COMERCIAL 11",
+      "nombreComercial": "EMPRESA COMERCIAL 11",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "08580132762",
+      "razonSocial": "Empresa comercial 1",
+      "nombreComercial": "Empresa comercial 1",
+      "estado": "No licenciada"
+    },
+    {
+      "ruc": "79819732262",
+      "razonSocial": "Empresa comercial 1",
+      "nombreComercial": "Empresa comercial 1",
+      "estado": "No licenciada"
+    },
+    {
+      "ruc": "24033318221",
+      "razonSocial": "EMPRESA DE COMERCIO DE COMBUSTIBLES SAC",
+      "nombreComercial": "EMPRESA DE COMERCIO DE COMBUSTIBLES SAC",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "88609738437",
+      "razonSocial": "Empresa comercial 1",
+      "nombreComercial": "Empresa comercial 1",
+      "estado": "No licenciada"
+    },
+    {
+      "ruc": "91033876793",
+      "razonSocial": "Empresa comercial 1",
+      "nombreComercial": "Empresa comercial 1",
+      "estado": "No licenciada"
+    },
+    {
+      "ruc": "61525282884",
+      "razonSocial": "Empresa comercial 1",
+      "nombreComercial": "Empresa comercial 1",
+      "estado": "No licenciada"
+    },
+    {
+      "ruc": "48538960928",
+      "razonSocial": "Empresa comercial 1",
+      "nombreComercial": "Empresa comercial 1",
+      "estado": "No licenciada"
+    },
+    {
+      "ruc": "74673428143",
+      "razonSocial": "Empresa comercial 1",
+      "nombreComercial": "Empresa comercial 1",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "20131368152",
+      "razonSocial": "MUNICIPALIDAD DE CHORRILLOS",
+      "nombreComercial": "MUNICIPALIDAD DE CHORRILLOS",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "20202380621",
+      "razonSocial": "MAPFRE PERU COMPAÑIA DE SEGUROS Y REASEGUROS S.A.",
+      "nombreComercial": "MAPFRE PERU COMPAÑIA DE SEGUROS Y REASEGUROS S.A.",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "20552588569",
+      "razonSocial": "MACROPOST LOGISTICS S.A.C.",
+      "nombreComercial": "MACROPOST LOGISTICS S.A.C.",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "20550840252",
+      "razonSocial": "EXPERTIC E.I.R.L.",
+      "nombreComercial": "EXPERTIC E.I.R.L.",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "20517572544",
+      "razonSocial": "SPEED APOYO EMPRESARIAL S.A.C.",
+      "nombreComercial": "SPEED APOYO EMPRESARIAL S.A.C.",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "20549638318",
+      "razonSocial": "X LOS ESTUDIANTES",
+      "nombreComercial": "X LOS ESTUDIANTES",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "20522737063",
+      "razonSocial": "A-SERVICES E.I.R.L.",
+      "nombreComercial": "A-SERVICES E.I.R.L.",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "20547416261",
+      "razonSocial": "BEST ENGINEERING SOLUTIONS S.A.C.",
+      "nombreComercial": "BEST ENGINEERING SOLUTIONS S.A.C.",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "20100210909",
+      "razonSocial": "LA POSITIVA SEGUROS Y REASEGUROS",
+      "nombreComercial": "LA POSITIVA SEGUROS Y REASEGUROS",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "20517162052",
+      "razonSocial": "EMAUS MADRE TERESA DE CALCUTA",
+      "nombreComercial": "EMAUS MADRE TERESA DE CALCUTA",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "2053409300",
+      "razonSocial": "EMPRESA CONSTRUCTORA MECEC S.R.L.",
+      "nombreComercial": "EMPRESA CONSTRUCTORA MECEC S.R.L.",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "20549905375",
+      "razonSocial": "LEOS GENERAL BUSSINES S.A.C.",
+      "nombreComercial": "LEOS GENERAL BUSSINES S.A.C.",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "20552272332",
+      "razonSocial": "NEWMAN CONSULTING GROUP E.I.R.L.",
+      "nombreComercial": "NEWMAN CONSULTING GROUP E.I.R.L.",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "20347375412",
+      "razonSocial": "MULTISERVICE ANGEL OHMAR TOURS CARGO S.A. - MAOTCSA",
+      "nombreComercial": "MULTISERVICE ANGEL OHMAR TOURS CARGO S.A. - MAOTCSA",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "20502454545",
+      "razonSocial": "SERVICIOS LOGISTICOS DE COURIER DEL PERU S.A.C.",
+      "nombreComercial": "SERVICIOS LOGISTICOS DE COURIER DEL PERU S.A.C.",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "20507891366",
+      "razonSocial": "temputronic sac",
+      "nombreComercial": "temputronic sac",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "20502267354",
+      "razonSocial": "PUNTO PUBLICITARIO MARKETING & PUBLICIDAD S.A.C.",
+      "nombreComercial": "PUNTO PUBLICITARIO MARKETING & PUBLICIDAD S.A.C.",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "20514038601",
+      "razonSocial": "CORPORACION PRIVADA DE SEGURIDAD LOS HALCONES S.A.C-CORPRISEG LOS HALCONES S.A.C",
+      "nombreComercial": "CORPORACION PRIVADA DE SEGURIDAD LOS HALCONES S.A.C-CORPRISEG LOS HALCONES S.A.C",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "00000000001",
+      "razonSocial": "ESCUELA SUPERIOR AUTÒNOMA DE BELLAS ARTES \"DIEGO QUISPE TITO\" DEL CUSCO",
+      "nombreComercial": "ESCUELA SUPERIOR AUTÒNOMA DE BELLAS ARTES \"DIEGO QUISPE TITO\" DEL CUSCO",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "00000000000",
+      "razonSocial": "ESCUELA DE OFICIALES DE LA POLICIA NACIONAL DEL PERÚ",
+      "nombreComercial": "ESCUELA DE OFICIALES DE LA POLICIA NACIONAL DEL PERÚ",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "00000000002",
+      "razonSocial": "ESCUELA DE SUBOFICIALES DE LA POLICIA NACIONAL DEL PERÚ",
+      "nombreComercial": "ESCUELA DE OFICIALES DE LA POLICIA NACIONAL DEL PERÚ",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "20487949125",
+      "razonSocial": "POLITECNICA AMAZONICA SAC",
+      "nombreComercial": "POLITECNICA AMAZONICA SAC",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "20521449731",
+      "razonSocial": "UNIVERSIDAD AUTONOMA DEL PERU",
+      "nombreComercial": "UNIVERSIDAD AUTÓNOMA DEL PERÚ",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "20518018818",
+      "razonSocial": "UNIVERSIDAD PERUANA DE INTEGRACION GLOBAL",
+      "nombreComercial": "UNIVERSIDAD PERUANA DE INTEGRACIÓN GLOBAL",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "20507790179",
+      "razonSocial": "UNIVERSIDAD ANTONIO RUIZ DE MONTOYA",
+      "nombreComercial": "UNIVERSIDAD ANTONIO RUÍZ DE MONTOYA",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "20479748102",
+      "razonSocial": "UNIVERSIDAD SEÑOR DE SIPAN",
+      "nombreComercial": "UNIVERSIDAD SEÑOR DE SIPÁN",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "20303063766",
+      "razonSocial": "UNIVERSIDAD ALAS PERUANAS",
+      "nombreComercial": "UNIVERSIDAD ALAS PERUANAS",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "20164113532",
+      "razonSocial": "UNIVERSIDAD CESAR VALLEJO",
+      "nombreComercial": "UNIVERSIDAD PRIVADA CÉSAR VALLEJO",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "20120710436",
+      "razonSocial": "UNIVERSIDAD DE HUANUCO",
+      "nombreComercial": "UNIVERSIDAD DE HUÁNUCO",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "20177395227",
+      "razonSocial": "UNIVERSIDAD ANDINA DEL CUSCO",
+      "nombreComercial": "UNIVERSIDAD ANDINA DEL CUSCO",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "20154605046",
+      "razonSocial": "UNIVERSIDAD NACIONAL DANIEL ALCIDES CARRION",
+      "nombreComercial": "UNIVERSIDAD NACIONAL DANIEL ALCÍDES CARRIÓN",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "20108383471",
+      "razonSocial": "UNIVERSIDAD INCA GARCILASO DE LA VEGA",
+      "nombreComercial": "UNIVERSIDAD INCA GARCILASO DE LA VEGA",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "20170934289",
+      "razonSocial": "UNIVERSIDAD NACIONAL FEDERICO VILLARREAL",
+      "nombreComercial": "UNIVERSIDAD NACIONAL FEDERICO VILLARREAL",
+      "estado": "Licenciada"
+    },
+    {
+      "ruc": "20138149022",
+      "razonSocial": "UNIVERSIDAD DE SAN MARTIN DE PORRES",
+      "nombreComercial": "UNIVERSIDAD DE SAN MARTÍN DE PORRES",
+      "estado": "Licenciada"
+    }
+  ]
+}

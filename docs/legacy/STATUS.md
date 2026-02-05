@@ -1,4 +1,7 @@
-﻿# âœ… ESTADO ACTUAL - PROYECTO LISTO
+﻿> ⚠️ **Movido a docs/STATUS.md**
+> Esta copia queda solo como histórico. No editar aquí.
+
+# âœ… ESTADO ACTUAL - PROYECTO LISTO
 
 **Fecha**: 19 de Enero 2026  
 **Caso**: Caso 02 - Registrar SanciÃ³n  

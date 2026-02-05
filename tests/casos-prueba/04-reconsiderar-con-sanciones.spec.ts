@@ -37,7 +37,7 @@ import {
  */
 
 test.describe('04-RECONSIDERAR CON SANCIONES', () => {
-  test('Reconsiderar - Buscar y abrir modal de sanción', async ({ page }) => {
+  test('Reconsiderar - Buscar y abrir modal de sanción', async ({ page }, testInfo) => {
     test.setTimeout(300000);
 
     try {
@@ -50,7 +50,7 @@ test.describe('04-RECONSIDERAR CON SANCIONES', () => {
       // Reutiliza `iniciarSesionYNavegar`
       // ═══════════════════════════════════════════════════════════════════
       console.log('📋 PASO 1: Iniciando sesión...');
-      await iniciarSesionYNavegar(page, 'infractor');
+      await iniciarSesionYNavegar(page, 'infractor', testInfo.workerIndex);
       console.log('✅ Sesión iniciada\n');
 
       // ═══════════════════════════════════════════════════════════════════

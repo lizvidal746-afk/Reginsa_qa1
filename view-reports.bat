@@ -1,5 +1,5 @@
 @echo off
 REM Wrapper para abrir/ver reportes.
-REM Script real: docs\scripts\reportes\view-reports.bat
-call "%~dp0docs\scripts\reportes\view-reports.bat"
+REM Script real: scripts\reportes\view-reports.bat
+call "%~dp0scripts\reportes\view-reports.bat"
 

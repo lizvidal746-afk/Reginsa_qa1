@@ -39,11 +39,28 @@ npm run test:04:fast   # Caso 04 sin capturas
 npm run test:all:fast  # Suite completa sin capturas
 ```
 
+### Casos rápidos con repeat-each (sin capturas)
+```powershell
+npm run test:01:fast -- --repeat-each=10   # Caso 01, 10 repeticiones
+npm run test:02:fast -- --repeat-each=10   # Caso 02, 10 repeticiones
+npm run test:03:fast -- --repeat-each=10   # Caso 03, 10 repeticiones
+npm run test:04:fast -- --repeat-each=10   # Caso 04, 10 repeticiones
+npm run test:all:fast -- --repeat-each=10  # Suite completa, 10 repeticiones
+```
+
 ### Paralelismo con workers (mismo equipo)
 > **Workers** = paralelismo dentro de la misma PC (división automática por tests).
 ```powershell
 npm run test:all:w2   # Suite completa con 2 workers (Chromium)
 npm run test:all:w4   # Suite completa con 4 workers (Chromium)
+```
+
+### Workers + repeat-each (paralelismo con repeticiones)
+```powershell
+npm run test:01:fast -- --workers=3 --repeat-each=10    # Caso 01, 3 workers, 10 repeticiones
+npm run test:02:fast -- --workers=3 --repeat-each=10    # Caso 02, 3 workers, 10 repeticiones
+npm run test:124:fast -- --workers=3 --repeat-each=10   # Casos 01+02+04, 3 workers, 10 repeticiones
+npm run test:all:fast -- --workers=3 --repeat-each=10   # Suite completa, 3 workers, 10 repeticiones
 ```
 
 > `test:all:w2` ejecuta **todos los casos** en paralelo (Chromium).

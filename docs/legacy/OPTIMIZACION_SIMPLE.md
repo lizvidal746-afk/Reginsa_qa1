@@ -1,3 +1,6 @@
+> ⚠️ **Movido a docs/OPTIMIZACION_SIMPLE.md**
+> Esta copia queda solo como histórico. No editar aquí.
+
 # ⚡ OPTIMIZACIÓN DE TIEMPOS - PARA TUS CASOS DE PRUEBA
 
 ## 🎯 OBJETIVO

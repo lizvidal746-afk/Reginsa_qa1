@@ -1,6 +1,6 @@
 ﻿$ErrorActionPreference = "Stop"
 $root = "D:\SUNEDU\SELENIUM\playwrigth"
-$docsScripts = Join-Path $root "docs\scripts"
+$docsScripts = Join-Path $root "scripts"
 
 New-Item -ItemType Directory -Force -Path $docsScripts | Out-Null
 

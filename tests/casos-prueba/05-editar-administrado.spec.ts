@@ -13,7 +13,7 @@ import {
  * - Sin capturas: scripts `:fast`.
  */
 
-test('05-ADMINISTRADOS: listar RUC/razón social (utilidad)', async ({ page }) => {
+test('05-EDITAR ADMINISTRADO: listar RUC/razón social (utilidad)', async ({ page }, testInfo) => {
   test.setTimeout(300000);
 
   if (process.env.RUN_ADMIN_CHECK !== '1') {
@@ -21,10 +21,10 @@ test('05-ADMINISTRADOS: listar RUC/razón social (utilidad)', async ({ page }) =
   }
 
   console.log('\n================================================================================');
-  console.log('📄 CASO 05: LISTAR ADMINISTRADOS (UTILIDAD)');
+  console.log('📄 CASO 05: EDITAR ADMINISTRADO (UTILIDAD)');
   console.log('================================================================================\n');
 
-  await iniciarSesionYNavegar(page, 'administrado');
+  await iniciarSesionYNavegar(page, 'administrado', testInfo.workerIndex);
   await page.waitForLoadState('networkidle');
 
   const registros = await extraerAdministradosDesdeTabla(page, 10);

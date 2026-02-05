@@ -2,9 +2,17 @@ const { chromium } = require('@playwright/test');
 
 const CREDENCIALES = {
   url: 'https://reginsaqa.sunedu.gob.pe/#/home',
-  usuario: 'lizvidal',
-  contraseña: 'QA1234510qa'
+  usuarios: [
+    { usuario: 'lizvidal', contraseña: 'QA1234510qa' },
+    { usuario: 'anahuaman', contraseña: 'QA1234512qa' }
+  ]
 };
+
+const usuarioEnv = process.env.REGINSA_USER;
+const contraseñaEnv = process.env.REGINSA_PASS;
+const credencialActiva = usuarioEnv && contraseñaEnv
+  ? { usuario: usuarioEnv, contraseña: contraseñaEnv }
+  : CREDENCIALES.usuarios[0];
 
 module.exports = async () => {
   const browser = await chromium.launch();
@@ -16,10 +24,10 @@ module.exports = async () => {
 
   const inputUsuario = page.getByRole('textbox', { name: 'Usuario' });
   await inputUsuario.waitFor({ state: 'visible', timeout: 30000 });
-  await inputUsuario.fill(CREDENCIALES.usuario);
+  await inputUsuario.fill(credencialActiva.usuario);
 
   const inputContraseña = page.getByRole('textbox', { name: 'Contraseña' });
-  await inputContraseña.fill(CREDENCIALES.contraseña);
+  await inputContraseña.fill(credencialActiva.contraseña);
 
   await page.getByRole('button', { name: 'Iniciar sesión' }).click();
 

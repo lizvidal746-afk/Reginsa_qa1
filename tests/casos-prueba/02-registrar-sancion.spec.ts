@@ -45,7 +45,7 @@ import {
  * - Errores se guardan siempre en errors/.
  */
 
-test('02-REGISTRAR SANCIÓN: 8 sanciones para 1 administrado', async ({ page }) => {
+test('02-REGISTRAR SANCIÓN: 8 sanciones para 1 administrado', async ({ page }, testInfo) => {
   test.setTimeout(300000); // 5 minutos de timeout
 
   console.log('\n================================================================================');
@@ -60,7 +60,7 @@ test('02-REGISTRAR SANCIÓN: 8 sanciones para 1 administrado', async ({ page }) 
   console.log('🔐 LOGIN Y NAVEGACIÓN');
   console.log('═'.repeat(90));
 
-  await iniciarSesionYNavegar(page, 'infractor');
+  await iniciarSesionYNavegar(page, 'infractor', testInfo.workerIndex);
   console.log('  ✅ Sesión iniciada y módulo cargado\n');
 
   // ═══════════════════════════════════════════════════════════════════

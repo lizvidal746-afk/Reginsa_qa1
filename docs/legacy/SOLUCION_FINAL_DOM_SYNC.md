@@ -1,3 +1,6 @@
+> ⚠️ **Movido a docs/SOLUCION_FINAL_DOM_SYNC.md**
+> Esta copia queda solo como histórico. No editar aquí.
+
 # ✅ SOLUCIÓN FINAL - SINCRONIZACIÓN DEL DOM
 
 **Estado**: 🟢 LISTO - Solución definitiva implementada  

@@ -1,3 +1,6 @@
+> ⚠️ **Movido a docs/RESUMEN_FINAL.md**
+> Esta copia queda solo como histórico. No editar aquí.
+
 # 📋 RESUMEN FINAL - Mejoras y Soluciones Implementadas
 
 ## 🎯 Objetivos Completados

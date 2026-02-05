@@ -61,7 +61,6 @@
     "test:all:cf:w4": "node scripts/run-tests-with-reports.js --screenshots playwright test tests/casos-prueba/ --project=chromium --project=firefox --workers=4",
     "test:all:cf:w2:fast": "node scripts/run-tests-with-reports.js --skip-screenshots playwright test tests/casos-prueba/ --project=chromium --project=firefox --workers=2",
     "test:all:cf:w4:fast": "node scripts/run-tests-with-reports.js --skip-screenshots playwright test tests/casos-prueba/ --project=chromium --project=firefox --workers=4",
-    
     "test:admin": "playwright test tests/casos-prueba/01-agregar-administrado.spec.ts --ui",
     "test:admin:headed": "playwright test tests/casos-prueba/01-agregar-administrado.spec.ts --headed && npm run reports:open",
     "report:generate": "node generar-reporte-html.js",
@@ -79,6 +78,7 @@
     "@playwright/test": "latest",
     "@types/node": "latest",
     "allure-commandline": "latest",
-    "allure-playwright": "latest"
+    "allure-playwright": "latest",
+    "xlsx": "^0.18.5"
   }
 }

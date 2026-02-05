@@ -1,3 +1,6 @@
+> ⚠️ **Movido a docs/RESUMEN_EJECUTIVO.md**
+> Esta copia queda solo como histórico. No editar aquí.
+
 # 📊 RESUMEN EJECUTIVO - Estado del Proyecto
 
 **Fecha**: 20 de Enero de 2026  
