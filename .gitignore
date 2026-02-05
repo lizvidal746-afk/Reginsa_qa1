@@ -17,3 +17,10 @@ videos/
 # VS Code (opcional)
 .vscode/settings.json
 
+# Forzar tracking de docs y scripts
+!docs/
+!docs/**
+!docs/legacy/**
+!scripts/
+!scripts/**
+
