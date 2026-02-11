@@ -1,4 +1,5 @@
-import { Page, expect } from '@playwright/test';
+import { Page, expect, type Locator } from '@playwright/test';
+import * as fs from 'fs';
 
 /**
  * Funciones Reutilizables - REGINSA SUNEDU
@@ -10,9 +11,11 @@ const CREDENCIALES = {
   url: 'https://reginsaqa.sunedu.gob.pe/#/home',
   usuarios: [
     { usuario: 'lizvidal', contraseña: 'QA1234510qa' },
-    { usuario: 'anahuaman', contraseña: 'QA1234512qa' },
     { usuario: 'lgvidalm', contraseña: 'QA12345qa' },
-    { usuario: 'lgvidal', contraseña: 'QA12345qa' }
+    { usuario: 'lgvidal', contraseña: 'QA12345qa' },
+    { usuario: 'lgvm', contraseña: 'QA12345qa' },
+    { usuario: 'lizividal', contraseña: 'QA12345qa' },
+    { usuario: 'lizitavidal', contraseña: 'QA12345qa' }
   ]
 };
 
@@ -33,6 +36,10 @@ const seleccionarCredencial = (workerIndex?: number): { usuario: string; contras
   return usuarios[0];
 };
 
+export function obtenerCredencial(workerIndex?: number): { usuario: string; contraseña: string } {
+  return seleccionarCredencial(workerIndex);
+}
+
 /**
  * FUNCIÓN PRINCIPAL DE SETUP
  * Realiza login + navegación en una sola llamada
@@ -45,6 +52,10 @@ export async function iniciarSesionYNavegar(
 ): Promise<void> {
   console.log('🔐 INICIALIZANDO SESIÓN Y NAVEGACIÓN...');
   const credencialActiva = seleccionarCredencial(workerIndex);
+  if (usuarioEnv && contraseñaEnv) {
+    console.log('⚠️ REGINSA_USER/REGINSA_PASS definidos: todos los workers usarán el mismo usuario.');
+  }
+  console.log(`👤 Usuario asignado: ${credencialActiva.usuario} (worker ${typeof workerIndex === 'number' ? workerIndex : 0})`);
   
   try {
     // Navegar a home
@@ -57,7 +68,15 @@ export async function iniciarSesionYNavegar(
         sessionStorage.clear();
       }).catch(() => {});
       await page.context().clearCookies().catch(() => {});
-      await page.reload();
+      if (page.isClosed()) {
+        throw new Error('La página se cerró antes de recargar en login.');
+      }
+      await page.reload().catch((error) => {
+        if (page.isClosed()) {
+          throw new Error('La página se cerró durante la recarga en login.');
+        }
+        throw error;
+      });
       await page.waitForLoadState('domcontentloaded');
     }
     await page.waitForLoadState('domcontentloaded');
@@ -99,7 +118,15 @@ export async function iniciarSesionYNavegar(
 
       const primerItem = page.locator('a, [role="link"], [role="menuitem"]').first();
       if (!(await primerItem.isVisible().catch(() => false))) {
-        await page.reload();
+        if (page.isClosed()) {
+          throw new Error('La página se cerró antes de recargar el menú.');
+        }
+        await page.reload().catch((error) => {
+          if (page.isClosed()) {
+            throw new Error('La página se cerró durante la recarga del menú.');
+          }
+          throw error;
+        });
         await page.waitForLoadState('domcontentloaded');
         await page.waitForLoadState('networkidle').catch(() => {});
       }
@@ -124,7 +151,7 @@ export async function iniciarSesionYNavegar(
     // Navegar al módulo solicitado - Con reintentos y alternativas
     const regexModulo = modulo === 'administrado'
       ? /Administrado|Administrados/i
-      : /Infractor y Sanción/i;
+      : /Infractor y Sanci[oó]n/i;
     const etiqueta = modulo === 'administrado' ? 'Administrado' : 'Infractor';
 
     await navegar(regexModulo, etiqueta);
@@ -269,46 +296,46 @@ export async function completarCabeceraReconsideracion(
     const selected = await tabDatos.getAttribute('aria-selected').catch(() => 'true');
     if (selected !== 'true') {
       await tabDatos.click();
-      await page.waitForTimeout(1000);
+      await cabeceraPanel.waitFor({ state: 'visible', timeout: 8000 }).catch(() => {});
     }
   }
   const scope = (await cabeceraPanel.isVisible().catch(() => false)) ? cabeceraPanel : page;
 
-  const btnEditarCabecera = page.getByRole('button', { name: 'Editar cabecera' });
-  await btnEditarCabecera.waitFor({ state: 'visible', timeout: 8000 });
-  const tryHabilitarEdicion = async () => {
-    const enabled = await btnEditarCabecera.isEnabled().catch(() => false);
-    if (enabled) {
-      await btnEditarCabecera.click();
-      await page.waitForTimeout(1500);
-      return;
-    }
+  const btnEditarCabecera = scope.getByRole('button', { name: /Editar cabecera/i }).first();
+  const btnGuardarCabecera = scope.getByRole('button', { name: /Guardar cabecera/i }).first();
 
-    // Si ya está en modo edición, el botón puede estar deshabilitado
-    const btnGuardar = page.getByRole('button', { name: 'Guardar cabecera' });
-    const guardEnabled = await btnGuardar.isEnabled().catch(() => false);
-    if (guardEnabled) return;
-
-    // Esperar un poco más por si habilita edición
-    for (let i = 0; i < 6; i++) {
-      await page.waitForTimeout(1000);
-      const enabledNow = await btnEditarCabecera.isEnabled().catch(() => false);
-      if (enabledNow) {
-        await btnEditarCabecera.click();
-        await page.waitForTimeout(1500);
-        return;
-      }
+  const esperarEnabled = async (locator: Locator, timeout = 6000) => {
+    const inicio = Date.now();
+    while (Date.now() - inicio < timeout) {
+      if (await locator.isEnabled().catch(() => false)) return true;
+      await page.waitForTimeout(250);
     }
+    return false;
   };
 
-  await tryHabilitarEdicion();
+  const habilitarEdicion = async () => {
+    await btnEditarCabecera.waitFor({ state: 'visible', timeout: 8000 });
+    await btnGuardarCabecera.waitFor({ state: 'visible', timeout: 8000 }).catch(() => {});
 
-  const btnGuardarCabecera = page.getByRole('button', { name: 'Guardar cabecera' });
-  for (let i = 0; i < 6; i++) {
-    const enabled = await btnGuardarCabecera.isEnabled().catch(() => false);
-    if (enabled) break;
-    await page.waitForTimeout(800);
+    const inicio = Date.now();
+    while (Date.now() - inicio < 4000) {
+      if (await btnGuardarCabecera.isEnabled().catch(() => false)) return true;
+      if (await btnEditarCabecera.isEnabled().catch(() => false)) {
+        await btnEditarCabecera.click().catch(() => {});
+      }
+      const presentoEnabled = await scope.locator('input#presentoReconsideracion').isEnabled().catch(() => false);
+      if (presentoEnabled) return true;
+      await page.waitForTimeout(150);
+    }
+    return false;
+  };
+
+  const edicionOk = await habilitarEdicion();
+  if (!edicionOk) {
+    throw new Error('No se pudo habilitar la edición de cabecera.');
   }
+
+  await esperarEnabled(btnGuardarCabecera, 3000).catch(() => {});
 
   const labelPresento = scope.locator('label[for="presentoReconsideracion"]').first();
   if (await labelPresento.isVisible().catch(() => false)) {
@@ -318,7 +345,7 @@ export async function completarCabeceraReconsideracion(
   const presentoInput = scope.locator('input#presentoReconsideracion').first();
   const presentoBox = scope.locator('p-checkbox[inputid="presentoReconsideracion"] .p-checkbox-box').first();
   if (await presentoInput.isVisible().catch(() => false)) {
-    for (let intento = 0; intento < 5; intento++) {
+    for (let intento = 0; intento < 3; intento++) {
       const enabled = await presentoInput.isEnabled().catch(() => false);
       const checked = await presentoInput.isChecked().catch(() => false);
       if (checked) break;
@@ -328,24 +355,24 @@ export async function completarCabeceraReconsideracion(
         } else {
           await scope.locator('label[for="presentoReconsideracion"]').click({ force: true }).catch(() => {});
         }
-        await page.waitForTimeout(800);
+        await page.waitForTimeout(150);
       } else {
-        await page.waitForTimeout(800);
+        await page.waitForTimeout(150);
       }
     }
   }
 
   const seccionReconsideracion = scope.locator('label').filter({ hasText: /Resoluci[oó]n de Reconsideraci[oó]n/i }).first();
-  for (let intento = 0; intento < 4; intento++) {
+  for (let intento = 0; intento < 3; intento++) {
     if (await seccionReconsideracion.isVisible().catch(() => false)) break;
     if (await presentoBox.isVisible().catch(() => false)) {
       await presentoBox.click({ force: true });
     } else if (await labelPresento.isVisible().catch(() => false)) {
       await labelPresento.click({ force: true });
     }
-    await page.waitForTimeout(1500);
+    await page.waitForTimeout(300);
   }
-  await seccionReconsideracion.waitFor({ state: 'visible', timeout: 12000 });
+  await seccionReconsideracion.waitFor({ state: 'visible', timeout: 8000 });
   await seccionReconsideracion.scrollIntoViewIfNeeded().catch(() => {});
 
   // 1) Adjuntar archivo de reconsideración
@@ -354,7 +381,7 @@ export async function completarCabeceraReconsideracion(
     .first();
   const fileInput = fileUpload.locator('input[type="file"]').first();
   const nombreArchivo = rutaArchivo.split(/[/\\]/).pop() || '';
-  await fileInput.waitFor({ state: 'attached', timeout: 10000 });
+  await fileInput.waitFor({ state: 'attached', timeout: 7000 });
   await fileInput.setInputFiles(rutaArchivo);
   const archivoNombre = scope.locator('.p-fileupload-filename, .p-fileupload-files').filter({ hasText: nombreArchivo }).first();
   const archivoTexto = scope.getByText(nombreArchivo).first();
@@ -366,8 +393,8 @@ export async function completarCabeceraReconsideracion(
     || await archivoRuta.isVisible().catch(() => false)
     || await botonVerReconsideracion.isEnabled().catch(() => false)
     || inputValor.includes(nombreArchivo);
-  for (let i = 0; i < 4 && !archivoVisible; i++) {
-    await page.waitForTimeout(1200);
+  for (let i = 0; i < 3 && !archivoVisible; i++) {
+    await page.waitForTimeout(500);
     const valorActual = await fileInput.inputValue().catch(() => '');
     archivoVisible = await archivoNombre.isVisible().catch(() => false)
       || await archivoTexto.isVisible().catch(() => false)
@@ -388,8 +415,8 @@ export async function completarCabeceraReconsideracion(
     .locator('..')
     .locator('input[formcontrolname="desResolucionReconsideracion"], input')
     .first();
-  await inputNumero.waitFor({ state: 'attached', timeout: 20000 });
-  for (let i = 0; i < 8; i++) {
+  await inputNumero.waitFor({ state: 'attached', timeout: 12000 });
+  for (let i = 0; i < 5; i++) {
     const visible = await inputNumero.isVisible().catch(() => false);
     const enabled = await inputNumero.isEnabled().catch(() => false);
     if (visible && enabled) break;
@@ -399,7 +426,7 @@ export async function completarCabeceraReconsideracion(
     if (await labelPresento.isVisible().catch(() => false)) {
       await labelPresento.click({ force: true }).catch(() => {});
     }
-    await page.waitForTimeout(800);
+    await page.waitForTimeout(150);
   }
   if (!(await inputNumero.isVisible().catch(() => false))) {
     throw new Error('No se encontró el campo "N° de Reconsideración".');
@@ -408,13 +435,13 @@ export async function completarCabeceraReconsideracion(
     throw new Error('El campo "N° de Reconsideración" está deshabilitado.');
   }
   await inputNumero.scrollIntoViewIfNeeded().catch(() => {});
-  await page.waitForTimeout(1200);
+  await page.waitForTimeout(200);
   await inputNumero.fill(numeroReconsideracion);
-  await page.waitForTimeout(2000);
+  await page.waitForTimeout(300);
   const numeroValor = await inputNumero.inputValue().catch(() => '');
   if (!numeroValor.includes(numeroReconsideracion)) {
     await inputNumero.fill(numeroReconsideracion);
-    await page.waitForTimeout(800);
+    await page.waitForTimeout(400);
   }
 
   // 3) Fecha de reconsideración (con botón de fecha)
@@ -424,12 +451,12 @@ export async function completarCabeceraReconsideracion(
     .locator('p-calendar[formcontrolname="fechaResolucionReconsideracion"], p-calendar[formcontrolname="fechaReconsideracion"], input')
     .locator('input')
     .first();
-  await fechaInput.waitFor({ state: 'visible', timeout: 20000 });
+  await fechaInput.waitFor({ state: 'visible', timeout: 12000 });
   await fechaInput.scrollIntoViewIfNeeded().catch(() => {});
-  await page.waitForTimeout(1200);
+  await page.waitForTimeout(200);
   const fechaTexto = formatearFecha(fechaUsar);
 
-  for (let i = 0; i < 6; i++) {
+  for (let i = 0; i < 4; i++) {
     const enabled = await fechaInput.isEnabled().catch(() => false);
     if (enabled) break;
     if (await btnEditarCabecera.isEnabled().catch(() => false)) {
@@ -438,7 +465,7 @@ export async function completarCabeceraReconsideracion(
     if (await labelPresento.isVisible().catch(() => false)) {
       await labelPresento.click({ force: true }).catch(() => {});
     }
-    await page.waitForTimeout(800);
+    await page.waitForTimeout(150);
   }
   if (!(await fechaInput.isEnabled().catch(() => false))) {
     throw new Error('El campo "Fecha de Reconsideración" está deshabilitado.');
@@ -452,7 +479,7 @@ export async function completarCabeceraReconsideracion(
     await fechaInput.fill(fechaTexto);
     await page.keyboard.press('Tab').catch(() => {});
     await fechaInput.blur().catch(() => {});
-    await page.waitForTimeout(800);
+    await page.waitForTimeout(200);
     const valor = await fechaInput.inputValue().catch(() => '');
     return valor.includes(fechaTexto);
   };
@@ -466,7 +493,7 @@ export async function completarCabeceraReconsideracion(
         await trigger.click({ force: true });
       }
       const calendario = panelId ? page.locator(`#${panelId}`) : page.locator('.p-datepicker').last();
-      await calendario.waitFor({ state: 'visible', timeout: 8000 }).catch(() => {});
+      await calendario.waitFor({ state: 'visible', timeout: 6000 }).catch(() => {});
 
       const monthNames = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
       const targetMonth = monthNames[fechaUsar.getMonth()];
@@ -488,13 +515,13 @@ export async function completarCabeceraReconsideracion(
         } else {
           if (await nextBtn.isVisible().catch(() => false)) await nextBtn.click();
         }
-        await page.waitForTimeout(200);
+        await page.waitForTimeout(120);
       }
 
       const diaBtn = calendario.getByRole('gridcell', { name: String(fechaUsar.getDate()) }).first();
       if (!(await diaBtn.isVisible().catch(() => false))) return false;
       await diaBtn.click();
-      await page.waitForTimeout(800);
+      await page.waitForTimeout(200);
       const valor = await fechaInput.inputValue().catch(() => '');
       return valor.includes(fechaTexto);
     } catch {
@@ -512,7 +539,7 @@ export async function completarCabeceraReconsideracion(
           el.dispatchEvent(new Event('change', { bubbles: true }));
         }
       }, fechaTexto);
-      await page.waitForTimeout(800);
+      await page.waitForTimeout(200);
       const valor = await fechaInput.inputValue().catch(() => '');
       return valor.includes(fechaTexto);
     } catch {
@@ -537,7 +564,7 @@ export async function completarCabeceraReconsideracion(
       } else {
         await scope.locator('label[for="presentoReconsideracion"]').click({ force: true }).catch(() => {});
       }
-      await page.waitForTimeout(600);
+      await page.waitForTimeout(150);
     }
   }
 
@@ -546,7 +573,7 @@ export async function completarCabeceraReconsideracion(
     const enabled = await checkPresento.isEnabled().catch(() => false);
     if (enabled && !(await checkPresento.isChecked().catch(() => false))) {
       await scope.locator('label[for="presentoReconsideracion"]').click({ force: true }).catch(() => {});
-      await page.waitForTimeout(600);
+      await page.waitForTimeout(150);
     }
   }
 
@@ -755,7 +782,7 @@ export function generarNumeroAleatorio(min: number = 100, max: number = 9999): n
  * Obtiene un administrado aleatorio de la lista
  * SOLUCIÓN FINAL CORRECTA PARA PRIMENNG (con sincronización del DOM)
  */
-export async function obtenerAdministradoAleatorio(page: Page): Promise<string> {
+export async function obtenerAdministradoAleatorio(page: Page, indicePreferido?: number): Promise<string> {
   console.log('🎲 Seleccionando administrado aleatorio...');
   
   try {
@@ -795,11 +822,13 @@ export async function obtenerAdministradoAleatorio(page: Page): Promise<string> 
 
     // PASO 3: Seleccionar opción aleatoria
     console.log('   Paso 3: Seleccionando opción aleatoria...');
-    const indiceAleatorio = Math.floor(Math.random() * count);
-    const optionSeleccionada = options.nth(indiceAleatorio);
+    const indiceBase = typeof indicePreferido === 'number'
+      ? ((indicePreferido % count) + count) % count
+      : Math.floor(Math.random() * count);
+    const optionSeleccionada = options.nth(indiceBase);
     
-    const administradoSeleccionado = (await optionSeleccionada.innerText())?.trim() || `Opcion_${indiceAleatorio}`;
-    console.log(`   Opción ${indiceAleatorio + 1}/${count}: "${administradoSeleccionado}"`);
+    const administradoSeleccionado = (await optionSeleccionada.innerText())?.trim() || `Opcion_${indiceBase}`;
+    console.log(`   Opción ${indiceBase + 1}/${count}: "${administradoSeleccionado}"`);
     
     // PASO 4: Clickear la opción
     console.log('   Paso 4: Clickeando opción...');
@@ -905,10 +934,27 @@ export async function capturarPantalla(page: Page, nombreCaso: string, paso: str
     console.log('⏩ Captura omitida por SKIP_SCREENSHOTS=1');
     return '';
   }
+  if (page.isClosed()) {
+    console.log('⏩ Captura omitida: la página ya está cerrada.');
+    return '';
+  }
+  const isError = /error/i.test(paso);
+  const carpeta = isError ? 'errors' : 'screenshots';
+  if (!fs.existsSync(`./${carpeta}`)) {
+    fs.mkdirSync(`./${carpeta}`, { recursive: true });
+  }
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
-  const nombreArchivo = `./screenshots/${nombreCaso}_${paso}_${timestamp}.png`;
-  await page.screenshot({ path: nombreArchivo });
-  console.log(`📸 Screenshot: ${nombreArchivo}`);
+  const nombreArchivo = `./${carpeta}/${nombreCaso}_${paso}_${timestamp}.png`;
+  try {
+    await page.screenshot({ path: nombreArchivo });
+    console.log(`📸 Screenshot: ${nombreArchivo}`);
+  } catch (error) {
+    if (page.isClosed()) {
+      console.log('⏩ Captura omitida: la página se cerró antes del screenshot.');
+      return '';
+    }
+    throw error;
+  }
   return nombreArchivo;
 }
 
@@ -966,10 +1012,22 @@ export async function capturarPantallaMejorada(
     console.log('⏩ Captura omitida por SKIP_SCREENSHOTS=1');
     return '';
   }
+  if (page.isClosed()) {
+    console.log('⏩ Captura omitida: la página ya está cerrada.');
+    return '';
+  }
   const nombreArchivo = construirNombreScreenshot(caso, paso, ruc, razonSocial);
   // Captura full page para ver todo el contenido
-  await page.screenshot({ path: nombreArchivo, fullPage: true });
-  console.log(`📸 Screenshot: ${nombreArchivo}`);
+  try {
+    await page.screenshot({ path: nombreArchivo, fullPage: true });
+    console.log(`📸 Screenshot: ${nombreArchivo}`);
+  } catch (error) {
+    if (page.isClosed()) {
+      console.log('⏩ Captura omitida: la página se cerró antes del screenshot.');
+      return '';
+    }
+    throw error;
+  }
   return nombreArchivo;
 }
 
@@ -988,9 +1046,21 @@ export async function capturarFormularioLleno(
     console.log('⏩ Captura omitida por SKIP_SCREENSHOTS=1');
     return '';
   }
+  if (page.isClosed()) {
+    console.log('⏩ Captura omitida: la página ya está cerrada.');
+    return '';
+  }
   const nombreArchivo = construirNombreScreenshot(caso, paso ?? 'FORMULARIO', ref1, ref2, modal);
-  await page.screenshot({ path: nombreArchivo, fullPage: true });
-  console.log(`📸 Screenshot formulario lleno: ${nombreArchivo}`);
+  try {
+    await page.screenshot({ path: nombreArchivo, fullPage: true });
+    console.log(`📸 Screenshot formulario lleno: ${nombreArchivo}`);
+  } catch (error) {
+    if (page.isClosed()) {
+      console.log('⏩ Captura omitida: la página se cerró antes del screenshot.');
+      return '';
+    }
+    throw error;
+  }
   return nombreArchivo;
 }
 
@@ -1009,6 +1079,10 @@ export async function capturarToastExito(
     console.log('⏩ Captura omitida por SKIP_SCREENSHOTS=1');
     return null;
   }
+  if (page.isClosed()) {
+    console.log('⏩ Captura omitida: la página ya está cerrada.');
+    return null;
+  }
   const toast = page
     .locator('.p-toast-message-success, .p-toast-message')
     .filter({ hasText: /registro|registrad|guardad|Éxito|exito/i })
@@ -1019,8 +1093,16 @@ export async function capturarToastExito(
 
   const paso = /EXITO/i.test(etiqueta) ? etiqueta : `EXITO_${etiqueta}`;
   const nombreArchivo = construirNombreScreenshot(caso, paso, ref1, ref2, modal);
-  await page.screenshot({ path: nombreArchivo, fullPage: true });
-  console.log(`📸 Screenshot toast éxito: ${nombreArchivo}`);
+  try {
+    await toast.screenshot({ path: nombreArchivo });
+    console.log(`📸 Screenshot toast éxito: ${nombreArchivo}`);
+  } catch (error) {
+    if (page.isClosed()) {
+      console.log('⏩ Captura omitida: la página se cerró antes del screenshot.');
+      return null;
+    }
+    throw error;
+  }
   return nombreArchivo;
 }
 

@@ -1,11 +1,18 @@
 # Dependencias
 node_modules/
 
+# Entornos locales
+.venv/
+
 # Reportes y resultados
 playwright-report/
 allure-results/
 allure-report/
 test-results/
+
+# Datos generados locales
+reportes/
+errors/
 
 # Evidencias
 screenshots/

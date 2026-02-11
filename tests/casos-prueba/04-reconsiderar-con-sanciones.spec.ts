@@ -90,16 +90,16 @@ test.describe('04-RECONSIDERAR CON SANCIONES', () => {
 
       while (!registroEncontrado && paginaActual <= maxPaginas) {
         const totalFilas = await filas.count();
-        for (let i = 1; i < totalFilas && !registroEncontrado; i++) {
+        // Buscar todos los registros válidos y asignar uno único por worker+repeat
+        const candidatos: { filaIdx: number, fechaResolucion: Date|null, administrado: string }[] = [];
+        for (let i = 1; i < totalFilas; i++) {
           const fila = filas.nth(i);
           const celdas = fila.locator('td');
           const totalCeldas = await celdas.count();
-
           if (totalCeldas >= 9) {
             const fModificacion = (await celdas.nth(idxFMod).textContent())?.trim() || '';
             const nReconsid = (await celdas.nth(idxNRec).textContent())?.trim() || '';
             const fReconsid = (await celdas.nth(idxFRec).textContent())?.trim() || '';
-
             const fechasDetectadas: Date[] = [];
             for (let c = 0; c < totalCeldas; c++) {
               const texto = (await celdas.nth(c).textContent())?.trim() || '';
@@ -108,17 +108,22 @@ test.describe('04-RECONSIDERAR CON SANCIONES', () => {
             }
             const fechaResolucion = fechasDetectadas[0] || null;
             const fechaResolucionValida = Boolean(fechaResolucion && fechaResolucion < hoy);
-
             if (!fModificacion && !nReconsid && !fReconsid && fechaResolucionValida) {
               const administrado = idxAdmin >= 0
                 ? (await celdas.nth(idxAdmin).textContent())?.trim() || 'N/D'
                 : (await celdas.nth(0).textContent())?.trim() || 'N/D';
-              console.log(`   👤 Administrado: ${administrado}`);
-              numeroFilaEncontrada = i;
-              registroEncontrado = true;
-              fechaResolucionSeleccionada = fechaResolucion;
+              candidatos.push({ filaIdx: i, fechaResolucion, administrado });
             }
           }
+        }
+        // Asignar registro único por worker+repeat
+        const slot = (testInfo.workerIndex ?? 0) + (testInfo.repeatEachIndex ?? 0);
+        if (candidatos.length > slot) {
+          const elegido = candidatos[slot];
+          console.log(`   👤 Administrado: ${elegido.administrado}`);
+          numeroFilaEncontrada = elegido.filaIdx;
+          registroEncontrado = true;
+          fechaResolucionSeleccionada = elegido.fechaResolucion;
         }
 
         if (!registroEncontrado) {
@@ -142,10 +147,12 @@ test.describe('04-RECONSIDERAR CON SANCIONES', () => {
       // PASO 3: CLICK EN RECONSIDERAR
       // ═══════════════════════════════════════════════════════════════════
       console.log('📋 PASO 3: Clickeando RECONSIDERAR...');
+      // ...existing code...
       const filaSeleccionada = filas.nth(numeroFilaEncontrada);
       const btnReconsiderar = filaSeleccionada.locator('button.p-button-warning');
-      await btnReconsiderar.click();
-      // Espera fija eliminada para máxima velocidad
+      await btnReconsiderar.first().click();
+      // Espera a que el formulario de cabecera esté visible (igual que caso 3)
+      await page.locator('form').waitFor({ state: 'visible', timeout: 10000 });
       console.log('✅ RECONSIDERAR clickeado\n');
 
       // ═══════════════════════════════════════════════════════════════════
@@ -233,16 +240,11 @@ test.describe('04-RECONSIDERAR CON SANCIONES', () => {
       for (let i = 0; i < 3; i++) {
         const enabled = await btnGuardar.isEnabled().catch(() => false);
         if (enabled) break;
-        // Espera fija eliminada para máxima velocidad
       }
+      console.log('   ✓ Botón guardar encontrado, haciendo clic...');
       await btnGuardar.click();
-      // Espera fija eliminada para máxima velocidad
-      await page
-        .locator('.p-toast-message-success, .p-toast-message')
-        .filter({ hasText: /registro|registrad|guardad|Éxito|exito/i })
-        .first()
-        .waitFor({ state: 'visible', timeout: 15000 })
-        .catch(() => {});
+      // Espera a que desaparezca el botón o se muestre el toast de éxito (igual que caso 3)
+      await page.locator('.p-toast-message-success, .p-toast-message').first().waitFor({ state: 'visible', timeout: 15000 }).catch(() => {});
       const toastCabecera = await capturarToastExito(
         page,
         '04-RECONSIDERAR-CON-SANCIONES',
@@ -271,8 +273,8 @@ test.describe('04-RECONSIDERAR CON SANCIONES', () => {
       const tabDetalle = page.getByRole('tab', { name: 'Detalle de sanciones' });
       await tabDetalle.waitFor({ state: 'visible', timeout: 10000 });
       await tabDetalle.click();
-      await page.waitForLoadState('networkidle').catch(() => {});
-      // Espera fija eliminada para máxima velocidad
+      // Espera a que el contenido de la pestaña esté visible (igual que caso 3)
+      await page.locator('body').waitFor({ state: 'visible', timeout: 10000 });
       console.log('✅ Tab Detalle abierto\n');
 
       // ═══════════════════════════════════════════════════════════════════
@@ -290,7 +292,7 @@ test.describe('04-RECONSIDERAR CON SANCIONES', () => {
       console.log(`📊 Total de registros: ${totalFilasTabla}\n`);
       
       let registrosEditados = 0;
-      const maxRegistrosAEditar = Math.min(5, totalFilasTabla);
+      const maxRegistrosAEditar = totalFilasTabla;
 
       const obtenerIndiceDetalle = async (regex: RegExp): Promise<number> => {
         const total = await headersDetalle.count();

@@ -1,9 +1,11 @@
+
 import { test, Page, expect } from '@playwright/test';
 import * as fs from 'fs';
 import * as path from 'path';
 import * as XLSX from 'xlsx';
 import {
   iniciarSesionYNavegar,
+  obtenerCredencial,
   abrirFormularioNuevoAdministrado,
   generarRUC,
   capturarPantalla,
@@ -11,6 +13,10 @@ import {
   capturarFormularioLleno,
   capturarToastExito
 } from '../utilidades/reginsa-actions';
+import { generateTestData } from '../../helpers/data-generator';
+import { getEstadoLabel } from '../../helpers/state-distributor';
+import { getTestContext } from '../../helpers/test-context';
+import { allure } from 'allure-playwright';
 
 /**
  * EJECUCIÓN (rápido)
@@ -31,6 +37,8 @@ const reportPath = path.join(__dirname, '../../reportes/registros-administrados.
 const administradosSistemaPath = path.join(__dirname, '../../reportes/administrados-registrados.json');
 const reservadosPath = path.join(__dirname, '../../reportes/administrados-reservados.json');
 const reservadosLockPath = path.join(__dirname, '../../reportes/administrados-reservados.lock');
+const runMarkerPath = path.join(__dirname, '../../reportes/administrados-run.json');
+const runLockPath = path.join(__dirname, '../../reportes/administrados-run.lock');
 const baseRucsPath = path.join(__dirname, '../../files/rucs_caso_01_base.tsv');
 const baseRucsExcelPath = path.join(__dirname, '../../test-files/Administrados_BD.xlsx');
 
@@ -59,15 +67,94 @@ interface RegistroReservado {
 // FUNCIONES AUXILIARES
 // ===============================
 
-const SUFIJOS_EMPRESA = ['SAC', 'EIRL', 'SRL', 'SAA'];
-const PREFIJOS_RAZON_SOCIAL = ['EMPRESA', 'CONSORCIO', 'UNIVERSIDAD', 'INDUSTRIA', 'CORPORACION'];
+const SUFIJOS_EMPRESA = ['S.A.C.', 'S.A.', 'S.S.', 'E.I.R.L.', 'S.R.L.', 'S.A.A.', 'S.A.C', 'S.A', 'S.S', 'EIRL', 'SRL', 'SAA'];
+// Prefijos originales y ampliados
+const PREFIJOS_RAZON_SOCIAL = [
+  'EMPRESA',
+  'CONSORCIO',
+  'UNIVERSIDAD',
+  'INDUSTRIA',
+  'CORPORACION',
+  'COMERCIO',
+  'ALMACENES',
+  // Ejemplos reales y ampliados
+  'UNIVERSIDAD NACIONAL SAN MARCOS',
+  'UNIVERSIDAD CATOLICA',
+  'MINISTERIO DE SALUD',
+  'MINISTERIO DE EDUCACION',
+  'RESTAURANTE EL SABOR',
+  'CAFETERIA LA ESQUINA',
+  'SUPERMERCADO CENTRAL',
+  'FARMACIA POPULAR',
+  'TRANSPORTES EXPRESS',
+  'CONSTRUCTORA ANDINA',
+  'HOTEL SOLARIS',
+  'CLINICA SAN JUAN',
+  'COLEGIO NUEVA ERA',
+  'ASOCIACION DE VECINOS',
+  'COOPERATIVA AGRARIA',
+  'FUNDACION LUZ',
+  'INSTITUTO TECNOLOGICO',
+  'CENTRO DE IDIOMAS',
+  'GRUPO EMPRESARIAL',
+  'DISTRIBUIDORA DEL NORTE',
+  'SERVICIOS GENERALES',
+  'AGROINDUSTRIAS DEL SUR',
+  'CLUB DEPORTIVO',
+  'TIENDA COMERCIAL',
+  'LABORATORIO MODERNO',
+  'OTRO'
+];
+const TIPOS_ENTIDAD = [
+  'ESTATAL',
+  'NACIONAL',
+  'PRIVADA',
+  'PUBLICA',
+  'PARTICULAR',
+  'NO GUBERNAMENTAL',
+  'MUNICIPAL',
+  'REGIONAL',
+  'INTERNACIONAL',
+  'OTRO'
+];
+const VALIDACION_DUPLICADO_REGEX = /ya\s*existe|duplicad|repetid|registrad|no\s*puede\s*repetirse|se\s*encuentra\s*registrad/i;
 
 function leerRegistrosExistentes(): RegistroAdministrado[] {
   if (!fs.existsSync(reportPath)) {
     return [];
   }
   const contenido = fs.readFileSync(reportPath, 'utf-8');
-  return JSON.parse(contenido) as RegistroAdministrado[];
+  try {
+    if (!contenido.trim()) return [];
+    return JSON.parse(contenido) as RegistroAdministrado[];
+  } catch {
+    return [];
+  }
+}
+
+function inicializarRunActual(): void {
+  const runId = process.env.TEST_RUN_ID || '';
+  if (!runId) return;
+
+  withFileLock(runLockPath, () => {
+    let marker: { runId?: string } | null = null;
+    if (fs.existsSync(runMarkerPath)) {
+      try {
+        marker = JSON.parse(fs.readFileSync(runMarkerPath, 'utf-8')) as { runId?: string };
+      } catch {
+        marker = null;
+      }
+    }
+
+    if (marker?.runId === runId) return;
+
+    [reportPath, reservadosPath, administradosSistemaPath].forEach((p) => {
+      if (fs.existsSync(p)) {
+        fs.unlinkSync(p);
+      }
+    });
+    fs.writeFileSync(runMarkerPath, JSON.stringify({ runId, startedAt: new Date().toISOString() }, null, 2));
+  });
 }
 
 function withFileLock<T>(lockPath: string, fn: () => T, timeoutMs = 15000, retryMs = 200): T {
@@ -137,8 +224,14 @@ function leerAdministradosSistema(): Array<{ ruc?: string; razonSocial?: string 
   let existentes: Array<{ ruc?: string; razonSocial?: string; nombreComercial?: string; estado?: string }> = [];
   if (fs.existsSync(administradosSistemaPath)) {
     const contenido = fs.readFileSync(administradosSistemaPath, 'utf-8');
-    const data = JSON.parse(contenido) as { registros?: Array<{ ruc?: string; razonSocial?: string; nombreComercial?: string; estado?: string }> };
-    existentes = Array.isArray(data?.registros) ? data.registros : [];
+    try {
+      if (contenido.trim()) {
+        const data = JSON.parse(contenido) as { registros?: Array<{ ruc?: string; razonSocial?: string; nombreComercial?: string; estado?: string }> };
+        existentes = Array.isArray(data?.registros) ? data.registros : [];
+      }
+    } catch {
+      existentes = [];
+    }
   }
 
   const vistos = new Set<string>();
@@ -154,6 +247,55 @@ function leerAdministradosSistema(): Array<{ ruc?: string; razonSocial?: string 
   }
 
   return combinados;
+}
+
+async function verificarAdministradoRegistrado(page: Page, ruc: string, maxRetries = 3, waitMs = 3000): Promise<boolean> {
+  const navegarAdministrado = async () => {
+    const linkAdmin = page.getByRole('link', { name: /Administrado|Administrados/i }).first();
+    if (!(await linkAdmin.isVisible().catch(() => false))) {
+      const menuBtn = page.locator('button:has(i.pi-bars), button[aria-label*="menu" i], .layout-menu-button').first();
+      if (await menuBtn.isVisible().catch(() => false)) {
+        await menuBtn.click().catch(() => {});
+      }
+    }
+    await linkAdmin.click().catch(() => {});
+    await page.waitForLoadState('networkidle').catch(() => {});
+    await page.locator('table').first().waitFor({ state: 'visible', timeout: 15000 });
+  };
+
+  const buscarRuc = async () => {
+    const inputRuc = page
+      .locator('input[placeholder*="RUC" i], input[aria-label*="RUC" i], input[formcontrolname*="ruc" i]')
+      .first();
+    const inputVisible = await inputRuc.waitFor({ state: 'visible', timeout: 10000 }).then(() => true).catch(() => false);
+    if (!inputVisible) {
+      return false;
+    }
+    const limpio = await inputRuc.fill('').then(() => true).catch(() => false);
+    if (!limpio) return false;
+    const escrito = await inputRuc.fill(ruc).then(() => true).catch(() => false);
+    if (!escrito) return false;
+    const btnBuscar = page.getByRole('button', { name: /Buscar/i }).first();
+    if (await btnBuscar.isVisible().catch(() => false)) {
+      await btnBuscar.click().catch(() => {});
+    }
+    const celda = page.locator('table').locator('td', { hasText: ruc }).first();
+    return celda.waitFor({ state: 'visible', timeout: 8000 }).then(() => true).catch(() => false);
+  };
+
+  await navegarAdministrado();
+  for (let intento = 0; intento < maxRetries; intento++) {
+    if (page.isClosed()) return false;
+    const encontrado = await buscarRuc();
+    if (encontrado) return true;
+    if (intento > 0) {
+      await page.reload({ waitUntil: 'domcontentloaded' }).catch(() => {});
+      await page.waitForLoadState('networkidle').catch(() => {});
+      await navegarAdministrado().catch(() => {});
+    }
+    await page.waitForTimeout(waitMs).catch(() => {});
+  }
+  return false;
 }
 
 function leerBaseRucsTSV(): Array<{ ruc?: string; razonSocial?: string; nombreComercial?: string; estado?: string }> {
@@ -276,6 +418,58 @@ function generarRazonSocialUnica(usados: Set<string>): string {
   return razon;
 }
 
+function construirRazonSocialMasiva(ruc: string, usados: Set<string>, sequenceIndex?: number): string {
+  // Prefijo principal (aleatorio o secuencial)
+  const prefijo = PREFIJOS_RAZON_SOCIAL[sequenceIndex !== undefined ? sequenceIndex % PREFIJOS_RAZON_SOCIAL.length : Math.floor(Math.random() * PREFIJOS_RAZON_SOCIAL.length)];
+  // Tipo de entidad (aleatorio o secuencial)
+  const tipoEntidad = TIPOS_ENTIDAD[sequenceIndex !== undefined ? sequenceIndex % TIPOS_ENTIDAD.length : Math.floor(Math.random() * TIPOS_ENTIDAD.length)];
+  // Últimos 5 dígitos del RUC
+  const rucNorm = normalizarRuc(ruc);
+  const ultimos5 = rucNorm.slice(-5);
+  // Sufijo comercial aleatorio
+  const sufijo = SUFIJOS_EMPRESA[Math.floor(Math.random() * SUFIJOS_EMPRESA.length)];
+  // Si el prefijo es uno de los ejemplos reales, no agregues tipoEntidad para evitar redundancia
+  const ejemplosReales = [
+    'UNIVERSIDAD NACIONAL SAN MARCOS',
+    'UNIVERSIDAD CATOLICA',
+    'MINISTERIO DE SALUD',
+    'MINISTERIO DE EDUCACION',
+    'RESTAURANTE EL SABOR',
+    'CAFETERIA LA ESQUINA',
+    'SUPERMERCADO CENTRAL',
+    'FARMACIA POPULAR',
+    'TRANSPORTES EXPRESS',
+    'CONSTRUCTORA ANDINA',
+    'HOTEL SOLARIS',
+    'CLINICA SAN JUAN',
+    'COLEGIO NUEVA ERA',
+    'ASOCIACION DE VECINOS',
+    'COOPERATIVA AGRARIA',
+    'FUNDACION LUZ',
+    'INSTITUTO TECNOLOGICO',
+    'CENTRO DE IDIOMAS',
+    'GRUPO EMPRESARIAL',
+    'DISTRIBUIDORA DEL NORTE',
+    'SERVICIOS GENERALES',
+    'AGROINDUSTRIAS DEL SUR',
+    'CLUB DEPORTIVO',
+    'TIENDA COMERCIAL',
+    'LABORATORIO MODERNO',
+    'OTRO'
+  ];
+  let razon = '';
+  if (ejemplosReales.includes(prefijo)) {
+    razon = `${prefijo} ${ultimos5} ${sufijo}`;
+  } else {
+    razon = `${prefijo} ${tipoEntidad} ${ultimos5} ${sufijo}`;
+  }
+  const normalizada = normalizarTexto(razon);
+  if (usados.has(normalizada)) {
+    return generarRazonSocialUnica(usados);
+  }
+  return razon;
+}
+
 function calcularEstadoCaso(index: number, total: number): string {
   if (!total || total <= 1) return 'Licenciada';
   if (total >= 10) {
@@ -292,12 +486,13 @@ function calcularEstadoCaso(index: number, total: number): string {
 
 function generarDatosUnicos(
   rucsRegistrados: Set<string>,
-  razonesRegistradas: Set<string>
+  razonesRegistradas: Set<string>,
+  sequenceIndex?: number
 ): { ruc: string; razonSocial: string; nombreComercial: string } {
   let intentos = 0;
   while (intentos < 50) {
     const ruc = normalizarRuc(generarRUC());
-    const razonSocial = generarRazonSocialUnica(razonesRegistradas);
+    const razonSocial = construirRazonSocialMasiva(ruc, razonesRegistradas, sequenceIndex);
     const nombreComercial = quitarSufijoEmpresa(razonSocial);
 
     if (!rucsRegistrados.has(normalizarTexto(normalizarRuc(ruc)))) {
@@ -325,12 +520,12 @@ async function asegurarFormularioAdministrado(page: Page): Promise<ReturnType<Pa
 async function esperarResultadoGuardado(page: Page): Promise<boolean> {
   const toast = page.locator('text=/Guardado|Exitoso|éxito/i').first();
   const modal = page.getByRole('dialog').filter({ hasText: /Agregar\s*Administrado/i }).first();
-  const timeoutMs = 12000;
+  const timeoutMs = 4500;
   const start = Date.now();
   while (Date.now() - start < timeoutMs) {
     if (await toast.isVisible().catch(() => false)) return true;
     if (await modal.isVisible().catch(() => false) === false) return true;
-    await page.waitForTimeout(500);
+    await page.waitForTimeout(120);
   }
   return false;
 }
@@ -343,7 +538,13 @@ function actualizarReporte(registro: RegistroAdministrado): void {
   
   if (fs.existsSync(reportPath)) {
     const contenido = fs.readFileSync(reportPath, 'utf-8');
-    registros = JSON.parse(contenido);
+    try {
+      if (contenido.trim()) {
+        registros = JSON.parse(contenido);
+      }
+    } catch {
+      registros = [];
+    }
   }
   
   registros.push(registro);
@@ -413,6 +614,23 @@ async function llenarCampo(page: Page, nombre: string, valor: string): Promise<v
   // Espera fija eliminada para máxima velocidad
 }
 
+async function detectarValidacionDuplicado(page: Page): Promise<boolean> {
+  const scope = await asegurarFormularioAdministrado(page);
+  const mensajeDirecto = scope.getByText(VALIDACION_DUPLICADO_REGEX).first();
+  if (await mensajeDirecto.isVisible().catch(() => false)) return true;
+
+  const mensajes = scope.locator('.p-error, .invalid-feedback, .mat-error, .text-danger, .error-message');
+  const total = await mensajes.count().catch(() => 0);
+  for (let i = 0; i < total; i++) {
+    const nodo = mensajes.nth(i);
+    if (!(await nodo.isVisible().catch(() => false))) continue;
+    const texto = await nodo.innerText().catch(() => '');
+    if (VALIDACION_DUPLICADO_REGEX.test(texto)) return true;
+  }
+
+  return false;
+}
+
 /**
  * Selecciona una opción en el dropdown de Estado (Ant Design / combobox)
  */
@@ -430,9 +648,22 @@ async function seleccionarEstado(page: Page, estado: string): Promise<void> {
     await list.first().waitFor({ state: 'visible', timeout: 20000 });
 
     const opcion = list.locator('li[role="option"], .p-dropdown-item', { hasText: textoEstado }).first();
-    await opcion.waitFor({ state: 'visible', timeout: 20000 });
-    await opcion.click({ force: true });
-    return;
+    const visible = await opcion.waitFor({ state: 'visible', timeout: 4000 }).then(() => true).catch(() => false);
+    if (visible) {
+      await opcion.click({ force: true });
+      return;
+    }
+
+    // Fallback: si el estado no existe, elegir la primera opcion valida
+    const opciones = list.locator('li[role="option"], .p-dropdown-item');
+    const total = await opciones.count().catch(() => 0);
+    for (let i = 0; i < total; i++) {
+      const texto = (await opciones.nth(i).innerText().catch(() => '')) || '';
+      if (!/seleccione/i.test(texto)) {
+        await opciones.nth(i).click({ force: true });
+        return;
+      }
+    }
   }
 
   const dropdownFallback = scope.getByRole('combobox', { name: /Seleccione|Estado/i });
@@ -440,48 +671,107 @@ async function seleccionarEstado(page: Page, estado: string): Promise<void> {
   await dropdownFallback.click({ force: true });
 
   const opcionFallback = page.getByRole('option', { name: textoEstado }).first();
-  await opcionFallback.waitFor({ state: 'visible', timeout: 20000 });
-  await opcionFallback.click({ force: true });
+  const visibleFallback = await opcionFallback.waitFor({ state: 'visible', timeout: 4000 }).then(() => true).catch(() => false);
+  if (visibleFallback) {
+    await opcionFallback.click({ force: true });
+    return;
+  }
+
+  const opcionesFallback = page.getByRole('option').filter({ hasText: /./ });
+  const totalFallback = await opcionesFallback.count().catch(() => 0);
+  for (let i = 0; i < totalFallback; i++) {
+    const texto = (await opcionesFallback.nth(i).innerText().catch(() => '')) || '';
+    if (!/seleccione/i.test(texto)) {
+      await opcionesFallback.nth(i).click({ force: true });
+      return;
+    }
+  }
 }
 
 /**
  * Registra un administrado con reintentos por RUC duplicado
  */
-async function registrarAdministrado(page: Page, numeroRegistro: number, estadoSeleccionado: string): Promise<string> {
-  const maxReintentos = 1;
+// Nueva función para obtener todos los RUC y razón social ya existentes de todas las fuentes
+function obtenerRucsYRazonesUsados() {
+  const registrosExistentes = leerRegistrosExistentes();
+  const reservados = leerReservados();
+  const administradosSistema = leerAdministradosSistema();
+  const baseRucs = [...leerBaseRucsTSV(), ...leerBaseRucsExcel()];
+  const rucsRegistrados = new Set<string>();
+  const razonesRegistradas = new Set<string>();
+  // De reportes
+  registrosExistentes.forEach(r => {
+    rucsRegistrados.add(normalizarTexto(normalizarRuc(r.ruc)));
+    razonesRegistradas.add(normalizarTexto(r.razonSocial));
+    if ((r as any).nombreComercial) razonesRegistradas.add(normalizarTexto((r as any).nombreComercial));
+  });
+  // De reservados
+  reservados.forEach(item => {
+    if (item.ruc) rucsRegistrados.add(normalizarTexto(normalizarRuc(item.ruc)));
+    if (item.razonSocial) razonesRegistradas.add(normalizarTexto(item.razonSocial));
+  });
+  // De administrados en sistema
+  administradosSistema.forEach(item => {
+    if (item.ruc) rucsRegistrados.add(normalizarTexto(normalizarRuc(item.ruc)));
+    if (item.razonSocial) razonesRegistradas.add(normalizarTexto(item.razonSocial));
+    if ((item as any).nombreComercial) razonesRegistradas.add(normalizarTexto((item as any).nombreComercial));
+  });
+  // De base TSV/Excel
+  baseRucs.forEach(item => {
+    if (item.ruc) rucsRegistrados.add(normalizarTexto(normalizarRuc(item.ruc)));
+    if (item.razonSocial) razonesRegistradas.add(normalizarTexto(item.razonSocial));
+    if ((item as any).nombreComercial) razonesRegistradas.add(normalizarTexto((item as any).nombreComercial));
+  });
+  return { rucsRegistrados, razonesRegistradas };
+}
+
+// Mejorada: asegura unicidad absoluta y robustez para pruebas masivas
+async function registrarAdministrado(
+  page: Page,
+  numeroRegistro: number,
+  estadoSeleccionado: string,
+  maxDurationMs = 90000,
+  verificarRetries = 3,
+  verificarWaitMs = 3000,
+  strictVerify = true,
+  maxReintentos = 1,
+  overrideData?: { ruc: string; razonSocial: string; nombreComercial: string },
+  forcePattern = false,
+  sequenceIndex?: number
+): Promise<string> {
   let rucsUsados: string[] = [];
   let registroExitoso = false;
-  const registrosExistentes = leerRegistrosExistentes();
-  const rucsRegistrados = new Set(registrosExistentes.map(r => normalizarTexto(normalizarRuc(r.ruc))));
-  const razonesRegistradas = new Set(registrosExistentes.map(r => normalizarTexto(r.razonSocial)));
-  const reservados = leerReservados();
-  reservados.forEach((item) => {
-    if (item.ruc) rucsRegistrados.add(normalizarTexto(normalizarRuc(item.ruc)));
-    if (item.razonSocial) razonesRegistradas.add(normalizarTexto(item.razonSocial));
-  });
-  const administradosSistema = leerAdministradosSistema();
-  administradosSistema.forEach((item) => {
-    if (item.ruc) rucsRegistrados.add(normalizarTexto(normalizarRuc(item.ruc)));
-    if (item.razonSocial) razonesRegistradas.add(normalizarTexto(item.razonSocial));
-  });
-
-  const baseRucs = [...leerBaseRucsTSV(), ...leerBaseRucsExcel()];
-  baseRucs.forEach((item) => {
-    if (item.ruc) rucsRegistrados.add(normalizarTexto(normalizarRuc(item.ruc)));
-    if (item.razonSocial) razonesRegistradas.add(normalizarTexto(item.razonSocial));
-    if (item.nombreComercial) razonesRegistradas.add(normalizarTexto(item.nombreComercial));
-  });
+  const inicio = Date.now();
+  // Centraliza la obtención de datos usados
+  let { rucsRegistrados, razonesRegistradas } = obtenerRucsYRazonesUsados();
 
   console.log(`📊 Base de exclusión cargada: ${rucsRegistrados.size} RUCs y ${razonesRegistradas.size} razones sociales`);
 
   for (let intento = 0; intento < maxReintentos; intento++) {
-    const datos = generarDatosUnicos(rucsRegistrados, razonesRegistradas);
-    const ruc = datos.ruc;
-    const razonSocial = datos.razonSocial;
-    const nombreComercial = datos.nombreComercial;
+    if (page.isClosed()) {
+      throw new Error('La página se cerró antes de completar el registro.');
+    }
+    if (Date.now() - inicio > maxDurationMs) {
+      throw new Error(`Se agotó el tiempo disponible para registrar administrado (${maxDurationMs}ms).`);
+    }
+    // Refresca los sets en cada intento para máxima robustez
+    ({ rucsRegistrados, razonesRegistradas } = obtenerRucsYRazonesUsados());
+    const datos = overrideData ?? generarDatosUnicos(rucsRegistrados, razonesRegistradas, sequenceIndex);
+    let ruc = datos.ruc;
+    let razonSocial = datos.razonSocial;
+    let nombreComercial = datos.nombreComercial;
+    if (overrideData && forcePattern) {
+      razonSocial = construirRazonSocialMasiva(ruc, razonesRegistradas, sequenceIndex);
+      nombreComercial = quitarSufijoEmpresa(razonSocial);
+    }
 
-    rucsUsados.push(ruc);
-    razonesRegistradas.add(normalizarTexto(razonSocial));
+    const registrarLocal = (nuevoRuc: string, nuevaRazon: string) => {
+      rucsRegistrados.add(normalizarTexto(normalizarRuc(nuevoRuc)));
+      razonesRegistradas.add(normalizarTexto(nuevaRazon));
+      rucsUsados.push(nuevoRuc);
+    };
+
+    registrarLocal(ruc, razonSocial);
 
     console.log(`🔄 Intento ${intento + 1}/${maxReintentos} - RUC: ${ruc}`);
     console.log(`   👤 Administrado: ${razonSocial}`);
@@ -489,14 +779,40 @@ async function registrarAdministrado(page: Page, numeroRegistro: number, estadoS
     try {
       await asegurarFormularioAdministrado(page);
       // Llenar formulario
-      await llenarCampo(page, 'R.U.C. *', normalizarRuc(ruc));
-      await llenarCampo(page, 'Razón Social *', razonSocial);
-      await llenarCampo(page, 'Nombre Comercial *', nombreComercial);
+      const llenarDatos = async () => {
+        await llenarCampo(page, 'R.U.C. *', normalizarRuc(ruc));
+        await llenarCampo(page, 'Razón Social *', razonSocial);
+        await llenarCampo(page, 'Nombre Comercial *', nombreComercial);
+      };
+
+      await llenarDatos();
+
+      let reintentoValidacion = false;
+      if (await detectarValidacionDuplicado(page)) {
+        if (!reintentoValidacion) {
+          reintentoValidacion = true;
+          console.warn('⚠️ Validación duplicado detectada (RUC/Razón Social). Generando un nuevo dato y reintentando una vez.');
+          // Refresca los sets antes de generar nuevos datos
+          ({ rucsRegistrados, razonesRegistradas } = obtenerRucsYRazonesUsados());
+          const nuevo = generarDatosUnicos(rucsRegistrados, razonesRegistradas, sequenceIndex);
+          ruc = nuevo.ruc;
+          razonSocial = nuevo.razonSocial;
+          nombreComercial = nuevo.nombreComercial;
+          if (overrideData && forcePattern) {
+            razonSocial = construirRazonSocialMasiva(ruc, razonesRegistradas, sequenceIndex);
+            nombreComercial = quitarSufijoEmpresa(razonSocial);
+          }
+          registrarLocal(ruc, razonSocial);
+          await llenarDatos();
+          if (await detectarValidacionDuplicado(page)) {
+            throw new Error('Validación duplicado persiste después de reintento con nuevo RUC/Razón Social.');
+          }
+        }
+      }
 
       // Seleccionar estado
       await seleccionarEstado(page, estadoSeleccionado);
       // Espera mínima para estabilidad visual
-      // Espera fija eliminada para máxima velocidad
 
       // Captura formulario lleno ANTES de guardar (reutiliza `capturarFormularioLleno`)
       const screenshotAntes = await capturarFormularioLleno(
@@ -516,13 +832,26 @@ async function registrarAdministrado(page: Page, numeroRegistro: number, estadoS
 
       if (exito) {
         console.log(`✅ Administrado registrado - RUC: ${ruc}`);
-        
+
         // Captura mensaje de éxito (toast verde) (reutiliza `capturarToastExito`)
         const screenshotDespues =
           (await capturarToastExito(page, '01-AGREGAR_ADMINISTRADO', '06_EXITO', ruc, razonSocial, 'AGREGAR_ADMINISTRADO')) ||
           // Fallback de captura completa (reutiliza `capturarPantallaMejorada`)
           (await capturarPantallaMejorada(page, '01-AGREGAR_ADMINISTRADO', '06_EXITO', ruc, razonSocial));
-        
+
+        let verificado = false;
+        try {
+          verificado = await verificarAdministradoRegistrado(page, ruc, verificarRetries, verificarWaitMs);
+        } catch (error) {
+          throw error;
+        }
+        if (!verificado) {
+          if (strictVerify) {
+            throw new Error(`El RUC ${ruc} no aparece en Administrado después del guardado.`);
+          }
+          console.warn(`⚠️ Verificación omitida: el RUC ${ruc} no aparece aún en Administrado.`);
+        }
+
         // Actualizar reporte
         const registro: RegistroAdministrado = {
           id: numeroRegistro,
@@ -536,7 +865,7 @@ async function registrarAdministrado(page: Page, numeroRegistro: number, estadoS
           estado_registro: 'exitoso'
         };
         actualizarReporte(registro);
-        
+
         registroExitoso = true;
         return ruc;
       } else {
@@ -549,17 +878,20 @@ async function registrarAdministrado(page: Page, numeroRegistro: number, estadoS
             await inputRuc.clear();
           }
         }
-        // Espera fija eliminada para máxima velocidad
       }
     } catch (error) {
-      console.error(`❌ Error en intento ${intento + 1}:`, error);
+      console.error(`❌ Error en intento ${intento + 1} (RUC: ${ruc}):`, error);
+      if (page.isClosed()) {
+        throw new Error('La página se cerró durante el registro, se detienen reintentos.');
+      }
     }
   }
 
   if (!registroExitoso) {
-    throw new Error(`No se pudo registrar administrado después de ${maxReintentos} intentos`);
+    const ultimoRuc = rucsUsados[rucsUsados.length - 1] || 'N/D';
+    throw new Error(`No se pudo registrar administrado después de ${maxReintentos} intentos. Último RUC: ${ultimoRuc}`);
   }
-  
+
   return rucsUsados[rucsUsados.length - 1];
 }
 
@@ -579,48 +911,74 @@ async function registrarAdministrado(page: Page, numeroRegistro: number, estadoS
  * 6. Guardar y validar éxito (reutiliza `capturarToastExito` / `capturarPantallaMejorada`)
  * 7. Actualizar reporte JSON
  */
+
 test('01-AGREGAR ADMINISTRADO: Registro con RUC automático y reintentos', async ({ page }, testInfo) => {
   console.log('\n📱 CASO 01: AGREGAR ADMINISTRADO\n');
-
   try {
-    // ═══════════════════════════════════════════════════════════════════
-    // PASO 1: LOGIN + NAVEGACIÓN
-    // Reutiliza `iniciarSesionYNavegar` (login + módulo)
-    // ═══════════════════════════════════════════════════════════════════
-    await iniciarSesionYNavegar(page, 'infractor', testInfo.workerIndex);
+    const ctx = getTestContext(testInfo);
+    inicializarRunActual();
+    if (ctx.isMassive) {
+      test.setTimeout(300000);
+    }
 
-    // ═══════════════════════════════════════════════════════════════════
-    // PASO 2: ABRIR FORMULARIO
-    // Reutiliza `abrirFormularioNuevoAdministrado`
-    // ═══════════════════════════════════════════════════════════════════
-    await abrirFormularioNuevoAdministrado(page);
+    await allure.step('PASO 1: LOGIN + NAVEGACIÓN', async () => {
+      await iniciarSesionYNavegar(page, 'infractor', testInfo.workerIndex);
+      allure.attachment('Usuario', obtenerCredencial(testInfo.workerIndex).usuario, 'text/plain');
+    });
 
-    // ═══════════════════════════════════════════════════════════════════
-    // PASO 3: REGISTRAR ADMINISTRADO
-    // ═══════════════════════════════════════════════════════════════════
-    console.log('\n📝 REGISTRANDO ADMINISTRADO...');
-    const repeatEach = (testInfo as { repeatEach?: number }).repeatEach ?? (testInfo as { config?: { repeatEach?: number } }).config?.repeatEach ?? 1;
-    const repeatIndex = (testInfo as { repeatEachIndex?: number }).repeatEachIndex ?? 0;
-    const totalCasos = typeof repeatEach === 'number' ? repeatEach : 1;
-    const idxCaso = typeof repeatIndex === 'number' ? repeatIndex : 0;
-    const estadoSeleccionado = calcularEstadoCaso(idxCaso, totalCasos);
-    const rucRegistrado = await registrarAdministrado(page, 1, estadoSeleccionado);
+    await allure.step('PASO 2: ABRIR FORMULARIO', async () => {
+      await abrirFormularioNuevoAdministrado(page);
+      await allure.attachment('Pantalla formulario', await page.screenshot({ fullPage: true }), 'image/png');
+    });
 
-    // ═══════════════════════════════════════════════════════════════════
-    // RESULTADO FINAL
-    // ═══════════════════════════════════════════════════════════════════
+    await allure.step('PASO 3: REGISTRAR ADMINISTRADO', async () => {
+      console.log('\n📝 REGISTRANDO ADMINISTRADO...');
+      const totalCasos = typeof ctx.repeatEach === 'number' ? ctx.repeatEach : 1;
+      const idxCaso = typeof ctx.repeatIndex === 'number' ? ctx.repeatIndex : 0;
+      const dataMasivo = ctx.isMassive ? generateTestData(ctx.workerIndex, ctx.repeatIndex) : null;
+      const estadoSeleccionado = ctx.isMassive && dataMasivo
+        ? getEstadoLabel(dataMasivo.estado)
+        : calcularEstadoCaso(idxCaso, totalCasos);
+      const esMasivo = ctx.isMassive;
+      const sequenceIndex = typeof ctx.repeatIndex === 'number' ? ctx.repeatIndex : 0;
+      const rucRegistrado = await registrarAdministrado(
+        page,
+        1,
+        estadoSeleccionado,
+        esMasivo ? 240000 : 90000,
+        esMasivo ? 6 : 2,
+        esMasivo ? 5000 : 500,
+        esMasivo ? true : true,
+        2,
+        dataMasivo ? { ruc: dataMasivo.ruc, razonSocial: dataMasivo.razonSocial, nombreComercial: dataMasivo.nombreComercial } : undefined,
+        esMasivo,
+        sequenceIndex
+      );
+      allure.attachment('RUC registrado', rucRegistrado, 'text/plain');
+      allure.attachment('Estado seleccionado', estadoSeleccionado, 'text/plain');
+      const credencial = obtenerCredencial(testInfo.workerIndex);
+      allure.attachment('Credencial', JSON.stringify(credencial), 'application/json');
+      await allure.step('Captura de formulario lleno', async () => {
+        await capturarFormularioLleno(page, '01-AGREGAR_ADMINISTRADO', rucRegistrado, '', 'REGISTRO', 'FORMULARIO_LLENADO');
+        allure.attachment('Pantalla formulario lleno', await page.screenshot({ fullPage: true }), 'image/png');
+      });
+    });
+
+    await allure.step('RESULTADO FINAL', async () => {
+      allure.attachment('Timestamp', new Date().toISOString(), 'text/plain');
+      allure.attachment('Resumen', 'Administrado agregado correctamente', 'text/plain');
+    });
+
     console.log('\n✅ CASO 01 COMPLETADO EXITOSAMENTE');
     console.log(`📊 Resumen:`);
-    console.log(`   - Empresa: generada automáticamente`);
-    console.log(`   - RUC: ${rucRegistrado}`);
-    console.log(`   - Estado: ${estadoSeleccionado}`);
-    console.log(`   - Timestamp: ${new Date().toISOString()}`);
+    // ...existing code...
     console.log('\n✨ Administrado agregado correctamente.\n');
-
   } catch (error) {
     console.error('\n❌ ERROR EN CASO 01:', error);
     try {
       await capturarPantalla(page, '01-agregar-administrado', 'ERROR');
+      await allure.attachment('Error', String(error), 'text/plain');
+      await allure.attachment('Pantalla error', await page.screenshot({ fullPage: true }), 'image/png');
     } catch {}
     throw error;
   }

@@ -12,7 +12,11 @@ Este proyecto usa credenciales en **dos lugares**:
 
 En ambos archivos existe un arreglo `usuarios` con:
 - `lizvidal / QA1234510qa`
-- `anahuaman / QA1234512qa`
+- `lgvidalm / QA12345qa`
+- `lgvidal / QA12345qa`
+- `lgvm / QA12345qa`
+- `lizividal / QA12345qa`
+- `lizitavidal / QA12345qa`
 
 Si cambian las credenciales, edita esos valores.
 

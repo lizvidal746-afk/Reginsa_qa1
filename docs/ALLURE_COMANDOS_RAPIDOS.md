@@ -91,7 +91,7 @@ npm run test:all && allure serve allure-results
 
 ### Dobla clic en:
 ```
-abrir-allure.bat
+scripts\reportes\abrir-allure.bat
 ```
 
 **URL:** http://localhost:4050

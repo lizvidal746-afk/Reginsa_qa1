@@ -1,0 +1,9 @@
+[
+  {
+    "razonSocial": "ADMINISTRADO DE EJEMPLO 1"
+  },
+  {
+    "razonSocial": "ADMINISTRADO DE EJEMPLO 2"
+  }
+  // ...agrega aquí los administrados exportados de Excel/JSON
+]

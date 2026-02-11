@@ -12,6 +12,7 @@ module.exports = defineConfig({
   expect: { timeout: 15000 },
   globalSetup: './tests/global-setup.js',
   reporter: [
+    ['line'],
     ['html', { open: 'never', outputFolder: 'playwright-report' }],
     ['allure-playwright', { outputFolder: 'allure-results' }],
     ['junit', { outputFile: 'test-results/junit.xml' }]

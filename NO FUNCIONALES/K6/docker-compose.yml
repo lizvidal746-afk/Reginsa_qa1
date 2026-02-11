@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  k6:
+    image: grafana/k6:latest
+    volumes:
+      - ./:/scripts
+    working_dir: /scripts
+    command: k6 run caso1-guardar-administrado.js
+    environment:
+      - K6_SCRIPT=caso1-guardar-administrado.js
+    # Para cambiar de caso, edita el comando o usa variables

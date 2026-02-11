@@ -6,7 +6,7 @@ Write-Host "ABRIENDO ALLURE REPORT" -ForegroundColor Cyan
 Write-Host "======================================" -ForegroundColor Cyan
 Write-Host ""
 
-cd "d:\SUNEDU\SELENIUM\playwrigth"
+Set-Location "d:\SUNEDU\SELENIUM\playwrigth"
 
 # Verificar si existen los datos de Allure
 if (-not (Test-Path "allure-results")) {

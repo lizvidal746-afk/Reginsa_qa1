@@ -15,7 +15,7 @@ Esto permite que los datos de prueba sean variados y robustos en cada corrida.
 
 ### 1. Ejecutar en modo headless (sin abrir navegador, más rápido)
 
-Por defecto, los siguientes comandos ejecutan los tests en modo headless:
+Por defecto, los siguientes comandos ejecutan los tests en modo headless: sin navegador y con capturas
 
 ```
 npm run test:01
@@ -25,6 +25,13 @@ npm run test:04
 npm run test:05
 npm run test:all
 ```
+
+Mostrando navegador y con capturas
+npm run test:01 -- --headed
+npm run test:02 -- --headed
+npm run test:03 -- --headed
+npm run test:04 -- --headed
+npm run test:all -- --headed
 
 ### Comandos con descripción (Chromium por defecto)
 
@@ -556,3 +563,19 @@ Este caso **no es un flujo funcional**; sirve para **leer el módulo Administrad
 
 **Guardar opcional (modo prueba):**
 - Si defines `SAVE_ADMINISTRADO=1`, intentará guardar los cambios.
+
+---
+
+## 🔄 Sync base (Caso 01)
+Cuando reinicien la base de datos, sincroniza la base local desde el Excel.
+
+1) Actualiza el Excel base: [test-files/Administrados_BD.xlsx](test-files/Administrados_BD.xlsx)
+2) Ejecuta:
+```
+npm run sync:base
+```
+
+Esto rehace [reportes/administrados-registrados.json](reportes/administrados-registrados.json) y limpia:
+- [reportes/registros-administrados.json](reportes/registros-administrados.json)
+- [reportes/administrados-reservados.json](reportes/administrados-reservados.json)
+- [reportes/administrados-reservados.lock](reportes/administrados-reservados.lock)

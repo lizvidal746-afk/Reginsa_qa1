@@ -73,7 +73,7 @@ sudo apt-get install allure
 
 ```bash
 # Ejecutar desde la raíz del proyecto
-.\view-reports.bat
+scripts\reportes\view-reports.bat
 ```
 
 Hace automáticamente:
@@ -84,8 +84,8 @@ Hace automáticamente:
 ### Linux/macOS - Usar script
 
 ```bash
-chmod +x view-reports.sh
-./view-reports.sh
+chmod +x scripts/reportes/view-reports.sh
+./scripts/reportes/view-reports.sh
 ```
 
 ---
@@ -183,9 +183,11 @@ allure serve allure-results --port 5000
 | Ejecutar test (abre reportes) | `npm run test:02` |
 | Ver Playwright | `npx playwright show-report` |
 | Ver Allure | `allure serve allure-results` |
-| Script Windows | `.\view-reports.bat` |
+| Script Windows | `scripts\reportes\view-reports.bat` |
 | Script Linux/Mac | `./view-reports.sh` |
 | Limpiar reportes | `rm -rf playwright-report allure-results` |
+
+`allure-results` guarda resultados y adjuntos de las ejecuciones. Se puede borrar sin problema antes de una nueva corrida.
 
 ---
 

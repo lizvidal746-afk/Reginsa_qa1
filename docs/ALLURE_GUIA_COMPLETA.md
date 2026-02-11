@@ -5,7 +5,7 @@
 ```
 â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
 â”‚ 1ï¸âƒ£  FORMA MÃS FÃCIL (Recomendado)                           â”‚
-â”‚     Dobla clic â†’ abrir-allure.bat                           â”‚
+â”‚     Dobla clic â†’ scripts\reportes\abrir-allure.bat           â”‚
 â”‚     Â¡Listo! Se abre Allure en http://localhost:4050        â”‚
 â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
 â”‚ 2ï¸âƒ£  COMANDO DIRECTO (PowerShell)                            â”‚
@@ -22,7 +22,7 @@
 
 ### Pasos:
 1. Abre carpeta: `d:\SUNEDU\SELENIUM\playwrigth`
-2. Dobla clic en: **`abrir-allure.bat`**
+2. Dobla clic en: **`scripts\reportes\abrir-allure.bat`**
 3. Se abre automÃ¡ticamente: http://localhost:4050
 4. âœ… Listo
 

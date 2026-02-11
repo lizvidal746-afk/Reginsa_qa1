@@ -25,6 +25,9 @@ if (!command) {
 
 const buildEnv = () => {
   const env = { ...process.env };
+  if (!env.TEST_RUN_ID) {
+    env.TEST_RUN_ID = String(Date.now());
+  }
   if (forceScreenshots) env.SKIP_SCREENSHOTS = '0';
   if (skipScreenshots) env.SKIP_SCREENSHOTS = '1';
   return env;

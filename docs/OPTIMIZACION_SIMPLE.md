@@ -55,7 +55,7 @@ npx playwright test tests/casos-prueba/01-agregar-administrado.spec.ts --headed 
 npm run test:all
 
 # Terminal 3: Ver Allure
-dobla clic en: abrir-allure.bat
+dobla clic en: scripts\reportes\abrir-allure.bat
 # O: allure serve allure-results
 ```
 
@@ -65,13 +65,13 @@ dobla clic en: abrir-allure.bat
 npm run test:03
 
 # Terminal 2: Ver resultado
-dobla clic en: abrir-allure.bat
+dobla clic en: scripts\reportes\abrir-allure.bat
 ```
 
 ### Ciclo C: Limpiar + Ejecutar Todos
 ```powershell
 # Terminal 1: Limpiar
-dobla clic en: limpiar-todo.bat
+dobla clic en: scripts\limpieza\limpiar-todo.bat
 
 # Selecciona opción 1 (Limpiar TODO)
 
@@ -79,7 +79,7 @@ dobla clic en: limpiar-todo.bat
 npm run test:all
 
 # Terminal 2: Ver reportes
-dobla clic en: abrir-allure.bat
+dobla clic en: scripts\reportes\abrir-allure.bat
 ```
 
 ---
@@ -130,7 +130,7 @@ dobla clic en: abrir-allure.bat
    ↓
 2. Ejecutar: npm run test:all
    ↓
-3. Ver resultado: abrir-allure.bat
+3. Ver resultado: scripts\reportes\abrir-allure.bat
    ↓
 4. Siguiente caso
 ```
@@ -158,7 +158,7 @@ dobla clic en: abrir-allure.bat
 - [ ] `npm run test:01` funciona (más rápido)
 - [ ] `npm run test:02` funciona (más rápido)
 - [ ] No ves navegador (headless activo)
-- [ ] Allure se abre: `abrir-allure.bat`
+- [ ] Allure se abre: `scripts\reportes\abrir-allure.bat`
 - [ ] Screenshots se generan
 - [ ] Listo para Caso 03
 

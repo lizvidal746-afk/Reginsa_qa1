@@ -5,6 +5,7 @@
 - Glosario + plantilla profesional: [GLOSARIO_PLANTILLA.md](GLOSARIO_PLANTILLA.md)
 - Instalación y ejecución: [INSTALACION_Y_EJECUCION.md](INSTALACION_Y_EJECUCION.md)
 - Crear casos manualmente: [CREAR_CASOS_MANUAL.md](CREAR_CASOS_MANUAL.md)
+- Guia TypeScript para pruebas: [GUIA_TYPESCRIPT_PRUEBAS.md](GUIA_TYPESCRIPT_PRUEBAS.md)
 
 ## 🧭 Índice por temas
 ### Ejecución
@@ -45,7 +46,7 @@
 - Limpieza por terminal: [LIMPIAR_POR_TERMINAL.md](LIMPIAR_POR_TERMINAL.md)
 
 ### Scripts y utilidades
-- Scripts organizados: [scripts/README.md](scripts/README.md)
+- Scripts organizados: [../scripts/README.md](../scripts/README.md)
 
 ## ✅ Convención de nombres (sin inglés)
 No se crearán archivos nuevos con nombres en inglés.

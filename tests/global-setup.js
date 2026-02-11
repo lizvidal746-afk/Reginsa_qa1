@@ -4,7 +4,11 @@ const CREDENCIALES = {
   url: 'https://reginsaqa.sunedu.gob.pe/#/home',
   usuarios: [
     { usuario: 'lizvidal', contraseña: 'QA1234510qa' },
-    { usuario: 'anahuaman', contraseña: 'QA1234512qa' }
+    { usuario: 'lgvidalm', contraseña: 'QA12345qa' },
+    { usuario: 'lgvidal', contraseña: 'QA12345qa' },
+    { usuario: 'lgvm', contraseña: 'QA12345qa' },
+    { usuario: 'lizividal', contraseña: 'QA12345qa' },
+    { usuario: 'lizitavidal', contraseña: 'QA12345qa' }
   ]
 };
 

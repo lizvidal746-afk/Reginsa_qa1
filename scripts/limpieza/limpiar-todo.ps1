@@ -13,7 +13,7 @@ Write-Host ""
 
 $opcion = Read-Host "Elige opciÃ³n (1-4)"
 
-cd "d:\SUNEDU\SELENIUM\playwrigth"
+Set-Location "d:\SUNEDU\SELENIUM\playwrigth"
 
 switch ($opcion) {
     "1" {
@@ -26,8 +26,12 @@ switch ($opcion) {
         Remove-Item -Path playwright-report -Recurse -Force -ErrorAction SilentlyContinue
         Remove-Item -Path test-results -Recurse -Force -ErrorAction SilentlyContinue
         Remove-Item -Path screenshots -Recurse -Force -ErrorAction SilentlyContinue
-        Remove-Item -Path registros-administrados.json -Force -ErrorAction SilentlyContinue
-        Remove-Item -Path reporte-administrados.html -Force -ErrorAction SilentlyContinue
+        Remove-Item -Path errors -Recurse -Force -ErrorAction SilentlyContinue
+        Remove-Item -Path reportes\registros-administrados.json -Force -ErrorAction SilentlyContinue
+        Remove-Item -Path reportes\administrados-registrados.json -Force -ErrorAction SilentlyContinue
+        Remove-Item -Path reportes\administrados-reservados.json -Force -ErrorAction SilentlyContinue
+        Remove-Item -Path reportes\administrados-reservados.lock -Force -ErrorAction SilentlyContinue
+        Remove-Item -Path reportes\reporte-administrados.html -Force -ErrorAction SilentlyContinue
         
         Write-Host ""
         Write-Host "âœ… Todo limpiado correctamente" -ForegroundColor Green

@@ -33,8 +33,12 @@ rmdir /s /q allure-report 2>nul
 rmdir /s /q playwright-report 2>nul
 rmdir /s /q test-results 2>nul
 rmdir /s /q screenshots 2>nul
-del /q registros-administrados.json 2>nul
-del /q reporte-administrados.html 2>nul
+rmdir /s /q errors 2>nul
+del /q reportes\registros-administrados.json 2>nul
+del /q reportes\administrados-registrados.json 2>nul
+del /q reportes\administrados-reservados.json 2>nul
+del /q reportes\administrados-reservados.lock 2>nul
+del /q reportes\reporte-administrados.html 2>nul
 echo.
 echo âœ… Todo limpiado correctamente
 echo.

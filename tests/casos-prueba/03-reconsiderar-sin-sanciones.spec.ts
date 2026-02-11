@@ -1,6 +1,7 @@
 import { test } from '@playwright/test';
 import {
   iniciarSesionYNavegar,
+  obtenerCredencial,
   navegarAInfraccionSancion,
   completarCabeceraReconsideracion,
   capturarFormularioLleno,
@@ -8,6 +9,7 @@ import {
   parseFechaTexto,
   calcularFechaReconsideracion,
 } from '../utilidades/reginsa-actions';
+import { getTestContext } from '../../helpers/test-context';
 
 /**
  * EJECUCIÓN (rápido)
@@ -39,6 +41,7 @@ test.describe('03-RECONSIDERAR SIN SANCIONES', () => {
   test('Reconsiderar sanción con campos vacíos - búsqueda dinámica', async ({ page }, testInfo) => {
     test.setTimeout(300000); // 5 minutos - evitar timeout en flujo completo
     const nombreCaso = '03-reconsiderar-sin-sanciones';
+    const ctx = getTestContext(testInfo);
 
     try {
       console.log('\n================================================================================');
@@ -72,8 +75,10 @@ test.describe('03-RECONSIDERAR SIN SANCIONES', () => {
       
       let registroEncontrado = false;
       let fechaResolucionSeleccionada: Date | null = null;
+      const candidatos: Array<{ filaIdx: number; fechaResolucion: Date; administrado: string; key: string }> = [];
       const hoy = new Date();
       hoy.setHours(0, 0, 0, 0);
+      const fechaMinima = new Date(2025, 0, 1);
 
       const obtenerIndiceColumna = async (regex: RegExp): Promise<number> => {
         const headers = page.locator('thead tr th');
@@ -85,15 +90,19 @@ test.describe('03-RECONSIDERAR SIN SANCIONES', () => {
         return -1;
       };
 
+      const idxAdmin = await obtenerIndiceColumna(/Administrado/i);
+      const idxExp = await obtenerIndiceColumna(/N\W*de\W*Expediente|N\W*Expediente/i);
+      const idxRes = await obtenerIndiceColumna(/N\W*de\W*Resoluci\w*|N\W*Resoluci\w*/i);
       const idxFMod = await obtenerIndiceColumna(/F\.\s*Modificaci\w*|Modificaci\w*/i);
       const idxNRec = await obtenerIndiceColumna(/N\W*Reconsideraci\w*/i);
       const idxFRec = await obtenerIndiceColumna(/F\.\s*Reconsideraci\w*|Reconsideraci\w*/i);
+      const idxFRes = await obtenerIndiceColumna(/F\.\s*Resoluci\w*|Resoluci\w*/i);
 
       if (idxFMod < 0 || idxNRec < 0 || idxFRec < 0) {
         throw new Error('No se pudieron identificar las columnas F. Modificación, N° Reconsideración y F. Reconsideración.');
       }
 
-      // Buscar primer registro que tenga VACÍOS: F. Modificación, N° Reconsideración y F. Reconsideración
+      // Buscar registros que tengan VACÍOS: F. Modificación, N° Reconsideración y F. Reconsideración
       for (let i = 1; i < totalFilas; i++) {
         const fila = filas.nth(i);
         const celdas = fila.locator('td');
@@ -106,33 +115,60 @@ test.describe('03-RECONSIDERAR SIN SANCIONES', () => {
           
           console.log(`   Fila ${i}: F.Mod='${fModificacion}' | N°Rec='${nReconsid}' | F.Rec='${fReconsid}'`);
           
-          // Buscar fecha de resolución en la fila (primera fecha encontrada)
-          const fechasDetectadas: Date[] = [];
-          for (let c = 0; c < totalCeldas; c++) {
-            const texto = (await celdas.nth(c).textContent())?.trim() || '';
-            const fecha = parseFechaTexto(texto);
-            if (fecha) fechasDetectadas.push(fecha);
+          // Buscar fecha de resolución en la fila (prioriza columna F. Resolución si existe)
+          let fechaResolucion: Date | null = null;
+          if (idxFRes >= 0 && idxFRes < totalCeldas) {
+            const textoFRes = (await celdas.nth(idxFRes).textContent())?.trim() || '';
+            fechaResolucion = parseFechaTexto(textoFRes);
           }
-          const fechaResolucion = fechasDetectadas[0] || null;
+          if (!fechaResolucion) {
+            const fechasDetectadas: Date[] = [];
+            for (let c = 0; c < totalCeldas; c++) {
+              const texto = (await celdas.nth(c).textContent())?.trim() || '';
+              const fecha = parseFechaTexto(texto);
+              if (fecha) fechasDetectadas.push(fecha);
+            }
+            fechaResolucion = fechasDetectadas[0] || null;
+          }
 
           // Si TODOS están vacíos
           if (!fModificacion && !nReconsid && !fReconsid) {
-            if (fechaResolucion && fechaResolucion < hoy) {
+            if (fechaResolucion && fechaResolucion >= fechaMinima && fechaResolucion < hoy) {
               const botones = fila.locator('button.p-button-warning');
               if (await botones.count() > 0) {
-                const administrado = (await celdas.nth(0).textContent())?.trim() || 'N/D';
-                console.log(`   👤 Administrado: ${administrado}`);
-                console.log(`   ✅ REGISTRO VÁLIDO encontrado en fila ${i}\n`);
-                await botones.first().click();
-                // Espera a que el formulario de cabecera esté visible
-                await page.locator('form').waitFor({ state: 'visible', timeout: 10000 });
-                registroEncontrado = true;
-                fechaResolucionSeleccionada = fechaResolucion;
-                break;
+                  const administrado = idxAdmin >= 0
+                    ? (await celdas.nth(idxAdmin).textContent())?.trim() || 'N/D'
+                    : (await celdas.nth(0).textContent())?.trim() || 'N/D';
+                const expediente = idxExp >= 0
+                  ? (await celdas.nth(idxExp).textContent())?.trim() || ''
+                  : '';
+                const resolucion = idxRes >= 0
+                  ? (await celdas.nth(idxRes).textContent())?.trim() || ''
+                  : '';
+                const key = `${administrado}|${expediente}|${resolucion}`.trim();
+                candidatos.push({ filaIdx: i, fechaResolucion, administrado, key });
               }
             }
           }
         }
+      }
+
+      if (candidatos.length > 0) {
+        if (candidatos.length < ctx.workers) {
+          test.skip(true, 'No hay suficientes candidatos para ejecutar en paralelo sin colisión.');
+          return;
+        }
+        const elegido = candidatos[ctx.selectionSlot % candidatos.length];
+        console.log(`   👤 Administrado: ${elegido.administrado}`);
+        console.log(`   ✅ REGISTRO VÁLIDO elegido en fila ${elegido.filaIdx} (worker ${ctx.workerIndex}, repeat ${ctx.repeatIndex})\n`);
+
+        const filaElegida = filas.nth(elegido.filaIdx);
+        const botonesElegidos = filaElegida.locator('button.p-button-warning');
+        await botonesElegidos.first().click();
+        // Espera a que el formulario de cabecera esté visible
+        await page.locator('form').waitFor({ state: 'visible', timeout: 10000 });
+        registroEncontrado = true;
+        fechaResolucionSeleccionada = elegido.fechaResolucion;
       }
 
       if (!registroEncontrado) {
@@ -239,6 +275,8 @@ test.describe('03-RECONSIDERAR SIN SANCIONES', () => {
         console.log('   - Archivo: GENERAL N° 00001-2026-SUNEDU-SG-OTI.pdf');
         console.log('   - Detalle: SIN SANCIONES REGISTRADAS');
         console.log('   - Resultado: ✅ EXITOSO\n');
+        const credencial = obtenerCredencial(testInfo.workerIndex);
+        console.log(`👷 Worker ${testInfo.workerIndex} (${credencial.usuario}) caso 03 completado`);
         return;
       } else {
         console.log('ℹ️ Se encontraron sanciones en este registro\n');

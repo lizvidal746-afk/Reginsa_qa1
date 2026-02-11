@@ -1,4 +1,4 @@
-cd "d:\SUNEDU\SELENIUM\playwrigth"
+Set-Location "d:\SUNEDU\SELENIUM\playwrigth"
 Write-Host "ðŸ§¹ Limpiando reportes y datos..." -ForegroundColor Cyan
 Write-Host ""
 

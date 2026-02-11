@@ -82,9 +82,10 @@ test('02-REGISTRAR SANCIÓN: 8 sanciones para 1 administrado', async ({ page }, 
   console.log('🎲 PASO 3: SELECCIONANDO ADMINISTRADO');
   console.log('═'.repeat(90));
 
-  // Reutiliza `obtenerAdministradoAleatorio`
+  // Reutiliza `obtenerAdministradoAleatorio` pero reduce espera
   const admin = await obtenerAdministradoAleatorio(page);
-  await page.waitForTimeout(2000);
+  // Espera mínima, solo para asegurar carga
+  await page.waitForTimeout(800);
   console.log(`  ✅ Administrado seleccionado: ${admin}\n`);
 
   // ═══════════════════════════════════════════════════════════════════
@@ -115,7 +116,7 @@ test('02-REGISTRAR SANCIÓN: 8 sanciones para 1 administrado', async ({ page }, 
   console.log(`  ✓ Expediente: Exp N° ${numExp}-${yearResolucion}`);
 
   const numRes = Math.floor(Math.random() * 10000);
-  const resInput = page.getByRole('textbox').nth(2);
+  const resInput = page.locator('input[formcontrolname="numeroResolucion"]');
   await resInput.click();
   await resInput.fill(`Res N° ${numRes}-${yearResolucion}`);
   console.log(`  ✓ Resolución: Res N° ${numRes}-${yearResolucion}`);
@@ -242,15 +243,16 @@ test('02-REGISTRAR SANCIÓN: 8 sanciones para 1 administrado', async ({ page }, 
 
     try {
       // PASO 8A: ABRIR MODAL
-      const btnAgregarSancion = page.getByRole('button', { name: 'Agregar sanción' });
-      for (let intento = 0; intento < 15; intento++) {
-        const isEnabled = await btnAgregarSancion.isEnabled({ timeout: 2000 }).catch(() => false);
+      const btnAgregarSancion = page.locator('button[label="Agregar sanción"][icon="pi pi-plus"]');
+      for (let intento = 0; intento < 8; intento++) {
+        const isEnabled = await btnAgregarSancion.isEnabled({ timeout: 1000 }).catch(() => false);
         if (isEnabled) {
-          await btnAgregarSancion.click();
-          await page.waitForTimeout(3000);
+          await btnAgregarSancion.click({ force: true });
+          // Espera mínima, solo lo necesario para el modal
+          await page.locator('[role="dialog"]').first().waitFor({ state: 'visible', timeout: 3000 });
           break;
         }
-        await page.waitForTimeout(500);
+        await page.waitForTimeout(200); // Menor espera entre intentos
       }
 
       const dialog = page.locator('[role="dialog"]').first();
@@ -318,12 +320,48 @@ test('02-REGISTRAR SANCIÓN: 8 sanciones para 1 administrado', async ({ page }, 
         return false;
       };
 
-      // PASO 8B: RIS (aleatorio)
-      await seleccionarAleatorioPorLabel(/RIS/i, 'RIS', 0);
+      // PASO 8B: RIS (aleatorio, selector exacto)
+      const risDropdown = dialog.locator('p-dropdown[name="risSeleccionado"]');
+      await risDropdown.waitFor({ state: 'visible', timeout: 3000 });
+      const risTrigger = risDropdown.locator('.p-dropdown-trigger');
+      await risTrigger.click({ force: true });
+      await page.waitForTimeout(300); // Espera mínima para que cargue el panel
+      const risOptions = page.locator('.p-dropdown-panel .p-dropdown-item, [role="option"]');
+      const risCount = await risOptions.count();
+      if (risCount > 0) {
+        const risIndex = Math.floor(Math.random() * risCount);
+        await risOptions.nth(risIndex).click();
+        await page.waitForTimeout(300);
+        console.log('  │  ✓ RIS aplicable seleccionado');
+      } else {
+        throw new Error('No se encontraron opciones RIS aplicable');
+      }
 
-      // PASO 8C: TIPO INFRACCIÓN (aleatorio)
-      await page.waitForTimeout(800);
-      await seleccionarAleatorioPorLabel(/Tipo.*Infrac|Tipo.*Infractor/i, 'Tipo Infracción', 1);
+      // PASO 8C: TIPO INFRACCIÓN (aleatorio, rápido y variable)
+      await page.waitForTimeout(200); // Espera mínima tras RIS
+      // Selector robusto para el segundo dropdown de tipo infractor
+      const tipoDropdown = dialog.locator('p-dropdown[formcontrolname="idTipoInfractor"], p-dropdown[optionlabel="DescripcionTipoInfractor"], p-dropdown').nth(1);
+      await tipoDropdown.waitFor({ state: 'visible', timeout: 2000 });
+      const tipoTrigger = tipoDropdown.locator('.p-dropdown-trigger');
+      await tipoTrigger.click({ force: true });
+      await page.waitForTimeout(150); // Espera mínima para panel
+      // Opciones visibles en el panel abierto
+      const tipoOptions = page.locator('.dropdown-panel-wrap--tipo .p-dropdown-item, [role="option"]');
+      const tipoCount = await tipoOptions.count();
+      if (tipoCount > 1) {
+        // Evita seleccionar la primera opción si es solo título/categoría
+        let tipoIndex = Math.floor(Math.random() * tipoCount);
+        // Si la opción elegida es solo título (sin número), elige la siguiente
+        let texto = (await tipoOptions.nth(tipoIndex).textContent()) || '';
+        if (/^\s*\d+\s*-/.test(texto) && tipoIndex + 1 < tipoCount) {
+          tipoIndex++;
+        }
+        await tipoOptions.nth(tipoIndex).click();
+        await page.waitForTimeout(150);
+        console.log('  │  ✓ Tipo Infractor seleccionado');
+      } else {
+        throw new Error('No se encontraron opciones de Tipo Infractor');
+      }
 
       // PASO 8D: HECHO INFRACTOR
       const hechoInput = dialog.getByPlaceholder('Describe el hecho infractor');
@@ -458,14 +496,37 @@ test('02-REGISTRAR SANCIÓN: 8 sanciones para 1 administrado', async ({ page }, 
       }
 
       // PASO 8H: GUARDAR DETALLE
-      const btnGuardarDetalle = page.getByRole('button', { name: 'Guardar detalle' });
-      await btnGuardarDetalle.click();
-      await page.waitForTimeout(2500);
+      const btnGuardarDetalle = page.locator('button[label="Guardar detalle"][icon="pi pi-save"]');
+      await btnGuardarDetalle.waitFor({ state: 'visible', timeout: 5000 });
+      await btnGuardarDetalle.click({ force: true });
+      // Validar que el detalle fue guardado correctamente
+      let guardado = false;
+      for (let intento = 0; intento < 3; intento++) {
+        // Espera a que desaparezca el modal o aparezca un toast de éxito
+        const modalVisible = await page.locator('[role="dialog"]').first().isVisible().catch(() => false);
+        const toastExito = await page.locator('.p-toast-message-success, .p-toast-message[aria-label*="Éxito"], .p-toast-message[style*="green"]').first();
+        if (!modalVisible || await toastExito.isVisible().catch(() => false)) {
+          guardado = true;
+          break;
+        }
+        await page.waitForTimeout(1000);
+      }
+      if (!guardado) {
+        throw new Error('No se confirmó el guardado del detalle de sanción');
+      }
+      await page.waitForTimeout(1000);
       exitosas++;
       console.log(`  │  ✅ GUARDADA (Detalle agregado ${exitosas}/${sanciones.length})`);
 
       if (sancion.numero === 5 || sancion.numero === sanciones.length) {
-        await capturarToastCaso(`08_DETALLE_${sancion.numero}_EXITO`);
+        // Espera a que el toast de éxito esté visible
+        const toast = page.locator('.p-toast-message-success, .p-toast-message[aria-label*="Éxito"], .p-toast-message[style*="green"]');
+        await toast.waitFor({ state: 'visible', timeout: 4000 });
+        await page.waitForTimeout(300); // Breve espera para asegurar render
+        await page.screenshot({
+          path: `screenshots/02-REGISTRAR_SANCION_DETALLE_${sancion.numero}_VENTANA.png`,
+          fullPage: true
+        });
       }
 
       // PASO 8I: CERRAR MODAL
@@ -494,21 +555,28 @@ test('02-REGISTRAR SANCIÓN: 8 sanciones para 1 administrado', async ({ page }, 
   await capturarFormularioLleno(page, '02-REGISTRAR_SANCION', admin, '', 'REGISTRAR_SANCION', '09_FORMULARIO_FINAL');
 
   await page.waitForTimeout(2000);
-  const btnGuardarFinal = page.getByRole('button', { name: 'Guardar' });
-  if (await btnGuardarFinal.isVisible({ timeout: 5000 }).catch(() => false)) {
-    await btnGuardarFinal.click();
-    await page.waitForTimeout(4000);
-    console.log('  ✅ Formulario guardado');
+  const btnGuardarFinal = page.locator('button[label="Guardar"][icon="pi pi-save"]');
+  await btnGuardarFinal.waitFor({ state: 'visible', timeout: 5000 });
+  await btnGuardarFinal.click({ force: true });
+  await page.waitForTimeout(4000);
+  console.log('  ✅ Formulario guardado');
 
-    // Reutiliza `capturarToastExito`
-    await capturarToastExito(page, '02-REGISTRAR_SANCION', '10_EXITO_GUARDAR_GENERAL', admin, '', 'REGISTRAR_SANCION');
+  // Captura pantalla completa de éxito final
+  const toastFinal = page.locator('.p-toast-message-success, .p-toast-message[aria-label*="Éxito"], .p-toast-message[style*="green"]');
+  await toastFinal.waitFor({ state: 'visible', timeout: 4000 });
+  await page.waitForTimeout(300);
+  await page.screenshot({
+    path: 'screenshots/02-REGISTRAR_SANCION_EXITO_FINAL.png',
+    fullPage: true
+  });
 
-    try {
-      // Reutiliza `capturarPantallaMejorada`
-      await capturarPantallaMejorada(page, '02-REGISTRAR_SANCION', '11_FINAL', 'Éxito', 'Final');
-    } catch (e) {}
-  }
+  // Reutiliza `capturarToastExito`
+  await capturarToastExito(page, '02-REGISTRAR_SANCION', '10_EXITO_GUARDAR_GENERAL', admin, '', 'REGISTRAR_SANCION');
 
+  try {
+    // Reutiliza `capturarPantallaMejorada`
+    await capturarPantallaMejorada(page, '02-REGISTRAR_SANCION', '11_FINAL', 'Éxito', 'Final');
+  } catch (e) {}
   console.log(`\n  ✅ TEST COMPLETADO - Sanciones: ${exitosas}/${sanciones.length}\n`);
 
   if (exitosas >= 3) {

@@ -7,7 +7,7 @@
 | **Limpiar CASO 01** | PowerShell | Ver abajo → "Limpiar Caso 01" |
 | **Limpiar CASO 02** | PowerShell | Ver abajo → "Limpiar Caso 02" |
 | **Limpiar TODO** | PowerShell | Ver abajo → "Limpiar TODO" |
-| **Usar script** | CMD | Ejecuta: `limpiar-todo.bat` |
+| **Usar script** | CMD | Ejecuta: `scripts\limpieza\limpiar-todo.bat` |
 
 ---
 
@@ -51,7 +51,7 @@ echo ✅ Caso 02 limpiado
 
 ### 🔴 OPCIÓN A: PowerShell (1 línea)
 ```powershell
-cd "d:\SUNEDU\SELENIUM\playwrigth"; Remove-Item -Path allure-results, allure-report, playwright-report, test-results, screenshots, errors, registros-administrados.json, reporte-administrados.html -Recurse -Force -ErrorAction SilentlyContinue; Write-Host "✅ Todo limpiado"
+cd "d:\SUNEDU\SELENIUM\playwrigth"; Remove-Item -Path allure-results, allure-report, playwright-report, test-results, screenshots, errors, reportes\registros-administrados.json, reportes\administrados-registrados.json, reportes\administrados-reservados.json, reportes\administrados-reservados.lock, reportes\reporte-administrados.html -Recurse -Force -ErrorAction SilentlyContinue; Write-Host "✅ Todo limpiado"
 ```
 
 ### 🔴 OPCIÓN B: PowerShell (paso a paso)
@@ -63,8 +63,11 @@ Remove-Item -Path playwright-report -Recurse -Force -ErrorAction SilentlyContinu
 Remove-Item -Path test-results -Recurse -Force -ErrorAction SilentlyContinue
 Remove-Item -Path screenshots -Recurse -Force -ErrorAction SilentlyContinue
 Remove-Item -Path errors -Recurse -Force -ErrorAction SilentlyContinue
-Remove-Item -Path registros-administrados.json -Force -ErrorAction SilentlyContinue
-Remove-Item -Path reporte-administrados.html -Force -ErrorAction SilentlyContinue
+Remove-Item -Path reportes\registros-administrados.json -Force -ErrorAction SilentlyContinue
+Remove-Item -Path reportes\administrados-registrados.json -Force -ErrorAction SilentlyContinue
+Remove-Item -Path reportes\administrados-reservados.json -Force -ErrorAction SilentlyContinue
+Remove-Item -Path reportes\administrados-reservados.lock -Force -ErrorAction SilentlyContinue
+Remove-Item -Path reportes\reporte-administrados.html -Force -ErrorAction SilentlyContinue
 Write-Host "✅ Todo limpiado"
 ```
 
@@ -77,20 +80,23 @@ rmdir /s /q playwright-report 2>nul
 rmdir /s /q test-results 2>nul
 rmdir /s /q screenshots 2>nul
 rmdir /s /q errors 2>nul
-del /q registros-administrados.json 2>nul
-del /q reporte-administrados.html 2>nul
+del /q reportes\registros-administrados.json 2>nul
+del /q reportes\administrados-registrados.json 2>nul
+del /q reportes\administrados-reservados.json 2>nul
+del /q reportes\administrados-reservados.lock 2>nul
+del /q reportes\reporte-administrados.html 2>nul
 echo ✅ Todo limpiado
 ```
 
 ### 🔴 OPCIÓN D: Script BAT (más fácil)
 ```cmd
-limpiar-todo.bat
+scripts\limpieza\limpiar-todo.bat
 ```
 
 ### 🔴 OPCIÓN E: Bash
 ```bash
 cd "d:/SUNEDU/SELENIUM/playwrigth"
-rm -rf allure-results allure-report playwright-report test-results screenshots errors registros-administrados.json reporte-administrados.html
+rm -rf allure-results allure-report playwright-report test-results screenshots errors reportes/registros-administrados.json reportes/administrados-registrados.json reportes/administrados-reservados.json reportes/administrados-reservados.lock reportes/reporte-administrados.html
 echo "✅ Todo limpiado"
 ```
 
@@ -106,8 +112,11 @@ echo "✅ Todo limpiado"
 | `test-results/` | Resultados tÃ©cnicos |
 | `screenshots/` | TODAS las screenshots |
 | `errors/` | Screenshots de errores |
-| `registros-administrados.json` | Datos de administrados registrados |
-| `reporte-administrados.html` | Reporte HTML |
+| `reportes/registros-administrados.json` | Datos de administrados registrados |
+| `reportes/administrados-registrados.json` | Base local de administrados |
+| `reportes/administrados-reservados.json` | Reservas para workers |
+| `reportes/administrados-reservados.lock` | Lock de reservas |
+| `reportes/reporte-administrados.html` | Reporte HTML |
 
 ---
 
@@ -117,7 +126,7 @@ echo "✅ Todo limpiado"
 ```powershell
 # Terminal 1 - Limpiar y ejecutar
 cd "d:\SUNEDU\SELENIUM\playwrigth"
-Remove-Item -Path allure-results, allure-report, playwright-report, test-results, screenshots, errors, registros-administrados.json, reporte-administrados.html -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item -Path allure-results, allure-report, playwright-report, test-results, screenshots, errors, reportes\registros-administrados.json, reportes\administrados-registrados.json, reportes\administrados-reservados.json, reportes\administrados-reservados.lock, reportes\reporte-administrados.html -Recurse -Force -ErrorAction SilentlyContinue
 npm run test:all
 
 # Terminal 2 - Ver Allure (después que termine)
@@ -158,7 +167,7 @@ npm run test:02
 
 ## 💡 RECOMENDACIÓN
 
-**Usa la OPCIÃ“N D:** `limpiar-todo.bat`
+**Usa la OPCION D:** `scripts\limpieza\limpiar-todo.bat`
 
 Es más fácil: solo dobla clic en el archivo y listo.
 

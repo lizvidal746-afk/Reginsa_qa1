@@ -3,7 +3,7 @@
 ## 📊 LO QUE SE CREÓ
 
 ### Scripts de Allure (Mejorados)
-✅ **abrir-allure.bat** - Dobla clic para abrir Allure
+✅ **scripts\reportes\abrir-allure.bat** - Dobla clic para abrir Allure
 ✅ **abrir-allure.ps1** - PowerShell para abrir Allure
 
 ### Documentación de Allure (Completa)
@@ -20,7 +20,7 @@
 
 ### Opción 1: Script (MÁS FÁCIL)
 ```
-1. Dobla clic: abrir-allure.bat
+1. Dobla clic: scripts\reportes\abrir-allure.bat
 2. Se abre: http://localhost:4050
 3. ¡Listo!
 ```
@@ -54,7 +54,7 @@ npm run test:all; allure serve allure-results
 
 2. Abre Allure:
    ```
-   Dobla clic: abrir-allure.bat
+   Dobla clic: scripts\reportes\abrir-allure.bat
    ```
 
 3. Ver reportes en:

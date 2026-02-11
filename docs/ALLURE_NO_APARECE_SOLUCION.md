@@ -31,7 +31,7 @@ cd "d:\SUNEDU\SELENIUM\playwrigth" && allure serve allure-results
 
 **Haz doble clic:**
 ```
-D:\SUNEDU\SELENIUM\playwrigth\abrir-allure.bat
+D:\SUNEDU\SELENIUM\playwrigth\scripts\reportes\abrir-allure.bat
 ```
 
 **QuÃ© hace:**

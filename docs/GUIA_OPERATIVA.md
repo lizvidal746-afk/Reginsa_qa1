@@ -110,10 +110,19 @@ npx playwright test --ui
 
 ---
 
+## 🔄 Sincronizar base del Caso 01 (opcion segura)
+Cuando la base se reinicia, actualiza la data local desde el Excel base:
+```powershell
+npm run sync:base
+```
+Esto reescribe `reportes/administrados-registrados.json` y limpia reservados/registro local para evitar duplicados.
+
+---
+
 ## 🧹 Limpieza
 ### Limpieza total
 ```powershell
-cd "d:\SUNEDU\SELENIUM\playwrigth"; Remove-Item -Path allure-results, allure-report, playwright-report, test-results, screenshots, errors, registros-administrados.json, reporte-administrados.html -Recurse -Force -ErrorAction SilentlyContinue; Write-Host "✅ Todo limpiado"
+cd "d:\SUNEDU\SELENIUM\playwrigth"; Remove-Item -Path allure-results, allure-report, playwright-report, test-results, screenshots, errors, reportes\registros-administrados.json, reportes\administrados-registrados.json, reportes\administrados-reservados.json, reportes\administrados-reservados.lock, reportes\reporte-administrados.html -Recurse -Force -ErrorAction SilentlyContinue; Write-Host "✅ Todo limpiado"
 ```
 
 ### Limpieza por caso
@@ -123,8 +132,21 @@ Remove-Item -Path screenshots/02-*.png -Force -ErrorAction SilentlyContinue
 Remove-Item -Path errors -Recurse -Force -ErrorAction SilentlyContinue
 ```
 
-### OpciÃ³n mÃ¡s simple
-- Script interactivo: `limpiar-todo.bat` (doble clic)
+### Opcion mas simple
+- Script interactivo: `scripts/limpieza/limpiar-todo.bat`
+
+---
+
+## 🔄 Sync base (Caso 01)
+Usa esta opcion cuando reinicien la base de datos.
+
+1) Actualiza el Excel base: [test-files/Administrados_BD.xlsx](test-files/Administrados_BD.xlsx)
+2) Ejecuta:
+```powershell
+npm run sync:base
+```
+
+Esto rehace [reportes/administrados-registrados.json](reportes/administrados-registrados.json) y limpia los archivos de uso/reserva del Caso 01.
 
 ---
 
@@ -161,7 +183,7 @@ allure serve allure-results
 
 ### Ejecutar todo con limpieza previa
 ```powershell
-cd "d:\SUNEDU\SELENIUM\playwrigth"; Remove-Item -Path allure-results, allure-report, playwright-report, test-results, screenshots, errors, registros-administrados.json, reporte-administrados.html -Recurse -Force -ErrorAction SilentlyContinue; npm run test:all
+cd "d:\SUNEDU\SELENIUM\playwrigth"; Remove-Item -Path allure-results, allure-report, playwright-report, test-results, screenshots, errors, reportes\registros-administrados.json, reportes\administrados-registrados.json, reportes\administrados-reservados.json, reportes\administrados-reservados.lock, reportes\reporte-administrados.html -Recurse -Force -ErrorAction SilentlyContinue; npm run test:all
 ```
 
 ---
